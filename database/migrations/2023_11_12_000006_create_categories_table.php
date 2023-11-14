@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('code',10)->nullable()->default(null);
             $table->string('name',255)->unique('ukCategory');
             $table->string('icon',15)->nullable()->default(null);
-            $table->string('type',15)->nullable()->default(null);
             $table->string('file',150)->nullable()->default(null);
             $table->text('observation')->nullable()->default(null);
             $table->string('status',20)->nullable()->default('Activo');

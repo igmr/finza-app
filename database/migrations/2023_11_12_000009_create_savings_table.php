@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('usr_id')->nullable()->default(null);
             $table->string('name',65)->unique('ukSaving');
             $table->double('amount',4)->nullable()->default(0);
+            $table->timestamp('date_finish')->nullable()->default(null);
             $table->string('file',150)->nullable()->default(null);
             $table->text('observation')->nullable()->default(null);
             $table->string('status',20)->nullable()->default('Activo');
