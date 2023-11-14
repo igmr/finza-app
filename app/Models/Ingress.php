@@ -2,53 +2,50 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+class Ingress extends Model
 {
-    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
+    use HasFactory, SoftDeletes;
+    protected $table = 'ingresses';
     // +----------------------------------------------------------------------------------+
     // | ID                                                                               |
     // +----------------------------------------------------------------------------------+
     protected $primaryKey = 'id';
     public $incrementing  = true;
-    protected $keyType    = 'INT';
+    protected $keyType    = true;
     // +----------------------------------------------------------------------------------+
     // | ATTRIBUTES                                                                       |
     // +----------------------------------------------------------------------------------+
     protected $fillable = [
-        'id',
-        'email', 'name', 'password',
+        'id', 'cta_id', 'sav_id', 'deb_id', 'acc_id',
+        'concept', 'description', 'reference', 'amount',
         'observation', 'file', 'status',
     ];
 
     protected $hidden = [
-        'password', 'remember_token',
-        'email_verified_at',
-        'files',
-        'created_at', 'updated_at', 'deleted_at',
+        'usr_id', 'created_at', 'updated_at', 'deleted_at',
     ];
 
     protected $casts = [
-        'id'                => 'integer',
-        'name'              => 'string',
-        'email'             => 'string',
-        'username'          => 'string',
-        'password'          => 'hashed',
-        'observation'       => 'string',
-        'file'              => 'string',
-        'status'            => 'string',
-        'email_verified_at' => 'datetime',
-        'remember_token'    => 'string',
-        'created_at'        => 'datetime',
-        'updated_at'        => 'datetime',
-        'deleted_at'        => 'datetime',
-        'email_verified_at' => 'datetime',
+        'id'           => 'integer',
+        'usr_id'       => 'integer',
+        'cta_id'       => 'integer',
+        'sav_id'       => 'integer',
+        'deb_id'       => 'integer',
+        'acc_id'       => 'integer',
+        'concept'      => 'string',
+        'description'  => 'string',
+        'reference'    => 'string',
+        'amount'       => 'double',
+        'file'         => 'string',
+        'observation'  => 'string',
+        'status'       => 'string',
+        'created_at'   => 'datetime',
+        'updated_at'   => 'datetime',
+        'deleted_at'   => 'datetime',
     ];
     // +----------------------------------------------------------------------------------+
     // | OTHERS                                                                           |
@@ -59,3 +56,4 @@ class User extends Authenticatable
     const UPDATED_AT = 'updated_at';
     const DELETED_AT = 'deleted_at';
 }
+

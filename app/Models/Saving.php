@@ -2,53 +2,44 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+class Saving extends Model
 {
-    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
+    use HasFactory, SoftDeletes;
+    protected $table = 'savings';
     // +----------------------------------------------------------------------------------+
     // | ID                                                                               |
     // +----------------------------------------------------------------------------------+
     protected $primaryKey = 'id';
     public $incrementing  = true;
-    protected $keyType    = 'INT';
+    protected $keyType    = true;
     // +----------------------------------------------------------------------------------+
     // | ATTRIBUTES                                                                       |
     // +----------------------------------------------------------------------------------+
     protected $fillable = [
-        'id',
-        'email', 'name', 'password',
-        'observation', 'file', 'status',
+        'id', 'name', 'amount', 'date_finish',
+        'observation', 'status',
     ];
 
     protected $hidden = [
-        'password', 'remember_token',
-        'email_verified_at',
-        'files',
-        'created_at', 'updated_at', 'deleted_at',
+        'usr_id', 'file',  'created_at', 'updated_at', 'deleted_at',
     ];
 
     protected $casts = [
-        'id'                => 'integer',
-        'name'              => 'string',
-        'email'             => 'string',
-        'username'          => 'string',
-        'password'          => 'hashed',
-        'observation'       => 'string',
-        'file'              => 'string',
-        'status'            => 'string',
-        'email_verified_at' => 'datetime',
-        'remember_token'    => 'string',
-        'created_at'        => 'datetime',
-        'updated_at'        => 'datetime',
-        'deleted_at'        => 'datetime',
-        'email_verified_at' => 'datetime',
+        'id'           => 'integer',
+        'usr_id'       => 'integer',
+        'name'         => 'string',
+        'amount'       => 'double',
+        'date_finish'  => 'datetime',
+        'observation'  => 'string',
+        'file'         => 'string',
+        'status'       => 'string',
+        'created_at'   => 'datetime',
+        'updated_at'   => 'datetime',
+        'deleted_at'   => 'datetime',
     ];
     // +----------------------------------------------------------------------------------+
     // | OTHERS                                                                           |
