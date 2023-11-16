@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('ingresses', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('usr_id')->nullable()->default(null);
-            $table->unsignedBigInteger('cta_id')->nullable()->default(null);
+            $table->unsignedBigInteger('cla_id')->nullable()->default(null);
             $table->unsignedBigInteger('sav_id')->nullable()->default(null);
             $table->unsignedBigInteger('deb_id')->nullable()->default(null);
             $table->unsignedBigInteger('acc_id')->nullable()->default(null);
