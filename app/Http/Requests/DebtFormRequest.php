@@ -35,7 +35,9 @@ class DebtFormRequest extends FormRequest
                     ],
                     'name'         => ['required', 'string', 'max:65', 'unique:debts,name',],
                     'amount'       => ['required', 'decimal:0,4', 'gte:0',],
-                    'period'       => ['required', 'string', new Enum(PeriodType::class)],
+                    'period'       => ['required', 'string', Rule::in([
+                        'Diary', 'Weekly', 'Biweekly', 'Monthly', 'Annual'
+                    ])],
                     'day'          => ['nullable', 'integer', 'gte:0',],
                     'date_at'      => ['nullable', 'date',],
                     'observation'  => ['nullable', 'string', 'max:512',],
@@ -53,7 +55,9 @@ class DebtFormRequest extends FormRequest
                         Rule::unique('debts', 'name')->ignore($this->segment(3), 'id'),
                     ],
                     'amount'       => ['nullable', 'decimal:0,4', 'gte:0',],
-                    'period'       => ['nullable', 'string', new Enum(PeriodType::class)],
+                    'period'       => ['nullable', 'string', Rule::in([
+                        'Diary', 'Weekly', 'Biweekly', 'Monthly', 'Annual'
+                    ])],
                     'day'          => ['nullable', 'integer', 'gte:0',],
                     'date_at'      => ['nullable', 'date',],
                     'observation'  => ['nullable', 'string', 'max:512',],

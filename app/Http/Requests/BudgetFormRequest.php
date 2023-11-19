@@ -3,10 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Enums\PeriodType;
 use Illuminate\Validation\Rule;
 use Illuminate\Database\Query\Builder;
-use Illuminate\Validation\Rules\Enum;
 
 class BudgetFormRequest extends FormRequest
 {
@@ -36,7 +34,9 @@ class BudgetFormRequest extends FormRequest
                     ],
                     'name'        => ['required', 'string', 'max:65', 'unique:budgets,name',],
                     'amount'      => ['required', 'decimal:0,4', 'gte:0',],
-                    'period'      => ['required', 'string', new Enum(PeriodType::class),],
+                    'period'      => ['required', 'string', Rule::in([
+                        'Diary', 'Weekly', 'Biweekly', 'Monthly', 'Annual'
+                    ]),],
                     'observation' => ['nullable', 'string', 'max:512',],
                 ];
             case 'PUT':
@@ -52,7 +52,9 @@ class BudgetFormRequest extends FormRequest
                         Rule::unique('budgets', 'name')->ignore($this->segment(3), 'id'),
                     ],
                     'amount'      => ['nullable', 'decimal:0,4', 'gte:0',],
-                    'period'      => ['nullable', 'string', new Enum(PeriodType::class),],
+                    'period'      => ['nullable', 'string', Rule::in([
+                        'Diary', 'Weekly', 'Biweekly', 'Monthly', 'Annual'
+                    ]),],
                     'observation' => ['nullable', 'string', 'max:512',],
                 ];
         }

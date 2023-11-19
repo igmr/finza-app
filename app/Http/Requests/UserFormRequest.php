@@ -27,7 +27,7 @@ class UserFormRequest extends FormRequest
             case 'POST':
                 return [
                     'name'     => ['required', 'string', 'max:65'],
-                    'email'    => ['required', 'string', 'max:120', 'email', 'unique:users, email'],
+                    'email'    => ['required', 'string', 'max:120', 'email', 'unique:users,email'],
                     'password' => [
                         'required', 'string', 'max:255',
                         Password::min(8)->mixedCase()->numbers()->symbols()

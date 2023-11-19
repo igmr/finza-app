@@ -45,7 +45,7 @@ class IngressFormRequest extends FormRequest
                         }),
                     ],
                     'account'     => [
-                        'nullable', 'integer', 'gte:0',
+                        'required', 'integer', 'gte:0',
                         Rule::exists('accounts', 'id')->where(function (Builder $query) {
                             return $query->where('deleted_at', null);
                         }),
