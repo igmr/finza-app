@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-class AccountService implements \App\Services\Interfaces\CategoryInterface
+class CategoryService implements \App\Services\Interfaces\CategoryInterface
 {
     protected $model;
     public function __construct(\App\Models\Category $model)
