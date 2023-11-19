@@ -20,7 +20,7 @@ class Ingress extends Model
     // | ATTRIBUTES                                                                       |
     // +----------------------------------------------------------------------------------+
     protected $fillable = [
-        'id', 'cta_id', 'sav_id', 'deb_id', 'acc_id',
+        'id', 'cls_id', 'sav_id', 'deb_id', 'acc_id',
         'concept', 'description', 'reference', 'amount',
         'observation', 'file', 'status',
     ];
@@ -32,7 +32,7 @@ class Ingress extends Model
     protected $casts = [
         'id'           => 'integer',
         'usr_id'       => 'integer',
-        'cta_id'       => 'integer',
+        'cls_id'       => 'integer',
         'sav_id'       => 'integer',
         'deb_id'       => 'integer',
         'acc_id'       => 'integer',
@@ -51,7 +51,7 @@ class Ingress extends Model
     // | OTHERS                                                                           |
     // +----------------------------------------------------------------------------------+
     public $timestamps = true;
-    protected $dateFormat = 'U';
+    protected $dateFormat = 'Y-m-d H:i:s';
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
     const DELETED_AT = 'deleted_at';

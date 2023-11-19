@@ -44,7 +44,7 @@ class Bank extends Model
     // | OTHERS                                                                           |
     // +----------------------------------------------------------------------------------+
     public $timestamps = true;
-    protected $dateFormat = 'U';
+    protected $dateFormat = 'Y-m-d H:i:s';
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
     const DELETED_AT = 'deleted_at';
