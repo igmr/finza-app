@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Api;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Database\Query\Builder;
 
-class EgressFormRequest extends FormRequest
+class IngressFormRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,9 +26,9 @@ class EgressFormRequest extends FormRequest
         switch ($this->method()) {
             case 'POST':
                 return [
-                    'category'    => [
+                    'classification'    => [
                         'nullable', 'integer', 'gte:0',
-                        Rule::exists('categories', 'id')->where(function (Builder $query) {
+                        Rule::exists('classifications', 'id')->where(function (Builder $query) {
                             return $query->where('deleted_at', null);
                         }),
                     ],
@@ -45,7 +45,7 @@ class EgressFormRequest extends FormRequest
                         }),
                     ],
                     'account'     => [
-                        'nullable', 'integer', 'gte:0',
+                        'required', 'integer', 'gte:0',
                         Rule::exists('accounts', 'id')->where(function (Builder $query) {
                             return $query->where('deleted_at', null);
                         }),
@@ -58,9 +58,9 @@ class EgressFormRequest extends FormRequest
                 ];
             case 'PUT':
                 return [
-                    'category'    => [
+                    'classification'    => [
                         'nullable', 'integer', 'gte:0',
-                        Rule::exists('categories', 'id')->where(function (Builder $query) {
+                        Rule::exists('classifications', 'id')->where(function (Builder $query) {
                             return $query->where('deleted_at', null);
                         }),
                     ],

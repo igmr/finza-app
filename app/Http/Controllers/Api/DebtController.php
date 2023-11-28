@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\ApiController;
-use App\Http\Requests\DebtFormRequest;
+use App\Http\Requests\Api\DebtFormRequest;
 use App\Services\DebtService;
 use stdClass;
 

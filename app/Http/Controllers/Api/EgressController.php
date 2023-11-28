@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\ApiController;
-use App\Http\Requests\EgressFormRequest;
+use App\Http\Requests\Api\EgressFormRequest;
 use App\Services\EgressService;
 use stdClass;
 

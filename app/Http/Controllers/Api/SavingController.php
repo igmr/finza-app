@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\ApiController;
-use App\Http\Requests\SavingFormRequest;
+use App\Http\Requests\Api\SavingFormRequest;
 use App\Services\SavingService;
 use stdClass;
 

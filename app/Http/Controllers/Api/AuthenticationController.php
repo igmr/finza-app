@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\ApiController;
-use App\Http\Requests\AuthenticationFormRequest;
+use App\Http\Requests\Api\AuthenticationFormRequest;
 use App\Services\UserService;
 
 class AuthenticationController extends ApiController

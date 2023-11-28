@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\ApiController;
-use App\Http\Requests\BankFormRequest;
+use App\Http\Requests\Api\BankFormRequest;
 use App\Services\BankService;
 use stdClass;
 

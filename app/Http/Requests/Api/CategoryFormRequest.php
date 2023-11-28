@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Api;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class ClassificationFormRequest extends FormRequest
+class CategoryFormRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,12 +22,11 @@ class ClassificationFormRequest extends FormRequest
      */
     public function rules(): array
     {
-        switch($this->method())
-        {
+        switch ($this->method()) {
             case 'POST':
                 return [
                     'code'        => ['nullable', 'string', 'max:10',],
-                    'name'        => ['required', 'string', 'max:255', 'unique:classifications,name'],
+                    'name'        => ['required', 'string', 'max:255', 'unique:categories,name'],
                     'icon'        => ['nullable', 'string', 'max:15',],
                     'observation' => ['nullable', 'string', 'max:512',],
                 ];
@@ -36,7 +35,7 @@ class ClassificationFormRequest extends FormRequest
                     'code'        => ['nullable', 'string', 'max:10',],
                     'name'        => [
                         'nullable', 'string', 'max:255',
-                        Rule::unique('classifications', 'name')->ignore($this->segment(3), 'id'),
+                        Rule::unique('categories', 'name')->ignore($this->segment(3), 'id'),
                     ],
                     'icon'        => ['nullable', 'string', 'max:15',],
                     'observation' => ['nullable', 'string', 'max:512',],

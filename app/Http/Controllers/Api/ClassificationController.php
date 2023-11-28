@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\ApiController;
-use App\Http\Requests\ClassificationFormRequest;
+use App\Http\Requests\Api\ClassificationFormRequest;
 use App\Services\ClassificationService;
 use stdClass;
 

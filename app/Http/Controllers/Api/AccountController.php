@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\ApiController;
-use App\Http\Requests\AccountFormRequest;
+use App\Http\Requests\Api\AccountFormRequest;
 use App\Services\AccountService;
 use stdClass;
 

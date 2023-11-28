@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\ApiController;
-use App\Http\Requests\CategoryFormRequest;
+use App\Http\Requests\Api\CategoryFormRequest;
 use App\Services\CategoryService;
 use stdClass;
 

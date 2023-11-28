@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Api;
 
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
@@ -8,6 +8,7 @@ use Illuminate\Validation\Rules\Password;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Closure;
+use Illuminate\Support\Facades\Auth;
 
 class AuthenticationFormRequest extends FormRequest
 {

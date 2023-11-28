@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\ApiController;
-use App\Http\Requests\BudgetFormRequest;
+use App\Http\Requests\Api\BudgetFormRequest;
 use App\Services\BudgetService;
 use stdClass;
 
