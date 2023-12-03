@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Services;
+use Illuminate\Support\Facades\Auth;
 
 class UserService implements \App\Services\Interfaces\UserInterface
 {
@@ -68,5 +69,15 @@ class UserService implements \App\Services\Interfaces\UserInterface
     public function token(\App\Models\User $user)
     {
         return $user->createToken('token')->plainTextToken;
+    }
+    public function getSession(\Illuminate\Http\Request $req)
+    {
+        $credentials = $req->validated();
+        if(Auth::attempt($credentials))
+        {
+            $req->session()->regenerate();
+            return 1;
+        }
+        return 0;
     }
 }
