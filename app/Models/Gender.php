@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Category extends Model
+class Gender extends Model
 {
     use HasFactory, SoftDeletes;
-    protected $table = 'categories';
+    protected $table = 'genders';
     // +----------------------------------------------------------------------------------+
     // | ID                                                                               |
     // +----------------------------------------------------------------------------------+
@@ -20,24 +20,20 @@ class Category extends Model
     // | ATTRIBUTES                                                                       |
     // +----------------------------------------------------------------------------------+
     protected $fillable = [
-        'id', 'usr_id',
-        'code', 'name', 
-        'file', 'observation', 'status',
+        'id', 'usr_id', 'code', 'name', 'icon', 'file', 'observation', 'status'
     ];
 
     protected $hidden = [
-        'usr_id', 'gen_id', 'icon', 'file', 'created_at', 'updated_at', 'deleted_at',
+        'usr_id', 'created_at', 'updated_at', 'deleted_at',
     ];
 
     protected $casts = [
         'id'           => 'integer',
-        'usr_id'       => 'integer',
-        'gen_id'       => 'integer',
         'code'         => 'string',
         'name'         => 'string',
         'icon'         => 'string',
-        'observation'  => 'string',
         'file'         => 'string',
+        'observation'  => 'string',
         'status'       => 'string',
         'created_at'   => 'datetime',
         'updated_at'   => 'datetime',

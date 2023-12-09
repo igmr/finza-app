@@ -20,7 +20,7 @@ class Saving extends Model
     // | ATTRIBUTES                                                                       |
     // +----------------------------------------------------------------------------------+
     protected $fillable = [
-        'id', 'name', 'amount', 'date_finish',
+        'id', 'usr_id', 'name', 'amount', 'date_finish',
         'observation', 'status',
     ];
 

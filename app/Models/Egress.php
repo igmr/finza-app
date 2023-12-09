@@ -20,7 +20,7 @@ class Egress extends Model
     // | ATTRIBUTES                                                                       |
     // +----------------------------------------------------------------------------------+
     protected $fillable = [
-        'id', 'cls_id', 'sav_id', 'deb_id', 'acc_id',
+        'id', 'usr_id', 'cls_id', 'sav_id', 'deb_id', 'acc_id',
         'concept', 'description', 'reference', 'amount',
         'observation', 'file', 'status'
     ];
