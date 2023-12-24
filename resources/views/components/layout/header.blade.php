@@ -60,16 +60,6 @@
                         <ul @class(['nk-menu-sub'])>
                             <li @class(['nk-menu-item'])>
                                 <a href="#" @class(['nk-menu-link'])>
-                                    <span @class(['nk-menu-text'])>Categories</span>
-                                </a>
-                            </li>
-                            <li @class(['nk-menu-item'])>
-                                <a href="#" @class(['nk-menu-link'])>
-                                    <span @class(['nk-menu-text'])>Classifications</span>
-                                </a>
-                            </li>
-                            <li @class(['nk-menu-item'])>
-                                <a href="#" @class(['nk-menu-link'])>
                                     <span @class(['nk-menu-text'])>Banks</span>
                                 </a>
                             </li>
@@ -78,9 +68,23 @@
                                     <span @class(['nk-menu-text'])>Accounts</span>
                                 </a>
                             </li>
+                            <li @class(['nk-menu-item'])>
+                                <a href="#" @class(['nk-menu-link'])>
+                                    <span @class(['nk-menu-text'])>Genders</span>
+                                </a>
+                            </li>
+                            <li @class(['nk-menu-item'])>
+                                <a href="#" @class(['nk-menu-link'])>
+                                    <span @class(['nk-menu-text'])>Categories</span>
+                                </a>
+                            </li>
+                            <li @class(['nk-menu-item'])>
+                                <a href="#" @class(['nk-menu-link'])>
+                                    <span @class(['nk-menu-text'])>Classifications</span>
+                                </a>
+                            </li>
                         </ul><!-- .nk-menu-sub -->
                     </li><!-- .nk-menu-item -->
-
                 </ul><!-- .nk-menu -->
             </div><!-- .nk-header-menu -->
             <div @class(['nk-header-tools'])>

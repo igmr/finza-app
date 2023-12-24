@@ -61,6 +61,11 @@
                     </li>
                     <li @class(['nk-menu-item'])>
                         <a href="#" @class(['nk-menu-link'])>
+                            <span @class(['nk-menu-text'])>Genders</span>
+                        </a>
+                    </li>
+                    <li @class(['nk-menu-item'])>
+                        <a href="#" @class(['nk-menu-link'])>
                             <span @class(['nk-menu-text'])>Categories</span>
                         </a>
                     </li>
@@ -70,7 +75,6 @@
                         </a>
                     </li>
                 </ul><!-- .nk-menu-sub -->
-            </li><!-- .nk-menu-item -->
         </ul><!-- .nk-menu -->
     </div><!-- .nk-sidebar-menu -->
     <div @class(['nk-aside-close'])>
