@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthenticationController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\BankController;
+use App\Http\Controllers\Api\GenderController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ClassificationController;
 use App\Http\Controllers\Api\DebtController;
@@ -11,7 +12,6 @@ use App\Http\Controllers\Api\AccountController;
 use App\Http\Controllers\Api\BudgetController;
 use App\Http\Controllers\Api\IngressController;
 use App\Http\Controllers\Api\EgressController;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -48,6 +48,15 @@ Route::prefix('bank')->group(function () {
     Route::put('/{id}',            [BankController::class, 'update']);
     Route::delete('/{id}',         [BankController::class, 'destroy']);
     Route::delete('/{id}/restore', [BankController::class, 'restore']);
+});
+
+Route::prefix('gender')->group(function () {
+    Route::get('/',                [GenderController::class, 'index']);
+    Route::get('/{id}',            [GenderController::class, 'show']);
+    Route::post('/',               [GenderController::class, 'store']);
+    Route::put('/{id}',            [GenderController::class, 'update']);
+    Route::delete('/{id}',         [GenderController::class, 'destroy']);
+    Route::delete('/{id}/restore', [GenderController::class, 'restore']);
 });
 
 Route::prefix('category')->group(function () {

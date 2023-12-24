@@ -25,7 +25,7 @@ class ServiceServiceProvider extends ServiceProvider
     {
         return [
             'Account', 'Bank', 'Budget', 'Category', 'Classification', 'Debt',
-            'Egress', 'Ingress', 'Saving', 'User'
+            'Egress', 'Ingress', 'Saving', 'User', 'Gender',
         ];
     }
 }
