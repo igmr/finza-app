@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Web\AuthenticationController;
+use App\Http\Controllers\Web\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +15,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/',  [AuthenticationController::class, 'create'])->name('authentication');
+Route::post('/', [AuthenticationController::class, 'store'])->name('authentication.store');
+
+Route::middleware(['auth'])->prefix('app')->group(function () {
+    Route::post('/logout', [AuthenticationController::class, 'destroy'])->name('authentication.destroy');
+    Route::get('/',        [DashboardController::class, 'index'])->name('dashboard');
 });

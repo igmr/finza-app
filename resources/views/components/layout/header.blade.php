@@ -2,7 +2,7 @@
     <div @class(['container-lg', 'wide-xl'])>
         <div @class(['nk-header-wrap'])>
             <div @class(['nk-header-brand'])>
-                <a href="#" @class(['logo-link'])>
+                <a href="{{ route('dashboard') }}" @class(['logo-link'])>
                     <img @class(['logo-light', 'logo-img', 'logo-img-lg']) src="{{ url('assets/images/logo.png') }}"
                         srcset="{{ url('assets/images/logo2x.png') }} 2x" alt="logo">
                     <img @class(['logo-dark', 'logo-img', 'logo-img-lg']) src="{{ url('assets/images/logo-dark.png') }}"
@@ -12,7 +12,7 @@
             <div @class(['nk-header-menu'])>
                 <ul @class(['nk-menu', 'nk-menu-main'])>
                     <li @class(['nk-menu-item'])>
-                        <a href="#" @class(['nk-menu-link'])>
+                        <a href="{{ route('dashboard') }}" @class(['nk-menu-link'])>
                             <span @class(['nk-menu-text'])>Dashboard</span>
                         </a>
                     </li><!-- .nk-menu-item -->
