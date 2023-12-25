@@ -2,6 +2,9 @@
 
 namespace App\Services;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 class BankService implements \App\Services\Interfaces\BankInterface
 {
     protected $model;
@@ -59,5 +62,45 @@ class BankService implements \App\Services\Interfaces\BankInterface
         } catch (\Exception $ex) {
             return false;
         }
+    }
+
+    public function list(Request $req)
+    {
+        return DB::table('banks')
+            ->join('users', 'users.id', '=', 'banks.usr_id')
+            ->select(
+                'banks.id AS bank_id',
+                'banks.abbreviature',
+                'banks.name AS bank',
+                'banks.observation',
+                'banks.status',
+                'banks.created_at',
+                DB::raw('if(isnull(usr_id), 0, usr_id) usr_id'),
+                DB::raw('if(isnull(users.name), "Administrator", users.name) user')
+            )
+            ->paginate(2);
+    }
+
+    public function info(string $id)
+    {
+        return DB::table('banks')
+            ->where('banks.id', $id)
+            ->join('users', 'users.id', '=', 'banks.usr_id')
+            ->select(
+                'banks.id AS bank_id',
+                'banks.abbreviature',
+                'banks.name AS bank',
+                'banks.observation',
+                'banks.status',
+                'banks.created_at',
+                DB::raw('if(isnull(usr_id), 0, usr_id) usr_id'),
+                DB::raw('if(isnull(users.name), "Administrator", users.name) user')
+            )
+            ->first();
+    }
+
+    public function select()
+    {
+        return $this->model::all();
     }
 }
