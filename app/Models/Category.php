@@ -20,13 +20,13 @@ class Category extends Model
     // | ATTRIBUTES                                                                       |
     // +----------------------------------------------------------------------------------+
     protected $fillable = [
-        'id', 'usr_id',
+        'id', 'usr_id', 'gen_id',
         'code', 'name', 
         'file', 'observation', 'status',
     ];
 
     protected $hidden = [
-        'usr_id', 'gen_id', 'icon', 'file', 'created_at', 'updated_at', 'deleted_at',
+        'usr_id', 'icon', 'file', 'created_at', 'updated_at', 'deleted_at',
     ];
 
     protected $casts = [

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Web\AccountController;
 use App\Http\Controllers\Web\AuthenticationController;
 use App\Http\Controllers\Web\BankController;
+use App\Http\Controllers\Web\CategoryController;
 use App\Http\Controllers\Web\ClassificationController;
 use App\Http\Controllers\Web\DashboardController;
 use App\Http\Controllers\Web\GenderController;
@@ -88,5 +89,21 @@ Route::middleware(['auth'])->prefix('app')->group(function () {
         Route::put('/{id}',            [AccountController::class, 'update'])->name('app.account.update');
         Route::delete('/{id}',         [AccountController::class, 'destroy'])->name('app.account.destroy');
         Route::delete('/{id}/restore', [AccountController::class, 'restore'])->name('app.account.restore');
+    });
+
+    Route::prefix('category')->group(function () {
+        // Queries
+        Route::get('/list',            [CategoryController::class, 'list'])->name('app.category.list');
+        Route::get('/info/{id}',       [CategoryController::class, 'info'])->name('app.category.info');
+        Route::get('/select',          [CategoryController::class, 'select'])->name('app.category.select');
+        // Resources
+        Route::get('/',                [CategoryController::class, 'index'])->name('app.category.index');
+        Route::get('/create',          [CategoryController::class, 'create'])->name('app.category.create');
+        Route::post('/',               [CategoryController::class, 'store'])->name('app.category.store');
+        Route::get('/{id}',            [CategoryController::class, 'show'])->name('app.category.show');
+        Route::get('/{id}/edit',       [CategoryController::class, 'edit'])->name('app.category.edit');
+        Route::put('/{id}',            [CategoryController::class, 'update'])->name('app.category.update');
+        Route::delete('/{id}',         [CategoryController::class, 'destroy'])->name('app.category.destroy');
+        Route::delete('/{id}/restore', [CategoryController::class, 'restore'])->name('app.category.restore');
     });
 });

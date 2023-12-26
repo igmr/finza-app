@@ -96,6 +96,47 @@ const showErrorsGenderForm = (errors) => {
     alertError.classList.remove("d-none");
     listError.innerHTML = content;
 };
+
+const showErrorsCategoryForm = (errors) => {
+    listError.innerHTML = "";
+    let content = "<b>List Errors</b><br/>";
+    console.log(errors);
+    if (errors.gender) {
+        content += `<b>Gender</b>`;
+        content += `<ul>`;
+        for (const item in errors.gender) {
+            content += `<li>${errors.gender[item]}</li>`;
+        }
+        content += `</ul>`;
+    }
+    if (errors.code) {
+        content += `<b>Code</b>`;
+        content += `<ul>`;
+        for (const item in errors.code) {
+            content += `<li>${errors.code[item]}</li>`;
+        }
+        content += `</ul>`;
+    }
+    if (errors.name) {
+        content += `<b>Name</b>`;
+        content += `<ul>`;
+        for (const item in errors.name) {
+            content += `<li>${errors.name[item]}</li>`;
+        }
+        content += `</ul>`;
+    }
+    if (errors.observation) {
+        content += `<b>Observation</b>`;
+        content += `<ul>`;
+        for (const item in errors.observation) {
+            content += `<li>${errors.observation[item]}</li>`;
+        }
+        content += `</ul>`;
+    }
+    listError.innerHTML = content;
+    alertError.classList.remove("d-none");
+};
+
 const showErrorsClassificationForm = (errors) => {
     listError.innerHTML = "";
     let content = "<b>List Errors</b><br/>";
