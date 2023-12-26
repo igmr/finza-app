@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Web\AccountController;
 use App\Http\Controllers\Web\AuthenticationController;
 use App\Http\Controllers\Web\BankController;
 use App\Http\Controllers\Web\ClassificationController;
@@ -71,5 +72,21 @@ Route::middleware(['auth'])->prefix('app')->group(function () {
         Route::put('/{id}',            [ClassificationController::class, 'update'])->name('app.classification.update');
         Route::delete('/{id}',         [ClassificationController::class, 'destroy'])->name('app.classification.destroy');
         Route::delete('/{id}/restore', [ClassificationController::class, 'restore'])->name('app.classification.restore');
+    });
+    
+    Route::prefix('account')->group(function () {
+        // Queries
+        Route::get('/list',            [AccountController::class, 'list'])->name('app.account.list');
+        Route::get('/info/{id}',       [AccountController::class, 'info'])->name('app.account.info');
+        Route::get('/select',          [AccountController::class, 'select'])->name('app.account.select');
+        // Resources
+        Route::get('/',                [AccountController::class, 'index'])->name('app.account.index');
+        Route::get('/create',          [AccountController::class, 'create'])->name('app.account.create');
+        Route::post('/',               [AccountController::class, 'store'])->name('app.account.store');
+        Route::get('/{id}',            [AccountController::class, 'show'])->name('app.account.show');
+        Route::get('/{id}/edit',       [AccountController::class, 'edit'])->name('app.account.edit');
+        Route::put('/{id}',            [AccountController::class, 'update'])->name('app.account.update');
+        Route::delete('/{id}',         [AccountController::class, 'destroy'])->name('app.account.destroy');
+        Route::delete('/{id}/restore', [AccountController::class, 'restore'])->name('app.account.restore');
     });
 });
