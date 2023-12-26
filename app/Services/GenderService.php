@@ -2,6 +2,9 @@
 
 namespace App\Services;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 class GenderService implements \App\Services\Interfaces\GenderInterface
 {
     protected $model;
@@ -59,5 +62,44 @@ class GenderService implements \App\Services\Interfaces\GenderInterface
         } catch (\Exception $ex) {
             return false;
         }
+    }
+    public function list(Request $req)
+    {
+        return DB::table('genders')
+            ->join('users', 'users.id', '=', 'genders.usr_id')
+            ->select(
+                'genders.id AS gender_id',
+                'genders.code',
+                'genders.name AS gender',
+                'genders.observation',
+                'genders.status',
+                'genders.created_at',
+                DB::raw('if(isnull(usr_id), 0, usr_id) usr_id'),
+                DB::raw('if(isnull(users.name), "Administrator", users.name) user')
+            )
+            ->paginate(2);
+    }
+
+    public function info(string $id)
+    {
+        return DB::table('genders')
+            ->where('genders.id', $id)
+            ->join('users', 'users.id', '=', 'genders.usr_id')
+            ->select(
+                'genders.id AS gender_id',
+                'genders.code',
+                'genders.name AS gender',
+                'genders.observation',
+                'genders.status',
+                'genders.created_at',
+                DB::raw('if(isnull(usr_id), 0, usr_id) usr_id'),
+                DB::raw('if(isnull(users.name), "Administrator", users.name) user')
+            )
+            ->first();
+    }
+
+    public function select()
+    {
+        return $this->model::all();
     }
 }

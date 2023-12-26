@@ -3,6 +3,7 @@
 use App\Http\Controllers\Web\AuthenticationController;
 use App\Http\Controllers\Web\BankController;
 use App\Http\Controllers\Web\DashboardController;
+use App\Http\Controllers\Web\GenderController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -37,5 +38,21 @@ Route::middleware(['auth'])->prefix('app')->group(function () {
         Route::put('/{id}',            [BankController::class, 'update'])->name('app.bank.update');
         Route::delete('/{id}',         [BankController::class, 'destroy'])->name('app.bank.destroy');
         Route::delete('/{id}/restore', [BankController::class, 'restore'])->name('app.bank.restore');
+    });
+
+    Route::prefix('gender')->group(function () {
+        // Queries
+        Route::get('/list',            [GenderController::class, 'list'])->name('app.gender.list');
+        Route::get('/info/{id}',       [GenderController::class, 'info'])->name('app.gender.info');
+        Route::get('/select',          [GenderController::class, 'select'])->name('app.gender.select');
+        // Resources
+        Route::get('/',                [GenderController::class, 'index'])->name('app.gender.index');
+        Route::get('/create',          [GenderController::class, 'create'])->name('app.gender.create');
+        Route::post('/',               [GenderController::class, 'store'])->name('app.gender.store');
+        Route::get('/{id}',            [GenderController::class, 'show'])->name('app.gender.show');
+        Route::get('/{id}/edit',       [GenderController::class, 'edit'])->name('app.gender.edit');
+        Route::put('/{id}',            [GenderController::class, 'update'])->name('app.gender.update');
+        Route::delete('/{id}',         [GenderController::class, 'destroy'])->name('app.gender.destroy');
+        Route::delete('/{id}/restore', [GenderController::class, 'restore'])->name('app.gender.restore');
     });
 });
