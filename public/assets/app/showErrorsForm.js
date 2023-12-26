@@ -96,6 +96,44 @@ const showErrorsGenderForm = (errors) => {
     alertError.classList.remove("d-none");
     listError.innerHTML = content;
 };
+const showErrorsClassificationForm = (errors) => {
+    listError.innerHTML = "";
+    let content = "<b>List Errors</b><br/>";
+    if (errors.general) {
+        content += `<b>General</b>`;
+        content += `<ul>`;
+        for (const item in errors.general) {
+            content += `<li>${errors.general[item]}</li>`;
+        }
+        content += `</ul>`;
+    }
+    if (errors.code) {
+        content += `<b>Code</b>`;
+        content += `<ul>`;
+        for (const item in errors.code) {
+            content += `<li>${errors.code[item]}</li>`;
+        }
+        content += `</ul>`;
+    }
+    if (errors.name) {
+        content += `<b>Name</b>`;
+        content += `<ul>`;
+        for (const item in errors.name) {
+            content += `<li>${errors.name[item]}</li>`;
+        }
+        content += `</ul>`;
+    }
+    if (errors.observation) {
+        content += `<b>Observation</b>`;
+        content += `<ul>`;
+        for (const item in errors.observation) {
+            content += `<li>${errors.observation[item]}</li>`;
+        }
+        content += `</ul>`;
+    }
+    alertError.classList.remove("d-none");
+    listError.innerHTML = content;
+};
 
 const showAlertSuccess = (statusValue, textValue) => {
     alertError.classList.add("d-none");

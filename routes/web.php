@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Web\AuthenticationController;
 use App\Http\Controllers\Web\BankController;
+use App\Http\Controllers\Web\ClassificationController;
 use App\Http\Controllers\Web\DashboardController;
 use App\Http\Controllers\Web\GenderController;
 use Illuminate\Support\Facades\Route;
@@ -54,5 +55,21 @@ Route::middleware(['auth'])->prefix('app')->group(function () {
         Route::put('/{id}',            [GenderController::class, 'update'])->name('app.gender.update');
         Route::delete('/{id}',         [GenderController::class, 'destroy'])->name('app.gender.destroy');
         Route::delete('/{id}/restore', [GenderController::class, 'restore'])->name('app.gender.restore');
+    });
+
+    Route::prefix('classification')->group(function () {
+        // Queries
+        Route::get('/list',            [ClassificationController::class, 'list'])->name('app.classification.list');
+        Route::get('/info/{id}',       [ClassificationController::class, 'info'])->name('app.classification.info');
+        Route::get('/select',          [ClassificationController::class, 'select'])->name('app.classification.select');
+        // Resources
+        Route::get('/',                [ClassificationController::class, 'index'])->name('app.classification.index');
+        Route::get('/create',          [ClassificationController::class, 'create'])->name('app.classification.create');
+        Route::post('/',               [ClassificationController::class, 'store'])->name('app.classification.store');
+        Route::get('/{id}',            [ClassificationController::class, 'show'])->name('app.classification.show');
+        Route::get('/{id}/edit',       [ClassificationController::class, 'edit'])->name('app.classification.edit');
+        Route::put('/{id}',            [ClassificationController::class, 'update'])->name('app.classification.update');
+        Route::delete('/{id}',         [ClassificationController::class, 'destroy'])->name('app.classification.destroy');
+        Route::delete('/{id}/restore', [ClassificationController::class, 'restore'])->name('app.classification.restore');
     });
 });

@@ -2,6 +2,9 @@
 
 namespace App\Services;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 class ClassificationService implements \App\Services\Interfaces\ClassificationInterface
 {
     protected $model;
@@ -59,5 +62,45 @@ class ClassificationService implements \App\Services\Interfaces\ClassificationIn
         } catch (\Exception $ex) {
             return false;
         }
+    }
+
+    public function list(Request $req)
+    {
+        return DB::table('classifications')
+            ->join('users', 'users.id', '=', 'classifications.usr_id')
+            ->select(
+                'classifications.id AS classification_id',
+                'classifications.code',
+                'classifications.name AS classification',
+                'classifications.observation',
+                'classifications.status',
+                'classifications.created_at',
+                DB::raw('if(isnull(usr_id), 0, usr_id) usr_id'),
+                DB::raw('if(isnull(users.name), "Administrator", users.name) user')
+            )
+            ->paginate(2);
+    }
+
+    public function info(string $id)
+    {
+        return DB::table('classifications')
+            ->where('classifications.id', $id)
+            ->join('users', 'users.id', '=', 'classifications.usr_id')
+            ->select(
+                'classifications.id AS classification_id',
+                'classifications.code',
+                'classifications.name AS classification',
+                'classifications.observation',
+                'classifications.status',
+                'classifications.created_at',
+                DB::raw('if(isnull(usr_id), 0, usr_id) usr_id'),
+                DB::raw('if(isnull(users.name), "Administrator", users.name) user')
+            )
+            ->first();
+    }
+
+    public function select()
+    {
+        return $this->model::all();
     }
 }

@@ -2,6 +2,7 @@ const baseUrl = `http://127.0.0.1:8000`;
 const urlPostAuthenticate = `${baseUrl}`;
 const baseUrlBank = `${baseUrl}/app/bank`;
 const baseUrlGender = `${baseUrl}/app/gender`;
+const baseUrlClassification = `${baseUrl}/app/classification`;
 
 const fetchPostAuthenticate = async (payload, token) => {
     try {
@@ -264,4 +265,122 @@ const restoreGender = async (genderId, token) => {
 
 //* ========================================================================================= *//
 //* end genders                                                                               *//
+//* ========================================================================================= *//
+//* classifications                                                                           *//
+//* ========================================================================================= *//
+
+const storeClassification = async (payload, token) => {
+    try {
+        const response = await fetch(baseUrlClassification, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+                "X-CSRF-Token": token,
+            },
+            body: JSON.stringify(payload),
+        });
+        const data = await response.json();
+        const status = response.status;
+        return {
+            status,
+            data,
+        };
+    } catch (error) {
+        console.log(error);
+        return {
+            status: 500,
+            data: {},
+        };
+    }
+};
+
+const getAllClassifications = async (url) => {
+    try {
+        auxUrl = url ?? `${baseUrlClassification}/list`;
+        const response = await fetch(auxUrl, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+            },
+        });
+        const data = await response.json();
+        if (data) {
+            return data;
+        }
+        return {};
+    } catch (error) {
+        console.log(error);
+        return {};
+    }
+};
+
+const findByIdClassification = async (classificationId) => {
+    const url = `${baseUrlClassification}/info/${classificationId}`;
+    console.log(url);
+    const response = await fetch(url, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+        },
+    });
+    return await response.json();
+};
+
+const updateClassification = async (payload, token, classificationId) => {
+    try {
+        const response = await fetch(`${baseUrlClassification}/${classificationId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+                "X-CSRF-Token": token,
+            },
+            body: JSON.stringify(payload),
+        });
+        const data = await response.json();
+        const status = response.status;
+        return {
+            status,
+            data,
+        };
+    } catch (error) {
+        console.log(error);
+        return {
+            status: 500,
+            data: {},
+        };
+    }
+};
+
+const deleteClassification = async (classificationId, token) => {
+    const url = `${baseUrlClassification}/${classificationId}`;
+    const response = await fetch(url, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            "X-CSRF-Token": token,
+        },
+    });
+    return await response.json();
+};
+
+const restoreClassification = async (classificationId, token) => {
+    const url = `${baseUrlClassification}/${classificationId}/restore`;
+    const response = await fetch(url, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            "X-CSRF-Token": token,
+        },
+    });
+    return await response.json();
+};
+
+//* ========================================================================================= *//
+//* end classifications                                                                       *//
 //* ========================================================================================= *//

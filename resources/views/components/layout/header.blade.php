@@ -79,7 +79,7 @@
                                 </a>
                             </li>
                             <li @class(['nk-menu-item'])>
-                                <a href="#" @class(['nk-menu-link'])>
+                                <a href="{{ route('app.classification.index') }}" @class(['nk-menu-link'])>
                                     <span @class(['nk-menu-text'])>Classifications</span>
                                 </a>
                             </li>
