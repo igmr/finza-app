@@ -37,11 +37,6 @@
                             <span @class(['nk-menu-text'])>Dudgets</span>
                         </a>
                     </li>
-                    <li @class(['nk-menu-item'])>
-                        <a href="#" @class(['nk-menu-link'])>
-                            <span @class(['nk-menu-text'])>Accounts</span>
-                        </a>
-                    </li>
                 </ul><!-- .nk-menu-sub -->
             </li><!-- .nk-menu-item -->
             <li @class(['nk-menu-item', 'has-sub'])>
