@@ -111,6 +111,10 @@ class AccountService implements \App\Services\Interfaces\AccountInterface
 
     public function select()
     {
-        return $this->model::all();
+        return DB::table('accounts')
+            ->where('accounts.deleted_at', null)
+            ->join('banks', 'banks.id', '=', 'accounts.ban_id')
+            ->select('accounts.id AS id', 'accounts.name AS account', 'banks.name AS bank')
+            ->get();
     }
 }

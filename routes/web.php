@@ -3,6 +3,7 @@
 use App\Http\Controllers\Web\AccountController;
 use App\Http\Controllers\Web\AuthenticationController;
 use App\Http\Controllers\Web\BankController;
+use App\Http\Controllers\Web\BudgetController;
 use App\Http\Controllers\Web\CategoryController;
 use App\Http\Controllers\Web\ClassificationController;
 use App\Http\Controllers\Web\DashboardController;
@@ -105,5 +106,21 @@ Route::middleware(['auth'])->prefix('app')->group(function () {
         Route::put('/{id}',            [CategoryController::class, 'update'])->name('app.category.update');
         Route::delete('/{id}',         [CategoryController::class, 'destroy'])->name('app.category.destroy');
         Route::delete('/{id}/restore', [CategoryController::class, 'restore'])->name('app.category.restore');
+    });
+
+    Route::prefix('budget')->group(function () {
+        // Queries
+        Route::get('/list',            [BudgetController::class, 'list'])->name('app.budget.list');
+        Route::get('/info/{id}',       [BudgetController::class, 'info'])->name('app.budget.info');
+        Route::get('/select',          [BudgetController::class, 'select'])->name('app.budget.select');
+        // Resources
+        Route::get('/',                [BudgetController::class, 'index'])->name('app.budget.index');
+        Route::get('/create',          [BudgetController::class, 'create'])->name('app.budget.create');
+        Route::post('/',               [BudgetController::class, 'store'])->name('app.budget.store');
+        Route::get('/{id}',            [BudgetController::class, 'show'])->name('app.budget.show');
+        Route::get('/{id}/edit',       [BudgetController::class, 'edit'])->name('app.budget.edit');
+        Route::put('/{id}',            [BudgetController::class, 'update'])->name('app.budget.update');
+        Route::delete('/{id}',         [BudgetController::class, 'destroy'])->name('app.budget.destroy');
+        Route::delete('/{id}/restore', [BudgetController::class, 'restore'])->name('app.budget.restore');
     });
 });

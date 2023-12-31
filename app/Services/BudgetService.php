@@ -2,6 +2,9 @@
 
 namespace App\Services;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 class BudgetService implements \App\Services\Interfaces\BudgetInterface
 {
     protected $model;
@@ -59,5 +62,59 @@ class BudgetService implements \App\Services\Interfaces\BudgetInterface
         } catch (\Exception $ex) {
             return false;
         }
+    }
+
+    public function list(Request $req)
+    {
+        return DB::table('budgets')
+            ->join('users', 'users.id', '=', 'budgets.usr_id')
+            ->leftJoin('accounts', 'accounts.id', '=', 'budgets.acc_id')
+            ->leftJoin('banks', 'banks.id', '=', 'accounts.ban_id')
+            ->select(
+                'budgets.id AS budget_id',
+                'budgets.name AS budget',
+                'budgets.amount',
+                'budgets.period',
+                'budgets.observation',
+                'budgets.status',
+                'budgets.created_at',
+                DB::raw('if(isnull(acc_id), 0, acc_id) acc_id'),
+                DB::raw('if(isnull(accounts.name), "None", accounts.name) account'),
+                DB::raw('if(isnull(ban_id), 0, ban_id) ban_id'),
+                DB::raw('if(isnull(banks.name), "None", banks.name) bank'),
+                DB::raw('if(isnull(budgets.usr_id), 0, budgets.usr_id) usr_id'),
+                DB::raw('if(isnull(users.name), "Administrator", users.name) user')
+            )
+            ->paginate(2);
+    }
+
+    public function info(string $id)
+    {
+        return DB::table('budgets')
+            ->where('budgets.id', $id)
+            ->join('users', 'users.id', '=', 'budgets.usr_id')
+            ->leftJoin('accounts', 'accounts.id', '=', 'budgets.acc_id')
+            ->leftJoin('banks', 'banks.id', '=', 'accounts.ban_id')
+            ->select(
+                'budgets.id AS budget_id',
+                'budgets.name AS budget',
+                'budgets.amount',
+                'budgets.period',
+                'budgets.observation',
+                'budgets.status',
+                'budgets.created_at',
+                DB::raw('if(isnull(acc_id), 0, acc_id) acc_id'),
+                DB::raw('if(isnull(accounts.name), "None", accounts.name) account'),
+                DB::raw('if(isnull(ban_id), 0, ban_id) ban_id'),
+                DB::raw('if(isnull(banks.name), "None", banks.name) bank'),
+                DB::raw('if(isnull(budgets.usr_id), 0, budgets.usr_id) usr_id'),
+                DB::raw('if(isnull(users.name), "Administrator", users.name) user')
+            )
+            ->first();
+    }
+
+    public function select()
+    {
+        return $this->model::all();
     }
 }

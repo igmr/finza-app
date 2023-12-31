@@ -16,3 +16,22 @@ const getId = () => {
     }
     return arrayUrl[arrayUrl.length - 1];
 };
+
+const currencyFormatter = ({ currency, value }) => {
+    const formatter = new Intl.NumberFormat("es-MX", {
+        style: "currency",
+        minimumFractionDigits: 2,
+        currency,
+    });
+    return formatter.format(value);
+};
+
+const periods = () => {
+    return [
+        { id: "Diary", text: "Diary" },
+        { id: "Weekly", text: "Weekly" },
+        { id: "Biweekly", text: "Biweekly" },
+        { id: "Monthly", text: "Monthly" },
+        { id: "Annual", text: "Annual" },
+    ];
+};
