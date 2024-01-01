@@ -254,7 +254,44 @@ const showErrorsBudgetForm = (errors) => {
     alertError.classList.remove("d-none");
 };
 
-
+const showErrorsSavingForm = (errors) => {
+    listError.innerHTML = "";
+    let content = "<b>List Errors</b><br/>";
+    if (errors.name) {
+        content += `<b>Saving</b>`;
+        content += `<ul>`;
+        for (const item in errors.name) {
+            content += `<li>${errors.name[item]}</li>`;
+        }
+        content += `</ul>`;
+    }
+    if (errors.amount) {
+        content += `<b>Amount</b>`;
+        content += `<ul>`;
+        for (const item in errors.amount) {
+            content += `<li>${errors.amount[item]}</li>`;
+        }
+        content += `</ul>`;
+    }
+    if (errors.date_finish) {
+        content += `<b>Date finish</b>`;
+        content += `<ul>`;
+        for (const item in errors.date_finish) {
+            content += `<li>${errors.date_finish[item]}</li>`;
+        }
+        content += `</ul>`;
+    }
+    if (errors.observation) {
+        content += `<b>Observation</b>`;
+        content += `<ul>`;
+        for (const item in errors.observation) {
+            content += `<li>${errors.observation[item]}</li>`;
+        }
+        content += `</ul>`;
+    }
+    listError.innerHTML = content;
+    alertError.classList.remove("d-none");
+};
 
 const showAlertSuccess = (statusValue, textValue) => {
     alertError.classList.add("d-none");

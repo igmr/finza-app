@@ -6,6 +6,7 @@ const baseUrlClassification = `${baseUrl}/app/classification`;
 const baseUrlAccount = `${baseUrl}/app/account`;
 const baseUrlCategory = `${baseUrl}/app/category`;
 const baseUrlBudget = `${baseUrl}/app/budget`;
+const baseUrlSaving = `${baseUrl}/app/saving`;
 
 const fetchPostAuthenticate = async (payload, token) => {
     try {
@@ -494,15 +495,18 @@ const findByIdClassification = async (classificationId) => {
 
 const updateClassification = async (payload, token, classificationId) => {
     try {
-        const response = await fetch(`${baseUrlClassification}/${classificationId}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-                Accept: "application/json",
-                "X-CSRF-Token": token,
-            },
-            body: JSON.stringify(payload),
-        });
+        const response = await fetch(
+            `${baseUrlClassification}/${classificationId}`,
+            {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                    "X-CSRF-Token": token,
+                },
+                body: JSON.stringify(payload),
+            }
+        );
         const data = await response.json();
         const status = response.status;
         return {
@@ -550,7 +554,7 @@ const restoreClassification = async (classificationId, token) => {
 //* accounts                                                                                  *//
 //* ========================================================================================= *//
 
-const storeAccount= async (payload, token) => {
+const storeAccount = async (payload, token) => {
     try {
         const response = await fetch(baseUrlAccount, {
             method: "POST",
@@ -823,5 +827,124 @@ const selectBudget = async () => {
 };
 
 //* ========================================================================================= *//
-//* end banks                                                                                 *//
+//* end budgets                                                                               *//
+//* ========================================================================================= *//
+//* ========================================================================================= *//
+//* Savings                                                                                   *//
+//* ========================================================================================= *//
+
+const storeSaving = async (payload, token) => {
+    try {
+        const response = await fetch(baseUrlSaving, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+                "X-CSRF-Token": token,
+            },
+            body: JSON.stringify(payload),
+        });
+        const data = await response.json();
+        const status = response.status;
+        return {
+            status,
+            data,
+        };
+    } catch (error) {
+        console.log(error);
+        return {
+            status: 500,
+            data: {},
+        };
+    }
+};
+
+const getAllSaving = async (url) => {
+    try {
+        auxUrl = url ?? `${baseUrlSaving}/list`;
+        const response = await fetch(auxUrl, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+            },
+        });
+        const data = await response.json();
+        if (data) {
+            return data;
+        }
+        return {};
+    } catch (error) {
+        console.log(error);
+        return {};
+    }
+};
+
+const findByIdSaving = async (savingId) => {
+    const url = `${baseUrlSaving}/info/${savingId}`;
+    console.log(url);
+    const response = await fetch(url, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+        },
+    });
+    return await response.json();
+};
+
+const updateSaving = async (payload, token, savingId) => {
+    try {
+        const response = await fetch(`${baseUrlSaving}/${savingId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+                "X-CSRF-Token": token,
+            },
+            body: JSON.stringify(payload),
+        });
+        const data = await response.json();
+        const status = response.status;
+        return {
+            status,
+            data,
+        };
+    } catch (error) {
+        console.log(error);
+        return {
+            status: 500,
+            data: {},
+        };
+    }
+};
+
+const deleteSaving = async (savingId, token) => {
+    const url = `${baseUrlSaving}/${savingId}`;
+    const response = await fetch(url, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            "X-CSRF-Token": token,
+        },
+    });
+    return await response.json();
+};
+
+const restoreSaving = async (savingId, token) => {
+    const url = `${baseUrlSaving}/${savingId}/restore`;
+    const response = await fetch(url, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            "X-CSRF-Token": token,
+        },
+    });
+    return await response.json();
+};
+
+//* ========================================================================================= *//
+//* end Savings                                                                               *//
 //* ========================================================================================= *//

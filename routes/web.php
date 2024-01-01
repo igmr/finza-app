@@ -8,6 +8,7 @@ use App\Http\Controllers\Web\CategoryController;
 use App\Http\Controllers\Web\ClassificationController;
 use App\Http\Controllers\Web\DashboardController;
 use App\Http\Controllers\Web\GenderController;
+use App\Http\Controllers\Web\SavingController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -75,7 +76,7 @@ Route::middleware(['auth'])->prefix('app')->group(function () {
         Route::delete('/{id}',         [ClassificationController::class, 'destroy'])->name('app.classification.destroy');
         Route::delete('/{id}/restore', [ClassificationController::class, 'restore'])->name('app.classification.restore');
     });
-    
+
     Route::prefix('account')->group(function () {
         // Queries
         Route::get('/list',            [AccountController::class, 'list'])->name('app.account.list');
@@ -122,5 +123,21 @@ Route::middleware(['auth'])->prefix('app')->group(function () {
         Route::put('/{id}',            [BudgetController::class, 'update'])->name('app.budget.update');
         Route::delete('/{id}',         [BudgetController::class, 'destroy'])->name('app.budget.destroy');
         Route::delete('/{id}/restore', [BudgetController::class, 'restore'])->name('app.budget.restore');
+    });
+
+    Route::prefix('saving')->group(function () {
+        // Queries
+        Route::get('/list',            [SavingController::class, 'list'])->name('app.saving.list');
+        Route::get('/info/{id}',       [SavingController::class, 'info'])->name('app.saving.info');
+        Route::get('/select',          [SavingController::class, 'select'])->name('app.saving.select');
+        // Resources
+        Route::get('/',                [SavingController::class, 'index'])->name('app.saving.index');
+        Route::get('/create',          [SavingController::class, 'create'])->name('app.saving.create');
+        Route::post('/',               [SavingController::class, 'store'])->name('app.saving.store');
+        Route::get('/{id}',            [SavingController::class, 'show'])->name('app.saving.show');
+        Route::get('/{id}/edit',       [SavingController::class, 'edit'])->name('app.saving.edit');
+        Route::put('/{id}',            [SavingController::class, 'update'])->name('app.saving.update');
+        Route::delete('/{id}',         [SavingController::class, 'destroy'])->name('app.saving.destroy');
+        Route::delete('/{id}/restore', [SavingController::class, 'restore'])->name('app.saving.restore');
     });
 });
