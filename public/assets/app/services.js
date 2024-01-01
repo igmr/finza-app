@@ -7,6 +7,7 @@ const baseUrlAccount = `${baseUrl}/app/account`;
 const baseUrlCategory = `${baseUrl}/app/category`;
 const baseUrlBudget = `${baseUrl}/app/budget`;
 const baseUrlSaving = `${baseUrl}/app/saving`;
+const baseUrlDebt = `${baseUrl}/app/debt`;
 
 const fetchPostAuthenticate = async (payload, token) => {
     try {
@@ -425,6 +426,27 @@ const restoreCategory = async (categoryId, token) => {
         },
     });
     return await response.json();
+};
+
+const selectCategory = async () => {
+    try {
+        const url = `${baseUrlCategory}/select`;
+        const response = await fetch(url, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+            },
+        });
+        const data = await response.json();
+        if (data) {
+            return data;
+        }
+        return {};
+    } catch (error) {
+        console.log(error);
+        return {};
+    }
 };
 
 //* ========================================================================================= *//
@@ -947,4 +969,123 @@ const restoreSaving = async (savingId, token) => {
 
 //* ========================================================================================= *//
 //* end Savings                                                                               *//
+//* ========================================================================================= *//
+//* Debts                                                                                     *//
+//* ========================================================================================= *//
+
+const storeDebt = async (payload, token) => {
+    try {
+        const response = await fetch(baseUrlDebt, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+                "X-CSRF-Token": token,
+            },
+            body: JSON.stringify(payload),
+        });
+        const data = await response.json();
+        const status = response.status;
+        return {
+            status,
+            data,
+        };
+    } catch (error) {
+        console.log(error);
+        return {
+            status: 500,
+            data: {},
+        };
+    }
+};
+
+const getAllDebt = async (url) => {
+    try {
+        auxUrl = url ?? `${baseUrlDebt}/list`;
+        const response = await fetch(auxUrl, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+            },
+        });
+        const data = await response.json();
+        console.log(data)
+        if (data) {
+            return data;
+        }
+        return {};
+    } catch (error) {
+        console.log(error);
+        return {};
+    }
+};
+
+const findByIdDebt = async (debtId) => {
+    const url = `${baseUrlDebt}/info/${debtId}`;
+    console.log(url);
+    const response = await fetch(url, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+        },
+    });
+    return await response.json();
+};
+
+const updateDebt = async (payload, token, debtId) => {
+    try {
+        const response = await fetch(`${baseUrlDebt}/${debtId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+                "X-CSRF-Token": token,
+            },
+            body: JSON.stringify(payload),
+        });
+        const data = await response.json();
+        const status = response.status;
+        return {
+            status,
+            data,
+        };
+    } catch (error) {
+        console.log(error);
+        return {
+            status: 500,
+            data: {},
+        };
+    }
+};
+
+const deleteDebt = async (debtId, token) => {
+    const url = `${baseUrlDebt}/${debtId}`;
+    const response = await fetch(url, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            "X-CSRF-Token": token,
+        },
+    });
+    return await response.json();
+};
+
+const restoreDebt = async (debtId, token) => {
+    const url = `${baseUrlDebt}/${debtId}/restore`;
+    const response = await fetch(url, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            "X-CSRF-Token": token,
+        },
+    });
+    return await response.json();
+};
+
+//* ========================================================================================= *//
+//* end Debts                                                                                 *//
 //* ========================================================================================= *//

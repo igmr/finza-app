@@ -23,7 +23,7 @@
                 </a>
                 <ul @class(['nk-menu-sub'])>
                     <li @class(['nk-menu-item'])>
-                        <a href="#" @class(['nk-menu-link'])>
+                        <a href="{{ route('app.debt.index') }}" @class(['nk-menu-link'])>
                             <span @class(['nk-menu-text'])>Debts</span>
                         </a>
                     </li>

@@ -293,6 +293,53 @@ const showErrorsSavingForm = (errors) => {
     alertError.classList.remove("d-none");
 };
 
+const showErrorsDebtForm = (errors) => {
+    listError.innerHTML = "";
+    let content = "<b>List Errors</b><br/>";
+    if (errors.name) {
+        content += `<b>Debt</b>`;
+        content += `<ul>`;
+        for (const item in errors.name) {
+            content += `<li>${errors.name[item]}</li>`;
+        }
+        content += `</ul>`;
+    }
+    if (errors.category) {
+        content += `<b>Category</b>`;
+        content += `<ul>`;
+        for (const item in errors.category) {
+            content += `<li>${errors.category[item]}</li>`;
+        }
+        content += `</ul>`;
+    }
+    if (errors.period) {
+        content += `<b>Period</b>`;
+        content += `<ul>`;
+        for (const item in errors.period) {
+            content += `<li>${errors.period[item]}</li>`;
+        }
+        content += `</ul>`;
+    }
+    if (errors.amount) {
+        content += `<b>Amount</b>`;
+        content += `<ul>`;
+        for (const item in errors.amount) {
+            content += `<li>${errors.amount[item]}</li>`;
+        }
+        content += `</ul>`;
+    }
+    if (errors.observation) {
+        content += `<b>Observation</b>`;
+        content += `<ul>`;
+        for (const item in errors.observation) {
+            content += `<li>${errors.observation[item]}</li>`;
+        }
+        content += `</ul>`;
+    }
+    listError.innerHTML = content;
+    alertError.classList.remove("d-none");
+};
+
 const showAlertSuccess = (statusValue, textValue) => {
     alertError.classList.add("d-none");
     alertSuccess.classList.add("d-none");

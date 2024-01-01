@@ -91,7 +91,6 @@ class CategoryService implements \App\Services\Interfaces\CategoryInterface
     public function info(string $id)
     {
         try {
-
             return DB::table('categories')
                 ->join('users', 'users.id', '=', 'categories.usr_id')
                 ->join('genders', 'genders.id', '=', 'categories.gen_id')
@@ -116,7 +115,19 @@ class CategoryService implements \App\Services\Interfaces\CategoryInterface
 
     public function select()
     {
-        return $this->model::all();
+        try {
+
+            return DB::table('categories')
+                ->join('genders', 'genders.id', '=', 'categories.gen_id')
+                ->select(
+                    'categories.id',
+                    'categories.name AS category',
+                    'genders.id AS gender_id',
+                    'genders.name AS gender',
+                )->get();
+        } catch (\Exception $e) {
+            //return $e->getMessage();
+            return null;
+        }
     }
 }
-

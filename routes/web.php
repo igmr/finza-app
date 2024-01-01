@@ -7,6 +7,7 @@ use App\Http\Controllers\Web\BudgetController;
 use App\Http\Controllers\Web\CategoryController;
 use App\Http\Controllers\Web\ClassificationController;
 use App\Http\Controllers\Web\DashboardController;
+use App\Http\Controllers\Web\DebtController;
 use App\Http\Controllers\Web\GenderController;
 use App\Http\Controllers\Web\SavingController;
 use Illuminate\Support\Facades\Route;
@@ -139,5 +140,21 @@ Route::middleware(['auth'])->prefix('app')->group(function () {
         Route::put('/{id}',            [SavingController::class, 'update'])->name('app.saving.update');
         Route::delete('/{id}',         [SavingController::class, 'destroy'])->name('app.saving.destroy');
         Route::delete('/{id}/restore', [SavingController::class, 'restore'])->name('app.saving.restore');
+    });
+
+    Route::prefix('debt')->group(function () {
+        // Queries
+        Route::get('/list',            [DebtController::class, 'list'])->name('app.debt.list');
+        Route::get('/info/{id}',       [DebtController::class, 'info'])->name('app.debt.info');
+        Route::get('/select',          [DebtController::class, 'select'])->name('app.debt.select');
+        // Resources
+        Route::get('/',                [DebtController::class, 'index'])->name('app.debt.index');
+        Route::get('/create',          [DebtController::class, 'create'])->name('app.debt.create');
+        Route::post('/',               [DebtController::class, 'store'])->name('app.debt.store');
+        Route::get('/{id}',            [DebtController::class, 'show'])->name('app.debt.show');
+        Route::get('/{id}/edit',       [DebtController::class, 'edit'])->name('app.debt.edit');
+        Route::put('/{id}',            [DebtController::class, 'update'])->name('app.debt.update');
+        Route::delete('/{id}',         [DebtController::class, 'destroy'])->name('app.debt.destroy');
+        Route::delete('/{id}/restore', [DebtController::class, 'restore'])->name('app.debt.restore');
     });
 });
