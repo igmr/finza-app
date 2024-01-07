@@ -26,10 +26,9 @@ const buildSelects = async () => {
         period.add(option, null);
     });
     const categories = await selectCategory();
-
     categories.forEach((item) => {
         const opt = document.createElement("option");
-        opt.value = item.category_id;
+        opt.value = item.id;
         opt.text = `${item.category} - ${item.gender}`;
         category.add(opt, null);
     });
