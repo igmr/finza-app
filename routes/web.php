@@ -9,6 +9,7 @@ use App\Http\Controllers\Web\ClassificationController;
 use App\Http\Controllers\Web\DashboardController;
 use App\Http\Controllers\Web\DebtController;
 use App\Http\Controllers\Web\GenderController;
+use App\Http\Controllers\Web\IngressController;
 use App\Http\Controllers\Web\SavingController;
 use Illuminate\Support\Facades\Route;
 
@@ -156,5 +157,21 @@ Route::middleware(['auth'])->prefix('app')->group(function () {
         Route::put('/{id}',            [DebtController::class, 'update'])->name('app.debt.update');
         Route::delete('/{id}',         [DebtController::class, 'destroy'])->name('app.debt.destroy');
         Route::delete('/{id}/restore', [DebtController::class, 'restore'])->name('app.debt.restore');
+    });
+
+    Route::prefix('ingress')->group(function () {
+        // Queries
+        Route::get('/list',            [IngressController::class, 'list'])->name('app.ingress.list');
+        Route::get('/info/{id}',       [IngressController::class, 'info'])->name('app.ingress.info');
+        Route::get('/select',          [IngressController::class, 'select'])->name('app.ingress.select');
+        // Resources
+        Route::get('/',                [IngressController::class, 'index'])->name('app.ingress.index');
+        Route::get('/create',          [IngressController::class, 'create'])->name('app.ingress.create');
+        Route::post('/',               [IngressController::class, 'store'])->name('app.ingress.store');
+        Route::get('/{id}',            [IngressController::class, 'show'])->name('app.ingress.show');
+        Route::get('/{id}/edit',       [IngressController::class, 'edit'])->name('app.ingress.edit');
+        Route::put('/{id}',            [IngressController::class, 'update'])->name('app.ingress.update');
+        Route::delete('/{id}',         [IngressController::class, 'destroy'])->name('app.ingress.destroy');
+        Route::delete('/{id}/restore', [IngressController::class, 'restore'])->name('app.ingress.restore');
     });
 });

@@ -2,6 +2,9 @@
 
 namespace App\Services;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 class IngressService implements \App\Services\Interfaces\IngressInterface
 {
     protected $model;
@@ -60,5 +63,71 @@ class IngressService implements \App\Services\Interfaces\IngressInterface
             return false;
         }
     }
-}
+    public function list(Request $req)
+    {
+        return DB::table('ingresses')
+            ->join('users', 'users.id', '=', 'ingresses.usr_id')
+            ->leftJoin('accounts', 'accounts.id', '=', 'ingresses.acc_id')
+            ->leftJoin('classifications', 'classifications.id', '=', 'ingresses.cls_id')
+            ->leftJoin('savings', 'savings.id', '=', 'ingresses.sav_id')
+            ->leftJoin('debts', 'debts.id', '=', 'ingresses.deb_id')
+            ->select(
+                'ingresses.id AS ing_id',
+                'ingresses.concept',
+                'ingresses.description',
+                'ingresses.reference',
+                'ingresses.amount',
+                'ingresses.observation',
+                'ingresses.status',
+                'ingresses.created_at',
+                DB::raw('if(isnull(ingresses.acc_id), 0, ingresses.acc_id) acc_id'),
+                DB::raw('if(isnull(accounts.name), "None", accounts.name) account'),
+                DB::raw('if(isnull(ingresses.cls_id), 0, ingresses.cls_id) cls_id'),
+                DB::raw('if(isnull(classifications.name), "None", classifications.name) classification'),
+                DB::raw('if(isnull(ingresses.sav_id), 0, ingresses.sav_id) sav_id'),
+                DB::raw('if(isnull(savings.name), "None", savings.name) classification'),
+                DB::raw('if(isnull(ingresses.deb_id), 0, ingresses.deb_id) deb_id'),
+                DB::raw('if(isnull(debts.name), "None", debts.name) debt'),
+                DB::raw('if(isnull(ingresses.usr_id), 0,ingresses.usr_id) usr_id'),
+                DB::raw('if(isnull(users.name), "Administrator", users.name) user'),
+            )
+            ->paginate(2);
+    }
 
+    public function info(string $id)
+    {
+        return DB::table('ingresses')
+            ->where('ingresses.id', $id)
+            ->join('users', 'users.id', '=', 'ingresses.usr_id')
+            ->leftJoin('accounts', 'accounts.id', '=', 'ingresses.acc_id')
+            ->leftJoin('classifications', 'classifications.id', '=', 'ingresses.cls_id')
+            ->leftJoin('savings', 'savings.id', '=', 'ingresses.sav_id')
+            ->leftJoin('debts', 'debts.id', '=', 'ingresses.deb_id')
+            ->select(
+                'ingresses.id AS ing_id',
+                'ingresses.concept',
+                'ingresses.description',
+                'ingresses.reference',
+                'ingresses.amount',
+                'ingresses.observation',
+                'ingresses.status',
+                'ingresses.created_at',
+                DB::raw('if(isnull(ingresses.acc_id), 0, ingresses.acc_id) acc_id'),
+                DB::raw('if(isnull(accounts.name), "None", accounts.name) account'),
+                DB::raw('if(isnull(ingresses.cls_id), 0, ingresses.cls_id) cls_id'),
+                DB::raw('if(isnull(classifications.name), "None", classifications.name) classification'),
+                DB::raw('if(isnull(ingresses.sav_id), 0, ingresses.sav_id) sav_id'),
+                DB::raw('if(isnull(savings.name), "None", savings.name) classification'),
+                DB::raw('if(isnull(ingresses.deb_id), 0, ingresses.deb_id) deb_id'),
+                DB::raw('if(isnull(debts.name), "None", debts.name) debt'),
+                DB::raw('if(isnull(ingresses.usr_id), 0,ingresses.usr_id) usr_id'),
+                DB::raw('if(isnull(users.name), "Administrator", users.name) user'),
+            )
+            ->first();
+    }
+
+    public function select()
+    {
+        return $this->model::all();
+    }
+}

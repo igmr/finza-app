@@ -8,6 +8,7 @@ const baseUrlCategory = `${baseUrl}/app/category`;
 const baseUrlBudget = `${baseUrl}/app/budget`;
 const baseUrlSaving = `${baseUrl}/app/saving`;
 const baseUrlDebt = `${baseUrl}/app/debt`;
+const baseUrlIngress = `${baseUrl}/app/ingress`;
 
 const fetchPostAuthenticate = async (payload, token) => {
     try {
@@ -570,6 +571,27 @@ const restoreClassification = async (classificationId, token) => {
     return await response.json();
 };
 
+const selectClassification = async () => {
+    try {
+        const url = `${baseUrlClassification}/select`;
+        const response = await fetch(url, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+            },
+        });
+        const data = await response.json();
+        if (data) {
+            return data;
+        }
+        return {};
+    } catch (error) {
+        console.log(error);
+        return {};
+    }
+};
+
 //* ========================================================================================= *//
 //* end classifications                                                                       *//
 //* ========================================================================================= *//
@@ -967,6 +989,27 @@ const restoreSaving = async (savingId, token) => {
     return await response.json();
 };
 
+const selectSaving = async () => {
+    try {
+        const url = `${baseUrlSaving}/select`;
+        const response = await fetch(url, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+            },
+        });
+        const data = await response.json();
+        if (data) {
+            return data;
+        }
+        return {};
+    } catch (error) {
+        console.log(error);
+        return {};
+    }
+};
+
 //* ========================================================================================= *//
 //* end Savings                                                                               *//
 //* ========================================================================================= *//
@@ -1010,7 +1053,7 @@ const getAllDebt = async (url) => {
             },
         });
         const data = await response.json();
-        console.log(data)
+        console.log(data);
         if (data) {
             return data;
         }
@@ -1086,6 +1129,145 @@ const restoreDebt = async (debtId, token) => {
     return await response.json();
 };
 
+const selectDebt = async () => {
+    try {
+        const url = `${baseUrlDebt}/select`;
+        const response = await fetch(url, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+            },
+        });
+        const data = await response.json();
+        if (data) {
+            return data;
+        }
+        return {};
+    } catch (error) {
+        console.log(error);
+        return {};
+    }
+};
+
 //* ========================================================================================= *//
 //* end Debts                                                                                 *//
+//* ========================================================================================= *//
+//* Ingresses                                                                                 *//
+//* ========================================================================================= *//
+const storeIngress = async (payload, token) => {
+    try {
+        const response = await fetch(baseUrlIngress, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+                "X-CSRF-Token": token,
+            },
+            body: JSON.stringify(payload),
+        });
+        const data = await response.json();
+        const status = response.status;
+        return {
+            status,
+            data,
+        };
+    } catch (error) {
+        console.log(error);
+        return {
+            status: 500,
+            data: {},
+        };
+    }
+};
+
+const getAllIngress = async (url) => {
+    try {
+        auxUrl = url ?? `${baseUrlIngress}/list`;
+        const response = await fetch(auxUrl, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+            },
+        });
+        const data = await response.json();
+        console.log(data);
+        if (data) {
+            return data;
+        }
+        return {};
+    } catch (error) {
+        console.log(error);
+        return {};
+    }
+};
+
+const findByIdIngress = async (ingressId) => {
+    const url = `${baseUrlIngress}/info/${ingressId}`;
+    console.log(url);
+    const response = await fetch(url, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+        },
+    });
+    return await response.json();
+};
+
+const updateIngress = async (payload, token, ingressId) => {
+    try {
+        const response = await fetch(`${baseUrlIngress}/${ingressId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+                "X-CSRF-Token": token,
+            },
+            body: JSON.stringify(payload),
+        });
+        const data = await response.json();
+        const status = response.status;
+        return {
+            status,
+            data,
+        };
+    } catch (error) {
+        console.log(error);
+        return {
+            status: 500,
+            data: {},
+        };
+    }
+};
+
+const deleteIngress = async (ingressId, token) => {
+    const url = `${baseUrlIngress}/${ingressId}`;
+    const response = await fetch(url, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            "X-CSRF-Token": token,
+        },
+    });
+    return await response.json();
+};
+
+const restoreIngress = async (ingressId, token) => {
+    const url = `${baseUrlIngress}/${ingressId}/restore`;
+    const response = await fetch(url, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            "X-CSRF-Token": token,
+        },
+    });
+    return await response.json();
+};
+
+//* ========================================================================================= *//
+//* end Ingresses                                                                             *//
 //* ========================================================================================= *//
