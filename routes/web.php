@@ -8,6 +8,7 @@ use App\Http\Controllers\Web\CategoryController;
 use App\Http\Controllers\Web\ClassificationController;
 use App\Http\Controllers\Web\DashboardController;
 use App\Http\Controllers\Web\DebtController;
+use App\Http\Controllers\Web\EgressController;
 use App\Http\Controllers\Web\GenderController;
 use App\Http\Controllers\Web\IngressController;
 use App\Http\Controllers\Web\SavingController;
@@ -173,5 +174,21 @@ Route::middleware(['auth'])->prefix('app')->group(function () {
         Route::put('/{id}',            [IngressController::class, 'update'])->name('app.ingress.update');
         Route::delete('/{id}',         [IngressController::class, 'destroy'])->name('app.ingress.destroy');
         Route::delete('/{id}/restore', [IngressController::class, 'restore'])->name('app.ingress.restore');
+    });
+
+    Route::prefix('egress')->group(function () {
+        // Queries
+        Route::get('/list',            [EgressController::class, 'list'])->name('app.egress.list');
+        Route::get('/info/{id}',       [EgressController::class, 'info'])->name('app.egress.info');
+        Route::get('/select',          [EgressController::class, 'select'])->name('app.egress.select');
+        // Resources
+        Route::get('/',                [EgressController::class, 'index'])->name('app.egress.index');
+        Route::get('/create',          [EgressController::class, 'create'])->name('app.egress.create');
+        Route::post('/',               [EgressController::class, 'store'])->name('app.egress.store');
+        Route::get('/{id}',            [EgressController::class, 'show'])->name('app.egress.show');
+        Route::get('/{id}/edit',       [EgressController::class, 'edit'])->name('app.egress.edit');
+        Route::put('/{id}',            [EgressController::class, 'update'])->name('app.egress.update');
+        Route::delete('/{id}',         [EgressController::class, 'destroy'])->name('app.egress.destroy');
+        Route::delete('/{id}/restore', [EgressController::class, 'restore'])->name('app.egress.restore');
     });
 });

@@ -419,6 +419,85 @@ const showErrorsIngressForm = (errors) => {
     alertError.classList.remove("d-none");
 };
 
+const showErrorsEgressForm = (errors) => {
+    listError.innerHTML = "";
+    let content = "<b>List Errors</b><br/>";
+    if (errors.category) {
+        content += `<b>Category</b>`;
+        content += `<ul>`;
+        for (const item in errors.category) {
+            content += `<li>${errors.category[item]}</li>`;
+        }
+        content += `</ul>`;
+    }
+    if (errors.saving) {
+        content += `<b>Saving</b>`;
+        content += `<ul>`;
+        for (const item in errors.saving) {
+            content += `<li>${errors.saving[item]}</li>`;
+        }
+        content += `</ul>`;
+    }
+    if (errors.debt) {
+        content += `<b>Debt</b>`;
+        content += `<ul>`;
+        for (const item in errors.debt) {
+            content += `<li>${errors.debt[item]}</li>`;
+        }
+        content += `</ul>`;
+    }
+    if (errors.account) {
+        content += `<b>Account</b>`;
+        content += `<ul>`;
+        for (const item in errors.account) {
+            content += `<li>${errors.account[item]}</li>`;
+        }
+        content += `</ul>`;
+    }
+    if (errors.concept) {
+        content += `<b>Concept</b>`;
+        content += `<ul>`;
+        for (const item in errors.concept) {
+            content += `<li>${errors.concept[item]}</li>`;
+        }
+        content += `</ul>`;
+    }
+    if (errors.description) {
+        content += `<b>Description</b>`;
+        content += `<ul>`;
+        for (const item in errors.description) {
+            content += `<li>${errors.description[item]}</li>`;
+        }
+        content += `</ul>`;
+    }
+    if (errors.reference) {
+        content += `<b>Reference</b>`;
+        content += `<ul>`;
+        for (const item in errors.reference) {
+            content += `<li>${errors.reference[item]}</li>`;
+        }
+        content += `</ul>`;
+    }
+    if (errors.amount) {
+        content += `<b>Amount</b>`;
+        content += `<ul>`;
+        for (const item in errors.amount) {
+            content += `<li>${errors.amount[item]}</li>`;
+        }
+        content += `</ul>`;
+    }
+    if (errors.observation) {
+        content += `<b>Observation</b>`;
+        content += `<ul>`;
+        for (const item in errors.observation) {
+            content += `<li>${errors.observation[item]}</li>`;
+        }
+        content += `</ul>`;
+    }
+    listError.innerHTML = content;
+    alertError.classList.remove("d-none");
+};
+
 const showAlertSuccess = (statusValue, textValue) => {
     alertError.classList.add("d-none");
     alertSuccess.classList.add("d-none");

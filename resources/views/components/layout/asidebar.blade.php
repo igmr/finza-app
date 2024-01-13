@@ -8,12 +8,12 @@
                 </a>
             </li><!-- .nk-menu-item -->
             <li @class(['nk-menu-item'])>
-                <a href="#" @class(['nk-menu-link'])>
+                <a href="{{ route('app.egress.index') }}" @class(['nk-menu-link'])>
                     <span @class(['nk-menu-text'])>Egress</span>
                 </a>
             </li><!-- .nk-menu-item -->
             <li @class(['nk-menu-item'])>
-                <a href="{{ route('app.ingress.index')}}" @class(['nk-menu-link'])>
+                <a href="{{ route('app.ingress.index') }}" @class(['nk-menu-link'])>
                     <span @class(['nk-menu-text'])>Ingress</span>
                 </a>
             </li><!-- .nk-menu-item -->

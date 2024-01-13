@@ -20,7 +20,7 @@ class Egress extends Model
     // | ATTRIBUTES                                                                       |
     // +----------------------------------------------------------------------------------+
     protected $fillable = [
-        'id', 'usr_id', 'cls_id', 'sav_id', 'deb_id', 'acc_id',
+        'id', 'usr_id', 'cat_id', 'sav_id', 'deb_id', 'acc_id',
         'concept', 'description', 'reference', 'amount',
         'observation', 'file', 'status'
     ];
@@ -32,7 +32,7 @@ class Egress extends Model
     protected $casts = [
         'id'           => 'integer',
         'usr_id'       => 'integer',
-        'cls_id'       => 'integer',
+        'cat_id'       => 'integer',
         'sav_id'       => 'integer',
         'deb_id'       => 'integer',
         'acc_id'       => 'integer',

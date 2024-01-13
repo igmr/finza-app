@@ -9,6 +9,7 @@ const baseUrlBudget = `${baseUrl}/app/budget`;
 const baseUrlSaving = `${baseUrl}/app/saving`;
 const baseUrlDebt = `${baseUrl}/app/debt`;
 const baseUrlIngress = `${baseUrl}/app/ingress`;
+const baseUrlEgress = `${baseUrl}/app/egress`;
 
 const fetchPostAuthenticate = async (payload, token) => {
     try {
@@ -277,6 +278,7 @@ const deleteGender = async (genderId, token) => {
     });
     return await response.json();
 };
+
 const restoreGender = async (genderId, token) => {
     const url = `${baseUrlGender}/${genderId}/restore`;
     const response = await fetch(url, {
@@ -1155,6 +1157,7 @@ const selectDebt = async () => {
 //* ========================================================================================= *//
 //* Ingresses                                                                                 *//
 //* ========================================================================================= *//
+
 const storeIngress = async (payload, token) => {
     try {
         const response = await fetch(baseUrlIngress, {
@@ -1270,4 +1273,123 @@ const restoreIngress = async (ingressId, token) => {
 
 //* ========================================================================================= *//
 //* end Ingresses                                                                             *//
+//* ========================================================================================= *//
+//* Egresses                                                                                  *//
+//* ========================================================================================= *//
+
+const storeEgress = async (payload, token) => {
+    try {
+        const response = await fetch(baseUrlEgress, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+                "X-CSRF-Token": token,
+            },
+            body: JSON.stringify(payload),
+        });
+        const data = await response.json();
+        const status = response.status;
+        return {
+            status,
+            data,
+        };
+    } catch (error) {
+        console.log(error);
+        return {
+            status: 500,
+            data: {},
+        };
+    }
+};
+
+const getAllEgress = async (url) => {
+    try {
+        auxUrl = url ?? `${baseUrlEgress}/list`;
+        const response = await fetch(auxUrl, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+            },
+        });
+        const data = await response.json();
+        console.log(data);
+        if (data) {
+            return data;
+        }
+        return {};
+    } catch (error) {
+        console.log(error);
+        return {};
+    }
+};
+
+const findByIdEgress = async (egressId) => {
+    const url = `${baseUrlEgress}/info/${egressId}`;
+    console.log(url);
+    const response = await fetch(url, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+        },
+    });
+    return await response.json();
+};
+
+const updateEgress = async (payload, token, egressId) => {
+    try {
+        const response = await fetch(`${baseUrlEgress}/${egressId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+                "X-CSRF-Token": token,
+            },
+            body: JSON.stringify(payload),
+        });
+        const data = await response.json();
+        const status = response.status;
+        return {
+            status,
+            data,
+        };
+    } catch (error) {
+        console.log(error);
+        return {
+            status: 500,
+            data: {},
+        };
+    }
+};
+
+const deleteEgress = async (egressId, token) => {
+    const url = `${baseUrlEgress}/${egressId}`;
+    const response = await fetch(url, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            "X-CSRF-Token": token,
+        },
+    });
+    return await response.json();
+};
+
+const restoreEgress = async (egressId, token) => {
+    const url = `${baseUrlEgress}/${egressId}/restore`;
+    const response = await fetch(url, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            "X-CSRF-Token": token,
+        },
+    });
+    return await response.json();
+};
+
+//* ========================================================================================= *//
+//* end Egresses                                                                              *//
 //* ========================================================================================= *//

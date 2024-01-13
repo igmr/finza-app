@@ -116,7 +116,6 @@ class CategoryService implements \App\Services\Interfaces\CategoryInterface
     public function select()
     {
         try {
-
             return DB::table('categories')
                 ->join('genders', 'genders.id', '=', 'categories.gen_id')
                 ->select(
