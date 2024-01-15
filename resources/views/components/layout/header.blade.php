@@ -22,6 +22,11 @@
                         </a>
                     </li><!-- .nk-menu-item -->
                     <li @class(['nk-menu-item'])>
+                        <a href="{{ route('app.transaction.index') }}" @class(['nk-menu-link'])>
+                            <span @class(['nk-menu-text'])>Transaction</span>
+                        </a>
+                    </li><!-- .nk-menu-item -->
+                    <li @class(['nk-menu-item'])>
                         <a href="{{ route('app.ingress.index') }}" @class(['nk-menu-link'])>
                             <span @class(['nk-menu-text'])>Ingress</span>
                         </a>

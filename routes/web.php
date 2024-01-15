@@ -12,6 +12,7 @@ use App\Http\Controllers\Web\EgressController;
 use App\Http\Controllers\Web\GenderController;
 use App\Http\Controllers\Web\IngressController;
 use App\Http\Controllers\Web\SavingController;
+use App\Http\Controllers\Web\transactionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -190,5 +191,21 @@ Route::middleware(['auth'])->prefix('app')->group(function () {
         Route::put('/{id}',            [EgressController::class, 'update'])->name('app.egress.update');
         Route::delete('/{id}',         [EgressController::class, 'destroy'])->name('app.egress.destroy');
         Route::delete('/{id}/restore', [EgressController::class, 'restore'])->name('app.egress.restore');
+    });
+
+    Route::prefix('transaction')->group(function () {
+        // Queries
+        Route::get('/list',            [transactionController::class, 'list'])->name('app.transaction.list');
+        Route::get('/info/{id}',       [transactionController::class, 'info'])->name('app.transaction.info');
+        Route::get('/select',          [transactionController::class, 'select'])->name('app.transaction.select');
+        // Resources
+        Route::get('/',                [transactionController::class, 'index'])->name('app.transaction.index');
+        Route::get('/create',          [transactionController::class, 'create'])->name('app.transaction.create');
+        Route::post('/',               [transactionController::class, 'store'])->name('app.transaction.store');
+        Route::get('/{id}',            [transactionController::class, 'show'])->name('app.transaction.show');
+        Route::get('/{id}/edit',       [transactionController::class, 'edit'])->name('app.transaction.edit');
+        Route::put('/{id}',            [transactionController::class, 'update'])->name('app.transaction.update');
+        Route::delete('/{id}',         [transactionController::class, 'destroy'])->name('app.transaction.destroy');
+        Route::delete('/{id}/restore', [transactionController::class, 'restore'])->name('app.transaction.restore');
     });
 });

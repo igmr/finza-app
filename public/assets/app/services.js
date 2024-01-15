@@ -10,6 +10,7 @@ const baseUrlSaving = `${baseUrl}/app/saving`;
 const baseUrlDebt = `${baseUrl}/app/debt`;
 const baseUrlIngress = `${baseUrl}/app/ingress`;
 const baseUrlEgress = `${baseUrl}/app/egress`;
+const baseUrlTransaction = `${baseUrl}/app/transaction`;
 
 const fetchPostAuthenticate = async (payload, token) => {
     try {
@@ -1392,4 +1393,123 @@ const restoreEgress = async (egressId, token) => {
 
 //* ========================================================================================= *//
 //* end Egresses                                                                              *//
+//* ========================================================================================= *//
+//* Transactions                                                                              *//
+//* ========================================================================================= *//
+
+const storeTransaction = async (payload, token) => {
+    try {
+        const response = await fetch(baseUrlTransaction, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+                "X-CSRF-Token": token,
+            },
+            body: JSON.stringify(payload),
+        });
+        const data = await response.json();
+        const status = response.status;
+        return {
+            status,
+            data,
+        };
+    } catch (error) {
+        console.log(error);
+        return {
+            status: 500,
+            data: {},
+        };
+    }
+};
+
+const getAllTransaction = async (url) => {
+    try {
+        auxUrl = url ?? `${baseUrlTransaction}/list`;
+        const response = await fetch(auxUrl, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+            },
+        });
+        const data = await response.json();
+        console.log(data);
+        if (data) {
+            return data;
+        }
+        return {};
+    } catch (error) {
+        console.log(error);
+        return {};
+    }
+};
+
+const findByIdTransaction = async (transactionId) => {
+    const url = `${baseUrlTransaction}/info/${transactionId}`;
+    console.log(url);
+    const response = await fetch(url, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+        },
+    });
+    return await response.json();
+};
+
+const updateTransaction = async (payload, token, transactionId) => {
+    try {
+        const response = await fetch(`${baseUrlTransaction}/${transactionId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+                "X-CSRF-Token": token,
+            },
+            body: JSON.stringify(payload),
+        });
+        const data = await response.json();
+        const status = response.status;
+        return {
+            status,
+            data,
+        };
+    } catch (error) {
+        console.log(error);
+        return {
+            status: 500,
+            data: {},
+        };
+    }
+};
+
+const deleteTransaction = async (transactionId, token) => {
+    const url = `${baseUrlTransaction}/${transactionId}`;
+    const response = await fetch(url, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            "X-CSRF-Token": token,
+        },
+    });
+    return await response.json();
+};
+
+const restoreTransaction = async (transactionId, token) => {
+    const url = `${baseUrlTransaction}/${transactionId}/restore`;
+    const response = await fetch(url, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            "X-CSRF-Token": token,
+        },
+    });
+    return await response.json();
+};
+
+//* ========================================================================================= *//
+//* end Transactions                                                                          *//
 //* ========================================================================================= *//
