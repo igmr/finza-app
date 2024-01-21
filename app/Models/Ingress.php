@@ -22,11 +22,11 @@ class Ingress extends Model
     protected $fillable = [
         'id', 'usr_id', 'cls_id', 'sav_id', 'deb_id', 'acc_id',
         'concept', 'description', 'reference', 'amount',
-        'observation', 'file', 'status',
+        'observation', 'status',
     ];
 
     protected $hidden = [
-        'usr_id', 'created_at', 'updated_at', 'deleted_at',
+        'file', 'usr_id', 'created_at', 'updated_at', 'deleted_at',
     ];
 
     protected $casts = [

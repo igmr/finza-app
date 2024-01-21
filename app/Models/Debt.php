@@ -23,11 +23,11 @@ class Debt extends Model
         'id', 'usr_id', 'cat_id',
         'name', 'amount', 'period',
         'day', 'date_at',
-        'file', 'observation', 'status',
+        'observation', 'status',
     ];
 
     protected $hidden = [
-        'usr_id', 'created_at', 'updated_at', 'deleted_at',
+        'file', 'usr_id', 'created_at', 'updated_at', 'deleted_at',
     ];
 
     protected $casts = [

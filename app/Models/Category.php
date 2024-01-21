@@ -22,7 +22,7 @@ class Category extends Model
     protected $fillable = [
         'id', 'usr_id', 'gen_id',
         'code', 'name', 
-        'file', 'observation', 'status',
+        'observation', 'status',
     ];
 
     protected $hidden = [

@@ -23,11 +23,11 @@ class Transaction extends Model
         'id', 'usr_id', 'ing_id', 'egr_id', 'acc_ing_id', 'acc_egr_id',
         'cls_id', 'cat_id', 'sav_id', 'deb_id',
         'concept', 'description', 'reference', 'amount',
-        'observation', 'file', 'status',
+        'observation', 'status',
     ];
 
     protected $hidden = [
-        'usr_id', 'created_at', 'updated_at', 'deleted_at',
+        'file', 'usr_id', 'created_at', 'updated_at', 'deleted_at',
     ];
     protected $casts = [
         'id'           => 'integer',

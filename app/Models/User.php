@@ -25,14 +25,13 @@ class User extends Authenticatable
     protected $fillable = [
         'id',
         'email', 'name', 'password',
-        'observation', 'file', 'status',
+        'observation', 'status',
     ];
 
     protected $hidden = [
         'password', 'remember_token',
         'email_verified_at',
-        'files',
-        'created_at', 'updated_at', 'deleted_at',
+        'file', 'created_at', 'updated_at', 'deleted_at',
     ];
 
     protected $casts = [

@@ -20,11 +20,11 @@ class Gender extends Model
     // | ATTRIBUTES                                                                       |
     // +----------------------------------------------------------------------------------+
     protected $fillable = [
-        'id', 'usr_id', 'code', 'name', 'icon', 'file', 'observation', 'status'
+        'id', 'usr_id', 'code', 'name', 'icon', 'observation', 'status'
     ];
 
     protected $hidden = [
-        'usr_id', 'created_at', 'updated_at', 'deleted_at',
+        'file', 'usr_id', 'created_at', 'updated_at', 'deleted_at',
     ];
 
     protected $casts = [
