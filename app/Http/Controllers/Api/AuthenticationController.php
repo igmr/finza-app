@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\Api\AuthenticationFormRequest;
 use App\Services\UserService;
+use Illuminate\Support\Facades\Auth;
 
 class AuthenticationController extends ApiController
 {
@@ -21,5 +22,13 @@ class AuthenticationController extends ApiController
         $user    = $this->service->getUserByEmail($email);
         $token   = $this->service->token($user);
         return $this->responseSuccessAuthorization($token);
+    }
+    public function logout()
+    {
+        $userId = Auth::user()->id;
+        $logout = $this->service->logout($userId);
+        if($logout){
+            return $this->responseSuccessLogout();
+        }
     }
 }

@@ -61,6 +61,15 @@ class ApiController extends Controller
         ], $code);
     }
 
+    public function responseSuccessLogout( string $message = 'Logout successfully', string $code = Response::HTTP_OK)
+    {
+        return response()->json([
+            'status'  => 'success',
+            'message' => $message,
+            'data'    => [],
+        ], $code);
+    }
+
     public function responseErrorAuthorization(array $data = ['token' => 'token unauthorized'], string $message = 'Authorization error')
     {
         return response()->json([
