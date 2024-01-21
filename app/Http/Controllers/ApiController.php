@@ -28,7 +28,7 @@ class ApiController extends Controller
     public function responseDeleted($status = true)
     {
         return response()->json([
-            'status'  => $status,
+            'status'  => $status ? 'success' : 'error',
             'message' => $status ? 'Resource deleted' : 'Resource not deleted',
             'data'    => [],
         ], $status ? Response::HTTP_OK : Response::HTTP_INTERNAL_SERVER_ERROR);
@@ -37,7 +37,7 @@ class ApiController extends Controller
     public function responseRestored($status = true)
     {
         return response()->json([
-            'status'  => $status,
+            'status'  => $status ? 'success' : 'error',
             'message' => $status ? 'Resource restored' : 'Resource not restored',
             'data'    => [],
         ], $status ? Response::HTTP_OK : Response::HTTP_INTERNAL_SERVER_ERROR);
