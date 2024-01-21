@@ -70,6 +70,10 @@ class UserService implements \App\Services\Interfaces\UserInterface
     {
         return $user->createToken('token')->plainTextToken;
     }
+    public function logout(int $userId)
+    {
+        return auth()->user()->tokens()->delete();
+    }
     public function getSession(\Illuminate\Http\Request $req)
     {
         $credentials = $req->validated();
