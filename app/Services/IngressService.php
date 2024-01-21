@@ -63,7 +63,7 @@ class IngressService implements \App\Services\Interfaces\IngressInterface
             return false;
         }
     }
-    public function list(Request $req)
+    public function list(Request $req, int $paginate = 15)
     {
         return DB::table('ingresses')
             ->join('users', 'users.id', '=', 'ingresses.usr_id')
@@ -91,7 +91,7 @@ class IngressService implements \App\Services\Interfaces\IngressInterface
                 DB::raw('if(isnull(ingresses.usr_id), 0,ingresses.usr_id) usr_id'),
                 DB::raw('if(isnull(users.name), "Administrator", users.name) user'),
             )
-            ->paginate(2);
+            ->paginate($paginate);
     }
 
     public function info(string $id)

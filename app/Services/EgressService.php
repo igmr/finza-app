@@ -63,7 +63,7 @@ class EgressService implements \App\Services\Interfaces\EgressInterface
             return false;
         }
     }
-    public function list(Request $req)
+    public function list(Request $req, int $paginate = 15)
     {
         return DB::table('egresses')
             ->join('users', 'users.id', '=', 'egresses.usr_id')
@@ -91,7 +91,7 @@ class EgressService implements \App\Services\Interfaces\EgressInterface
                 DB::raw('if(isnull(egresses.usr_id), 0,egresses.usr_id) usr_id'),
                 DB::raw('if(isnull(users.name), "Administrator", users.name) user'),
             )
-            ->paginate(2);
+            ->paginate($paginate);
     }
     public function info(string $id)
     {

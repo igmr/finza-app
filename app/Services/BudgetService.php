@@ -64,7 +64,7 @@ class BudgetService implements \App\Services\Interfaces\BudgetInterface
         }
     }
 
-    public function list(Request $req)
+    public function list(Request $req, int $paginate = 15)
     {
         return DB::table('budgets')
             ->join('users', 'users.id', '=', 'budgets.usr_id')
@@ -85,7 +85,7 @@ class BudgetService implements \App\Services\Interfaces\BudgetInterface
                 DB::raw('if(isnull(budgets.usr_id), 0, budgets.usr_id) usr_id'),
                 DB::raw('if(isnull(users.name), "Administrator", users.name) user')
             )
-            ->paginate(2);
+            ->paginate($paginate);
     }
 
     public function info(string $id)

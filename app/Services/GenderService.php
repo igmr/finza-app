@@ -63,7 +63,7 @@ class GenderService implements \App\Services\Interfaces\GenderInterface
             return false;
         }
     }
-    public function list(Request $req)
+    public function list(Request $req, int $paginate = 15)
     {
         return DB::table('genders')
             ->join('users', 'users.id', '=', 'genders.usr_id')
@@ -77,7 +77,7 @@ class GenderService implements \App\Services\Interfaces\GenderInterface
                 DB::raw('if(isnull(usr_id), 0, usr_id) usr_id'),
                 DB::raw('if(isnull(users.name), "Administrator", users.name) user')
             )
-            ->paginate(2);
+            ->paginate($paginate);
     }
 
     public function info(string $id)

@@ -64,7 +64,7 @@ class ClassificationService implements \App\Services\Interfaces\ClassificationIn
         }
     }
 
-    public function list(Request $req)
+    public function list(Request $req, int $paginate = 15)
     {
         return DB::table('classifications')
             ->join('users', 'users.id', '=', 'classifications.usr_id')
@@ -78,7 +78,7 @@ class ClassificationService implements \App\Services\Interfaces\ClassificationIn
                 DB::raw('if(isnull(usr_id), 0, usr_id) usr_id'),
                 DB::raw('if(isnull(users.name), "Administrator", users.name) user')
             )
-            ->paginate(2);
+            ->paginate($paginate);
     }
 
     public function info(string $id)

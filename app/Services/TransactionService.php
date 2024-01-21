@@ -63,7 +63,7 @@ class TransactionService implements \App\Services\Interfaces\TransactionInterfac
             return false;
         }
     }
-    public function list(Request $req)
+    public function list(Request $req, int $paginate = 15)
     {
         return DB::table('transactions')
             ->leftJoin('users', 'users.id', '=', 'transactions.usr_id')
@@ -104,7 +104,7 @@ class TransactionService implements \App\Services\Interfaces\TransactionInterfac
                 DB::raw('if(isnull(debts.name), "None", debts.name) debt'),
                 DB::raw('if(isnull(transactions.usr_id), 0,transactions.usr_id) usr_id'),
                 DB::raw('if(isnull(users.name), "Administrator", users.name) user'),
-            )->paginate(2);
+            )->paginate($paginate);
     }
 
     public function info(string $id)

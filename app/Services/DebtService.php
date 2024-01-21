@@ -63,7 +63,7 @@ class DebtService implements \App\Services\Interfaces\DebtInterface
             return false;
         }
     }
-    public function list(Request $req)
+    public function list(Request $req, int $paginate = 15)
     {
         return DB::table('debts')
             ->join('users', 'users.id', '=', 'debts.usr_id')
@@ -86,7 +86,7 @@ class DebtService implements \App\Services\Interfaces\DebtInterface
                 DB::raw('if(isnull(users.id), 0, users.id) usr_id'),
                 DB::raw('if(isnull(users.name), "Administrator", users.name) user'),
             )
-            ->paginate(2);
+            ->paginate($paginate);
     }
 
     public function info(string $id)

@@ -64,7 +64,7 @@ class CategoryService implements \App\Services\Interfaces\CategoryInterface
         }
     }
 
-    public function list(Request $req)
+    public function list(Request $req, int $paginate = 15)
     {
         try {
             return DB::table('categories')
@@ -81,7 +81,7 @@ class CategoryService implements \App\Services\Interfaces\CategoryInterface
                     'genders.name AS gender',
                     DB::raw('if(isnull(users.id), 0, users.id) usr_id'),
                     DB::raw('if(isnull(users.name), "Administrator", users.name) user')
-                )->paginate(2);
+                )->paginate($paginate);
         } catch (\Exception $e) {
             //return $e->getMessage();
             return [];

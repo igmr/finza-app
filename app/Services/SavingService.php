@@ -64,7 +64,7 @@ class SavingService implements \App\Services\Interfaces\SavingInterface
         }
     }
 
-    public function list(Request $req)
+    public function list(Request $req, int $paginate = 15)
     {
         return DB::table('savings')
             ->join('users', 'users.id', '=', 'savings.usr_id')
@@ -79,7 +79,7 @@ class SavingService implements \App\Services\Interfaces\SavingInterface
                 DB::raw('if(isnull(savings.usr_id), 0, savings.usr_id) usr_id'),
                 DB::raw('if(isnull(users.name), "Administrator", users.name) user')
             )
-            ->paginate(2);
+            ->paginate($paginate);
     }
 
     public function info(string $id)

@@ -64,7 +64,7 @@ class AccountService implements \App\Services\Interfaces\AccountInterface
         }
     }
 
-    public function list(Request $req)
+    public function list(Request $req, int $paginate = 15)
     {
         try {
             return DB::table('accounts')
@@ -82,7 +82,7 @@ class AccountService implements \App\Services\Interfaces\AccountInterface
                     DB::raw('if(isnull(accounts.usr_id), 0, accounts.usr_id) usr_id'),
                     DB::raw('if(isnull(users.name), "Administrator", users.name) user')
                 )
-                ->paginate(2);
+                ->paginate($paginate);
         } catch (\Exception $e) {
             return $e;
         }

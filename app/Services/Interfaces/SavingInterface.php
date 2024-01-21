@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 interface SavingInterface extends ServiceInterface
 {
-    public function list(Request $req);
+    public function list(Request $req, int $paginate = 15);
     public function info(string $id);
     public function select();
 }
