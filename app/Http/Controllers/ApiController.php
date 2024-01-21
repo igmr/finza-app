@@ -25,7 +25,7 @@ class ApiController extends Controller
         ], Response::HTTP_OK);
     }
 
-    public function responseDeleted( $status = true)
+    public function responseDeleted($status = true)
     {
         return response()->json([
             'status'  => $status,
@@ -34,7 +34,7 @@ class ApiController extends Controller
         ], $status ? Response::HTTP_OK : Response::HTTP_INTERNAL_SERVER_ERROR);
     }
 
-    public function responseRestored( $status = true)
+    public function responseRestored($status = true)
     {
         return response()->json([
             'status'  => $status,
@@ -79,5 +79,14 @@ class ApiController extends Controller
                 'data'    => [],
             ], Response::HTTP_BAD_REQUEST));
         }
+    }
+
+    public function responseException($message)
+    {
+        throw new HttpResponseException(response()->json([
+            'status' => 'exception',
+            'message' => 'Data exception',
+            'errors'  => ['general' => [$message]],
+        ], Response::HTTP_INTERNAL_SERVER_ERROR));
     }
 }

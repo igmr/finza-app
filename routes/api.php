@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\AccountController;
 use App\Http\Controllers\Api\BudgetController;
 use App\Http\Controllers\Api\IngressController;
 use App\Http\Controllers\Api\EgressController;
+use App\Http\Controllers\Api\TransactionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -129,4 +130,13 @@ Route::prefix('egress')->group(function () {
     Route::put('/{id}',            [EgressController::class, 'update']);
     Route::delete('/{id}',         [EgressController::class, 'destroy']);
     Route::delete('/{id}/restore', [EgressController::class, 'restore']);
+});
+
+Route::prefix('transaction')->group(function () {
+    Route::get('/',                [TransactionController::class, 'index']);
+    Route::get('/{id}',            [TransactionController::class, 'show']);
+    Route::post('/',               [TransactionController::class, 'store']);
+    Route::put('/{id}',            [TransactionController::class, 'update']);
+    Route::delete('/{id}',         [TransactionController::class, 'destroy']);
+    Route::delete('/{id}/restore', [TransactionController::class, 'restore']);
 });

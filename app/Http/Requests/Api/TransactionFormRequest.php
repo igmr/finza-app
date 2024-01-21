@@ -26,9 +26,27 @@ class TransactionFormRequest extends FormRequest
         switch ($this->method()) {
             case 'POST':
                 return [
+                    'account_from'     => [
+                        'required', 'integer', 'gte:0',
+                        Rule::exists('accounts', 'id')->where(function (Builder $query) {
+                            return $query->where('deleted_at', null);
+                        }),
+                    ],
+                    'account_to'     => [
+                        'required', 'integer', 'gte:0', 'different:account_from',
+                        Rule::exists('accounts', 'id')->where(function (Builder $query) {
+                            return $query->where('deleted_at', null);
+                        }),
+                    ],
                     'classification'    => [
                         'nullable', 'integer', 'gte:0',
                         Rule::exists('classifications', 'id')->where(function (Builder $query) {
+                            return $query->where('deleted_at', null);
+                        }),
+                    ],
+                    'category'    => [
+                        'nullable', 'integer', 'gte:0',
+                        Rule::exists('categories', 'id')->where(function (Builder $query) {
                             return $query->where('deleted_at', null);
                         }),
                     ],
@@ -41,12 +59,6 @@ class TransactionFormRequest extends FormRequest
                     'debt'        => [
                         'nullable', 'integer', 'gte:0',
                         Rule::exists('debts', 'id')->where(function (Builder $query) {
-                            return $query->where('deleted_at', null);
-                        }),
-                    ],
-                    'account'     => [
-                        'required', 'integer', 'gte:0',
-                        Rule::exists('accounts', 'id')->where(function (Builder $query) {
                             return $query->where('deleted_at', null);
                         }),
                     ],
@@ -58,9 +70,27 @@ class TransactionFormRequest extends FormRequest
                 ];
             case 'PUT':
                 return [
+                    'account_from'     => [
+                        'nullable', 'integer', 'gte:0',
+                        Rule::exists('accounts', 'id')->where(function (Builder $query) {
+                            return $query->where('deleted_at', null);
+                        }),
+                    ],
+                    'account_to'     => [
+                        'nullable', 'integer', 'gte:0', 'different:account_from',
+                        Rule::exists('accounts', 'id')->where(function (Builder $query) {
+                            return $query->where('deleted_at', null);
+                        }),
+                    ],
                     'classification'    => [
                         'nullable', 'integer', 'gte:0',
                         Rule::exists('classifications', 'id')->where(function (Builder $query) {
+                            return $query->where('deleted_at', null);
+                        }),
+                    ],
+                    'category'    => [
+                        'nullable', 'integer', 'gte:0',
+                        Rule::exists('categories', 'id')->where(function (Builder $query) {
                             return $query->where('deleted_at', null);
                         }),
                     ],
@@ -73,12 +103,6 @@ class TransactionFormRequest extends FormRequest
                     'debt'        => [
                         'nullable', 'integer', 'gte:0',
                         Rule::exists('debts', 'id')->where(function (Builder $query) {
-                            return $query->where('deleted_at', null);
-                        }),
-                    ],
-                    'account'     => [
-                        'nullable', 'integer', 'gte:0',
-                        Rule::exists('accounts', 'id')->where(function (Builder $query) {
                             return $query->where('deleted_at', null);
                         }),
                     ],
