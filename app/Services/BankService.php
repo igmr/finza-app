@@ -64,6 +64,24 @@ class BankService implements \App\Services\Interfaces\BankInterface
         }
     }
 
+    public function datatable()
+    {
+        $data = DB::table('banks')
+            ->join('users', 'users.id', '=', 'banks.usr_id')
+            ->select(
+                'banks.id AS bank_id',
+                'banks.abbreviature',
+                'banks.name AS bank',
+                'banks.observation',
+                'banks.status',
+                'banks.created_at',
+                DB::raw('if(isnull(usr_id), 0, usr_id) usr_id'),
+                DB::raw('if(isnull(users.name), "Administrator", users.name) user')
+            )
+            ->get();
+        return datatables($data)->toJson();
+    }
+
     public function list(Request $req, int $paginate = 15)
     {
         return DB::table('banks')
