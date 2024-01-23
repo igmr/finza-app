@@ -54,6 +54,7 @@
     <!-- JavaScript -->
     <script src="{{ url('assets/js/bundle.js?ver=2.7.0') }}"></script>
     <script src="{{ url('assets/js/scripts.js?ver=2.7.0') }}"></script>
+    <script src="{{ url('assets/js/libs/datatable-btns.js?ver=2.7.0') }}"></script>
     <!-- Custom JS -->
     {{ $customJS }}
 </body>
