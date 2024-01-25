@@ -12,16 +12,19 @@ class GenderService implements \App\Services\Interfaces\GenderInterface
     {
         $this->model = $model;
     }
+
     public function index()
     {
         return $this->model::all();
     }
+
     public function store(array $payload)
     {
         $data = new $this->model($payload);
         $data->save();
         return $data;
     }
+
     public function show(string|int $id)
     {
         try {
@@ -30,6 +33,7 @@ class GenderService implements \App\Services\Interfaces\GenderInterface
             return new \stdClass();
         }
     }
+
     public function update(string|int $id, array $payload)
     {
         try {
@@ -41,6 +45,7 @@ class GenderService implements \App\Services\Interfaces\GenderInterface
             return new \stdClass();
         }
     }
+
     public function destroy(string|int $id)
     {
         try {
@@ -52,6 +57,7 @@ class GenderService implements \App\Services\Interfaces\GenderInterface
             return false;
         }
     }
+
     public function restore(string|int $id)
     {
         try {
@@ -63,6 +69,29 @@ class GenderService implements \App\Services\Interfaces\GenderInterface
             return false;
         }
     }
+
+    public function datatable()
+    {
+        $data = DB::table('genders')
+            ->join('users', 'users.id', '=', 'genders.usr_id')
+            ->select(
+                'genders.id AS gender_id',
+                'genders.code',
+                'genders.name AS gender',
+                'genders.observation',
+                'genders.status',
+                'genders.created_at',
+                DB::raw('if(isnull(usr_id), 0, usr_id) usr_id'),
+                DB::raw('if(isnull(users.name), "Administrator", users.name) user')
+            )
+            ->get();
+        return datatables($data)->toJson();
+    }
+
+    public function detail(int $id)
+    {
+    }
+
     public function list(Request $req, int $paginate = 15)
     {
         return DB::table('genders')

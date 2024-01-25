@@ -12,16 +12,19 @@ class AccountService implements \App\Services\Interfaces\AccountInterface
     {
         $this->model = $model;
     }
+
     public function index()
     {
         return $this->model::all();
     }
+
     public function store(array $payload)
     {
         $data = new $this->model($payload);
         $data->save();
         return $data;
     }
+
     public function show(string|int $id)
     {
         try {
@@ -30,6 +33,7 @@ class AccountService implements \App\Services\Interfaces\AccountInterface
             return new \stdClass();
         }
     }
+
     public function update(string|int $id, array $payload)
     {
         try {
@@ -41,6 +45,7 @@ class AccountService implements \App\Services\Interfaces\AccountInterface
             return new \stdClass();
         }
     }
+
     public function destroy(string|int $id)
     {
         try {
@@ -52,6 +57,7 @@ class AccountService implements \App\Services\Interfaces\AccountInterface
             return false;
         }
     }
+
     public function restore(string|int $id)
     {
         try {
@@ -62,6 +68,30 @@ class AccountService implements \App\Services\Interfaces\AccountInterface
         } catch (\Exception $ex) {
             return false;
         }
+    }
+
+    public function datatable()
+    {
+        $data = DB::table('accounts')
+            ->join('users', 'users.id', '=', 'accounts.usr_id')
+            ->join('banks', 'banks.id', '=', 'accounts.ban_id')
+            ->select(
+                'banks.id AS bank_id',
+                'banks.abbreviature',
+                'banks.name AS bank',
+                'accounts.id AS account_id',
+                'accounts.name AS account',
+                'accounts.observation',
+                'accounts.status',
+                'accounts.created_at',
+                DB::raw('if(isnull(accounts.usr_id), 0, accounts.usr_id) usr_id'),
+                DB::raw('if(isnull(users.name), "Administrator", users.name) user')
+            )->get();
+        return datatables($data)->toJson();
+    }
+
+    public function detail(int $id)
+    {
     }
 
     public function list(Request $req, int $paginate = 15)
@@ -81,8 +111,7 @@ class AccountService implements \App\Services\Interfaces\AccountInterface
                     'accounts.created_at',
                     DB::raw('if(isnull(accounts.usr_id), 0, accounts.usr_id) usr_id'),
                     DB::raw('if(isnull(users.name), "Administrator", users.name) user')
-                )
-                ->paginate($paginate);
+                )->paginate($paginate);
         } catch (\Exception $e) {
             return $e;
         }

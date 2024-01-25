@@ -198,6 +198,16 @@ class DebtController extends Controller
         ], Response::HTTP_BAD_REQUEST));
     }
 
+    public function datatable()
+    {
+        return $this->service->datatable();
+    }
+
+    public function detail(int $id)
+    {
+        return $this->service->detail($id);
+    }
+
     public function list(Request $req)
     {
         return $this->service->list($req);

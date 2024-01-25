@@ -1,118 +1,57 @@
-const btnReload = document.querySelector("#reload");
-const detail = document.querySelector("#detail-list");
-const pagination = document.querySelector(".reload-pagination");
 
-btnReload.addEventListener("click", async () => {
-    await buildList();
-    return;
+const table = new NioApp.DataTable(".list", {
+    scrollX: true,
+    scrollY: 200,
+    progressing: true,
+    autoWidth: false,
+    pageLength: 5,
+    lengthMenu: [
+        [5, 10, 20, -1],
+        [5, 10, 20, "All"],
+    ],
+    paging: true,
+    responsive: {
+        details: true,
+    },
+    buttons: ["copy", "excel", "csv", "pdf"],
+    ajax: `${baseUrlCategory}/datatable`,
+    columns: [
+        {
+            title: "#",
+            data: "category_id",
+        },
+        {
+            title:'Code',
+            data:'code',
+        },
+        {
+            title: "Category",
+            data: null,
+            render: (data) => {
+                return `<a href="${baseUrlCategory}/${data.category_id}">${data.category}</a>`;
+            },
+        },
+        {
+            title: "Gender",
+            data: "gender",
+        },
+        {
+            title: "Created at",
+            data: "created_at",
+            render: (data) => {
+                return dateFormatter({ locate: "en-US", value: data });
+            },
+        },
+        {
+            title: "Status",
+            data: null,
+            render: (data) => {
+                let statusClass = "text-danger";
+                if (data.status == "Activo") {
+                    statusClass = "text-success";
+                }
+                return `<span class="tb-status ${statusClass}">${data.status}</span>`;
+            },
+        },
+    ],
 });
-
-const btnInfo = async (id) => {
-    window.location.href = `${baseUrlCategory}/${id}`;
-    return;
-};
-
-const buildList = async () => {
-    let content = buildHeader();
-    const response = await getAllCategories();
-    detail.innerHTML = "";
-    response.data.forEach((item) => {
-        content += buildItem(item);
-    });
-    detail.innerHTML = content;
-    buildPaginate(response);
-};
-
-const buildHeader = () => {
-    return `
-    <div class="nk-tb-item nk-tb-head">
-        <div class="nk-tb-col">
-            <span class="sub-text">Id</span>
-        </div>
-        <div class="nk-tb-col tb-col-md">
-            <span class="sub-text">Code</span>
-        </div>
-        <div class="nk-tb-col">
-            <span class="sub-text">Category</span>
-        </div>
-        <div class="nk-tb-col tb-col-md">
-            <span class="sub-text">Gender</span>
-        </div>
-        <div class="nk-tb-col tb-col-md">
-            <span class="sub-text">Created at</span>
-        </div>
-        <div class="nk-tb-col tb-col-md">
-            <span class="sub-text">User</span>
-        </div>
-        <div class="nk-tb-col">
-            <span class="sub-text">Status</span>
-        </div>
-    </div><!-- .nk-tb-item -->`;
-};
-
-
-const buildItem = (data) => {
-    let statusClass = "text-danger";
-    if (data.status == "Activo") {
-        statusClass = "text-success";
-    }
-    return `
-            <div class="nk-tb-item" onclick="btnInfo(${data.category_id})">
-                <div class="nk-tb-col">
-                    <span>${data.category_id}</span>
-                </div>
-                <div class="nk-tb-col tb-col-md">
-                    <span>${data.code ?? ""}</span>
-                </div>
-                <div class="nk-tb-col">
-                    <span>${data.category ?? ""}</span><br>
-                    <small class="d-md-none fw-lighter">${data.gender}</small>
-                </div>
-                <div class="nk-tb-col">
-                    <span>${data.gender}</span>
-                </div>
-                <div class="nk-tb-col tb-col-md">
-                    <span>${data.created_at}</span>
-                </div>
-                <div class="nk-tb-col tb-col-md">
-                    <span>${data.user}</span>
-                </div>
-                <div class="nk-tb-col">
-                    <span class="tb-status ${statusClass}">${data.status}</span>
-                </div>
-            </div><!-- .nk-tb-item -->`;
-};
-
-
-const buildPaginate = (data) => {
-    let content = "";
-    const { links } = data;
-    links.forEach((pag) => {
-        content += `
-        <li class="page-item">
-            <button class="page-link active" aria-current="page"
-                onClick="reloadList('${pag.url ?? ""}')">
-                ${pag.label}
-            </button>
-        </li>`;
-    });
-    pagination.innerHTML = content;
-};
-
-const reloadList = async (url) => {
-    if (!url) {
-        return;
-    }
-    let content = buildHeader();
-    const response = await getAllCategories(url);
-    detail.innerHTML = "";
-    response.data.forEach((item) => {
-        content += buildItem(item);
-    });
-    detail.innerHTML = content;
-    buildPaginate(response);
-};
-
-(async () => {
-    await buildList();
-})();

@@ -315,6 +315,16 @@ class transactionController extends Controller
         }
     }
 
+    public function datatable()
+    {
+        return $this->service->datatable();
+    }
+
+    public function detail(int $id)
+    {
+        return $this->service->detail($id);
+    }
+
     public function list(Request $req)
     {
         return $this->service->list($req);

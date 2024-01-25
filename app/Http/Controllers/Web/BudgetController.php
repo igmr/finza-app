@@ -27,8 +27,8 @@ class BudgetController extends Controller
         $data['subtitle'] = 'List budgets';
         $data['cssFILES'] = [];
         $data['jsFILES']  = [
-            'assets/app/services.js',
             'assets/app/tools.js',
+            'assets/app/services.js',
             'assets/app/budget/index.js',
         ];
         return view('app.budgets.index', $data);
@@ -185,6 +185,16 @@ class BudgetController extends Controller
             'message' => 'Data invalid',
             'errors'  => ['general' => ['Error in server.']],
         ], Response::HTTP_BAD_REQUEST));
+    }
+
+    public function datatable()
+    {
+        return $this->service->datatable();
+    }
+
+    public function detail(int $id)
+    {
+        return $this->service->detail($id);
     }
 
     public function list(Request $req)

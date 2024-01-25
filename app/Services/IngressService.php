@@ -12,16 +12,19 @@ class IngressService implements \App\Services\Interfaces\IngressInterface
     {
         $this->model = $model;
     }
+
     public function index()
     {
         return $this->model::all();
     }
+
     public function store(array $payload)
     {
         $data = new $this->model($payload);
         $data->save();
         return $data;
     }
+
     public function show(string|int $id)
     {
         try {
@@ -30,6 +33,7 @@ class IngressService implements \App\Services\Interfaces\IngressInterface
             return new \stdClass();
         }
     }
+
     public function update(string|int $id, array $payload)
     {
         try {
@@ -41,6 +45,7 @@ class IngressService implements \App\Services\Interfaces\IngressInterface
             return new \stdClass();
         }
     }
+
     public function destroy(string|int $id)
     {
         try {
@@ -52,6 +57,7 @@ class IngressService implements \App\Services\Interfaces\IngressInterface
             return false;
         }
     }
+
     public function restore(string|int $id)
     {
         try {
@@ -63,6 +69,42 @@ class IngressService implements \App\Services\Interfaces\IngressInterface
             return false;
         }
     }
+
+    public function datatable()
+    {
+        $data = DB::table('ingresses')
+            ->join('users', 'users.id', '=', 'ingresses.usr_id')
+            ->leftJoin('accounts', 'accounts.id', '=', 'ingresses.acc_id')
+            ->leftJoin('classifications', 'classifications.id', '=', 'ingresses.cls_id')
+            ->leftJoin('savings', 'savings.id', '=', 'ingresses.sav_id')
+            ->leftJoin('debts', 'debts.id', '=', 'ingresses.deb_id')
+            ->select(
+                'ingresses.id AS ing_id',
+                'ingresses.concept',
+                'ingresses.description',
+                'ingresses.reference',
+                'ingresses.amount',
+                'ingresses.observation',
+                'ingresses.status',
+                'ingresses.created_at',
+                DB::raw('if(isnull(ingresses.acc_id), 0, ingresses.acc_id) acc_id'),
+                DB::raw('if(isnull(accounts.name), "None", accounts.name) account'),
+                DB::raw('if(isnull(ingresses.cls_id), 0, ingresses.cls_id) cls_id'),
+                DB::raw('if(isnull(classifications.name), "None", classifications.name) classification'),
+                DB::raw('if(isnull(ingresses.sav_id), 0, ingresses.sav_id) sav_id'),
+                DB::raw('if(isnull(savings.name), "None", savings.name) saving'),
+                DB::raw('if(isnull(ingresses.deb_id), 0, ingresses.deb_id) deb_id'),
+                DB::raw('if(isnull(debts.name), "None", debts.name) debt'),
+                DB::raw('if(isnull(ingresses.usr_id), 0,ingresses.usr_id) usr_id'),
+                DB::raw('if(isnull(users.name), "Administrator", users.name) user'),
+            )->get();
+        return datatables($data)->toJson();
+    }
+
+    public function detail(int $id)
+    {
+    }
+
     public function list(Request $req, int $paginate = 15)
     {
         return DB::table('ingresses')
@@ -90,8 +132,7 @@ class IngressService implements \App\Services\Interfaces\IngressInterface
                 DB::raw('if(isnull(debts.name), "None", debts.name) debt'),
                 DB::raw('if(isnull(ingresses.usr_id), 0,ingresses.usr_id) usr_id'),
                 DB::raw('if(isnull(users.name), "Administrator", users.name) user'),
-            )
-            ->paginate($paginate);
+            )->paginate($paginate);
     }
 
     public function info(string $id)
@@ -122,8 +163,7 @@ class IngressService implements \App\Services\Interfaces\IngressInterface
                 DB::raw('if(isnull(debts.name), "None", debts.name) debt'),
                 DB::raw('if(isnull(ingresses.usr_id), 0,ingresses.usr_id) usr_id'),
                 DB::raw('if(isnull(users.name), "Administrator", users.name) user'),
-            )
-            ->first();
+            )->first();
     }
 
     public function select()

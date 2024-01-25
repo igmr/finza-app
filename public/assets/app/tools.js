@@ -17,6 +17,14 @@ const getId = () => {
     return arrayUrl[arrayUrl.length - 1];
 };
 
+const dateFormatter = ({ locate, value }) => {
+    const date = new Date(value);
+    const formatter = new Intl.DateTimeFormat(locate, {
+        dateStyle: "long",
+    });
+    return formatter.format(date);
+};
+
 const currencyFormatter = ({ currency, value }) => {
     const formatter = new Intl.NumberFormat("es-MX", {
         style: "currency",

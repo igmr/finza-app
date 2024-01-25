@@ -17,6 +17,7 @@ class EgressController extends Controller
     {
         $this->service = $service;
     }
+
     /**
      * Display a listing of the resource.
      */
@@ -196,6 +197,16 @@ class EgressController extends Controller
             'message' => 'Data invalid',
             'errors'  => ['general' => ['Error in server.']],
         ], Response::HTTP_BAD_REQUEST));
+    }
+
+    public function datatable()
+    {
+        return $this->service->datatable();
+    }
+
+    public function detail(int $id)
+    {
+        return $this->service->detail($id);
     }
 
     public function list(Request $req)

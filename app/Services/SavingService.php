@@ -12,16 +12,19 @@ class SavingService implements \App\Services\Interfaces\SavingInterface
     {
         $this->model = $model;
     }
+
     public function index()
     {
         return $this->model::all();
     }
+
     public function store(array $payload)
     {
         $data = new $this->model($payload);
         $data->save();
         return $data;
     }
+
     public function show(string|int $id)
     {
         try {
@@ -30,6 +33,7 @@ class SavingService implements \App\Services\Interfaces\SavingInterface
             return new \stdClass();
         }
     }
+
     public function update(string|int $id, array $payload)
     {
         try {
@@ -41,6 +45,7 @@ class SavingService implements \App\Services\Interfaces\SavingInterface
             return new \stdClass();
         }
     }
+
     public function destroy(string|int $id)
     {
         try {
@@ -52,6 +57,7 @@ class SavingService implements \App\Services\Interfaces\SavingInterface
             return false;
         }
     }
+
     public function restore(string|int $id)
     {
         try {
@@ -62,6 +68,28 @@ class SavingService implements \App\Services\Interfaces\SavingInterface
         } catch (\Exception $ex) {
             return false;
         }
+    }
+
+    public function datatable()
+    {
+        $data = DB::table('savings')
+            ->join('users', 'users.id', '=', 'savings.usr_id')
+            ->select(
+                'savings.id AS saving_id',
+                'savings.name AS saving',
+                'savings.amount',
+                'savings.date_finish',
+                'savings.observation',
+                'savings.status',
+                'savings.created_at',
+                DB::raw('if(isnull(savings.usr_id), 0, savings.usr_id) usr_id'),
+                DB::raw('if(isnull(users.name), "Administrator", users.name) user')
+            )->get();
+        return datatables($data)->toJson();
+    }
+
+    public function detail(int $id)
+    {
     }
 
     public function list(Request $req, int $paginate = 15)
@@ -78,8 +106,7 @@ class SavingService implements \App\Services\Interfaces\SavingInterface
                 'savings.created_at',
                 DB::raw('if(isnull(savings.usr_id), 0, savings.usr_id) usr_id'),
                 DB::raw('if(isnull(users.name), "Administrator", users.name) user')
-            )
-            ->paginate($paginate);
+            )->paginate($paginate);
     }
 
     public function info(string $id)

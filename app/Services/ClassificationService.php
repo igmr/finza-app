@@ -12,16 +12,19 @@ class ClassificationService implements \App\Services\Interfaces\ClassificationIn
     {
         $this->model = $model;
     }
+
     public function index()
     {
         return $this->model::all();
     }
+
     public function store(array $payload)
     {
         $data = new $this->model($payload);
         $data->save();
         return $data;
     }
+
     public function show(string|int $id)
     {
         try {
@@ -30,6 +33,7 @@ class ClassificationService implements \App\Services\Interfaces\ClassificationIn
             return new \stdClass();
         }
     }
+
     public function update(string|int $id, array $payload)
     {
         try {
@@ -41,6 +45,7 @@ class ClassificationService implements \App\Services\Interfaces\ClassificationIn
             return new \stdClass();
         }
     }
+
     public function destroy(string|int $id)
     {
         try {
@@ -52,6 +57,7 @@ class ClassificationService implements \App\Services\Interfaces\ClassificationIn
             return false;
         }
     }
+
     public function restore(string|int $id)
     {
         try {
@@ -62,6 +68,27 @@ class ClassificationService implements \App\Services\Interfaces\ClassificationIn
         } catch (\Exception $ex) {
             return false;
         }
+    }
+
+    public function datatable()
+    {
+        $data = DB::table('classifications')
+            ->join('users', 'users.id', '=', 'classifications.usr_id')
+            ->select(
+                'classifications.id AS classification_id',
+                'classifications.code',
+                'classifications.name AS classification',
+                'classifications.observation',
+                'classifications.status',
+                'classifications.created_at',
+                DB::raw('if(isnull(usr_id), 0, usr_id) usr_id'),
+                DB::raw('if(isnull(users.name), "Administrator", users.name) user')
+            )->get();
+        return datatables($data)->toJson();
+    }
+
+    public function detail(int $id)
+    {
     }
 
     public function list(Request $req, int $paginate = 15)
@@ -77,8 +104,7 @@ class ClassificationService implements \App\Services\Interfaces\ClassificationIn
                 'classifications.created_at',
                 DB::raw('if(isnull(usr_id), 0, usr_id) usr_id'),
                 DB::raw('if(isnull(users.name), "Administrator", users.name) user')
-            )
-            ->paginate($paginate);
+            )->paginate($paginate);
     }
 
     public function info(string $id)
@@ -95,8 +121,7 @@ class ClassificationService implements \App\Services\Interfaces\ClassificationIn
                 'classifications.created_at',
                 DB::raw('if(isnull(usr_id), 0, usr_id) usr_id'),
                 DB::raw('if(isnull(users.name), "Administrator", users.name) user')
-            )
-            ->first();
+            )->first();
     }
 
     public function select()

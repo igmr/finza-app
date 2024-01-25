@@ -12,16 +12,19 @@ class BankService implements \App\Services\Interfaces\BankInterface
     {
         $this->model = $model;
     }
+
     public function index()
     {
         return $this->model::all();
     }
+
     public function store(array $payload)
     {
         $data = new $this->model($payload);
         $data->save();
         return $data;
     }
+
     public function show(string|int $id)
     {
         try {
@@ -30,6 +33,7 @@ class BankService implements \App\Services\Interfaces\BankInterface
             return new \stdClass();
         }
     }
+
     public function update(string|int $id, array $payload)
     {
         try {
@@ -41,6 +45,7 @@ class BankService implements \App\Services\Interfaces\BankInterface
             return new \stdClass();
         }
     }
+
     public function destroy(string|int $id)
     {
         try {
@@ -52,6 +57,7 @@ class BankService implements \App\Services\Interfaces\BankInterface
             return false;
         }
     }
+
     public function restore(string|int $id)
     {
         try {
@@ -80,6 +86,36 @@ class BankService implements \App\Services\Interfaces\BankInterface
             )
             ->get();
         return datatables($data)->toJson();
+    }
+
+    public function detail(int $id)
+    {
+        $sql = "SELECT info.*
+                FROM (SELECT accounts.name AS account, classifications.name AS description,
+                    savings.name AS saving, debts.name AS debt,
+                    ingresses.amount, ingresses.created_at, 'ingress' AS type
+                FROM ingresses
+                LEFT JOIN classifications ON classifications.id = ingresses.cls_id
+                LEFT JOIN savings ON savings.id = ingresses.sav_id
+                LEFT JOIN debts ON debts.id = ingresses.deb_id
+                LEFT JOIN accounts ON accounts.id = ingresses.acc_id
+                WHERE 1=1
+                AND accounts.ban_id = ?
+                UNION
+                SELECT accounts.name AS account, CONCAT(genders.name, ' - ', categories.name) AS description,
+                    savings.name AS saving, debts.name AS debt,
+                    egresses.amount, egresses.created_at, 'egress' AS type
+                FROM egresses
+                LEFT JOIN categories ON categories.id = egresses.cat_id
+                LEFT JOIN genders ON genders.id = categories.gen_id
+                LEFT JOIN savings ON savings.id = egresses.sav_id
+                LEFT JOIN debts ON debts.id = egresses.deb_id
+                LEFT JOIN accounts ON accounts.id = egresses.acc_id
+                WHERE 1=1
+                AND accounts.ban_id = ?) AS info
+                ORDER BY info.created_at DESC;";
+        $query = DB::select($sql, [$id, $id]);
+        return datatables($query)->toJson(); 
     }
 
     public function list(Request $req, int $paginate = 15)
@@ -121,4 +157,5 @@ class BankService implements \App\Services\Interfaces\BankInterface
     {
         return $this->model::all();
     }
+
 }

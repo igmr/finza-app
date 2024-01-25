@@ -12,16 +12,19 @@ class CategoryService implements \App\Services\Interfaces\CategoryInterface
     {
         $this->model = $model;
     }
+
     public function index()
     {
         return $this->model::all();
     }
+
     public function store(array $payload)
     {
         $data = new $this->model($payload);
         $data->save();
         return $data;
     }
+
     public function show(string|int $id)
     {
         try {
@@ -30,6 +33,7 @@ class CategoryService implements \App\Services\Interfaces\CategoryInterface
             return new \stdClass();
         }
     }
+
     public function update(string|int $id, array $payload)
     {
         try {
@@ -41,6 +45,7 @@ class CategoryService implements \App\Services\Interfaces\CategoryInterface
             return new \stdClass();
         }
     }
+
     public function destroy(string|int $id)
     {
         try {
@@ -52,6 +57,7 @@ class CategoryService implements \App\Services\Interfaces\CategoryInterface
             return false;
         }
     }
+
     public function restore(string|int $id)
     {
         try {
@@ -62,6 +68,31 @@ class CategoryService implements \App\Services\Interfaces\CategoryInterface
         } catch (\Exception $ex) {
             return false;
         }
+    }
+
+    public function datatable()
+    {
+        $data = DB::table('categories')
+            ->join('users', 'users.id', '=', 'categories.usr_id')
+            ->join('genders', 'genders.id', '=', 'categories.gen_id')
+            ->select(
+                'categories.id AS category_id',
+                'categories.code',
+                'categories.name AS category',
+                'categories.observation',
+                'categories.status',
+                'categories.created_at',
+                'genders.id AS gender_id',
+                'genders.name AS gender',
+                DB::raw('if(isnull(users.id), 0, users.id) usr_id'),
+                DB::raw('if(isnull(users.name), "Administrator", users.name) user')
+            )
+            ->get();
+        return datatables($data)->toJson();
+    }
+
+    public function detail(int $id)
+    {
     }
 
     public function list(Request $req, int $paginate = 15)
