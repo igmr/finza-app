@@ -93,6 +93,23 @@ class CategoryService implements \App\Services\Interfaces\CategoryInterface
 
     public function detail(int $id)
     {
+        $data = DB::table('egresses')
+            ->leftJoin('categories', 'categories.id', '=', 'egresses.cat_id')
+            ->leftJoin('savings', 'savings.id', '=', 'egresses.sav_id')
+            ->leftJoin('debts', 'debts.id', '=', 'egresses.deb_id')
+            ->leftJoin('accounts', 'accounts.id', '=', 'egresses.acc_id')
+            ->leftJoin('genders', 'genders.id', '=', 'categories.gen_id')
+            ->leftJoin('banks', 'banks.id', '=', 'accounts.ban_id')
+            ->where('categories.id', "=", $id)
+            ->select([
+                'genders.name AS gender', 'savings.name AS saving', 'debts.name AS debt',
+                'accounts.name AS account', 'banks.name AS bank',
+                'egresses.amount', 'egresses.created_at',
+                DB::raw('"egress" AS type'),
+            ])
+            ->orderBy('egresses.created_at', 'desc')
+            ->get();
+        return datatables($data)->toJson();
     }
 
     public function list(Request $req, int $paginate = 15)

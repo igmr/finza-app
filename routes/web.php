@@ -111,7 +111,7 @@ Route::middleware(['auth'])->prefix('app')->group(function () {
         Route::get('/info/{id}',       [CategoryController::class, 'info'])->name('app.category.info');
         Route::get('/select',          [CategoryController::class, 'select'])->name('app.category.select');
         Route::get('/datatable',       [CategoryController::class, 'datatable'])->name('app.category.datatable');
-        Route::get('/detail',          [CategoryController::class, 'detail'])->name('app.category.detail');
+        Route::get('/detail/{id}',     [CategoryController::class, 'detail'])->name('app.category.detail');
         // Resources
         Route::get('/',                [CategoryController::class, 'index'])->name('app.category.index');
         Route::get('/create',          [CategoryController::class, 'create'])->name('app.category.create');
