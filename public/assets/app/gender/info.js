@@ -1,3 +1,71 @@
+const table = new NioApp.DataTable(".info", {
+    scrollX: true,
+    scrollY: 200,
+    progressing: true,
+    autoWidth: false,
+    pageLength: 5,
+    lengthMenu: [
+        [5, 10, 20, -1],
+        [5, 10, 20, "All"],
+    ],
+    paging: true,
+    responsive: {
+        details: true,
+    },
+    buttons: ["copy", "excel", "csv", "pdf"],
+    ajax: `${baseUrlGender}/detail/${getId()}`,
+    columns: [
+        {
+            title: "Category",
+            data: "category",
+        },
+        {
+            title: "Account/Bank",
+            data: null,
+            render: (data) => {
+                if (data.account == data.bank) {
+                    return data.account;
+                }
+                return `${data.account}/${data.bank}`;
+            },
+        },
+        {
+            title: "Saving",
+            data: "saving",
+        },
+        {
+            title: "Debt",
+            data: "debt",
+        },
+        {
+            title: "Amount",
+            class: "text-right",
+            data: null,
+            render: (data) => {
+                let amount = data.amount;
+                let color = "success";
+                if (data.type == "egress") {
+                    amount = parseFloat(data.amount) * -1;
+                    color = "danger";
+                }
+                amount = currencyFormatter({
+                    currency: "MXN",
+                    value: amount,
+                });
+                return `<span class="text-${color}">${amount}</span>`;
+            },
+        },
+        {
+            title: "Created at",
+            class: "text-right",
+            data: "created_at",
+            render: (data) => {
+                return dateFormatter({ locate: "en-US", value: data });
+            },
+        },
+    ],
+});
+
 const id = document.querySelector("#id");
 const code = document.querySelector("#code");
 const name = document.querySelector("#name");

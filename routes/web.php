@@ -57,7 +57,7 @@ Route::middleware(['auth'])->prefix('app')->group(function () {
         Route::get('/info/{id}',       [GenderController::class, 'info'])->name('app.gender.info');
         Route::get('/select',          [GenderController::class, 'select'])->name('app.gender.select');
         Route::get('/datatable',       [GenderController::class, 'datatable'])->name('app.gender.datatable');
-        Route::get('/detail',          [GenderController::class, 'detail'])->name('app.gender.detail');
+        Route::get('/detail/{id}',     [GenderController::class, 'detail'])->name('app.gender.detail');
         // Resources
         Route::get('/',                [GenderController::class, 'index'])->name('app.gender.index');
         Route::get('/create',          [GenderController::class, 'create'])->name('app.gender.create');
