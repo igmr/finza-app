@@ -39,7 +39,7 @@ Route::middleware(['auth'])->prefix('app')->group(function () {
         Route::get('/info/{id}',       [BankController::class, 'info'])->name('app.bank.info');
         Route::get('/select',          [BankController::class, 'select'])->name('app.bank.select');
         Route::get('/datatable',       [BankController::class, 'datatable'])->name('app.bank.datatable');
-        Route::get('/detail',          [BankController::class, 'detail'])->name('app.bank.detail');
+        Route::get('/detail/{id}',     [BankController::class, 'detail'])->name('app.bank.detail');
         // Resources
         Route::get('/',                [BankController::class, 'index'])->name('app.bank.index');
         Route::get('/create',          [BankController::class, 'create'])->name('app.bank.create');

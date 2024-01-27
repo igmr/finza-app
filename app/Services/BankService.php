@@ -90,7 +90,7 @@ class BankService implements \App\Services\Interfaces\BankInterface
 
     public function detail(int $id)
     {
-        $sql = "SELECT info.*
+        $sql = "SELECT account, description, saving, debt, amount, created_at, type
                 FROM (SELECT accounts.name AS account, classifications.name AS description,
                     savings.name AS saving, debts.name AS debt,
                     ingresses.amount, ingresses.created_at, 'ingress' AS type
@@ -112,10 +112,10 @@ class BankService implements \App\Services\Interfaces\BankInterface
                 LEFT JOIN debts ON debts.id = egresses.deb_id
                 LEFT JOIN accounts ON accounts.id = egresses.acc_id
                 WHERE 1=1
-                AND accounts.ban_id = ?) AS info
-                ORDER BY info.created_at DESC;";
+                AND accounts.ban_id = ?) AS detail
+                ORDER BY created_at DESC";
         $query = DB::select($sql, [$id, $id]);
-        return datatables($query)->toJson(); 
+        return datatables($query)->toJson();
     }
 
     public function list(Request $req, int $paginate = 15)
@@ -157,5 +157,4 @@ class BankService implements \App\Services\Interfaces\BankInterface
     {
         return $this->model::all();
     }
-
 }
