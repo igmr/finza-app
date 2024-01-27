@@ -67,9 +67,7 @@ const table = new NioApp.DataTable(".info", {
 });
 
 const id = document.querySelector("#id");
-const code = document.querySelector("#code");
 const name = document.querySelector("#name");
-const observation = document.querySelector("#observation");
 const status = document.querySelector("#status");
 const genderId = getId();
 const btnDelete = document.querySelector("#btnDelete");
@@ -104,14 +102,6 @@ const loadInfo = async () => {
     const data = await findByIdGender(genderId);
     id.value = genderId;
     name.innerText = data.gender;
-    code.innerText = "";
-    if (data.code) {
-        code.innerText = `@${data.code}`;
-    }
-    observation.innerText = "";
-    if (data.observation) {
-        observation.innerText = data.observation;
-    }
     setDelete(data.status);
     console.log(data);
 };
