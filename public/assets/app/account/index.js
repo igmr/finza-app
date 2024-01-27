@@ -1,4 +1,3 @@
-
 const table = new NioApp.DataTable(".list", {
     scrollX: true,
     scrollY: 200,
@@ -21,15 +20,14 @@ const table = new NioApp.DataTable(".list", {
             data: "account_id",
         },
         {
-            title: "Account",
+            title: "Account/Bank",
             data: null,
             render: (data) => {
-                return `<a href="${baseUrlAccount}/${data.account_id}">${data.account}</a>`;
+                if (data.account == data.bank) {
+                    return `<a href="${baseUrlAccount}/${data.account_id}">${data.account}</a>`;
+                }
+                return `<a href="${baseUrlAccount}/${data.account_id}">${data.account}/${data.bank}</a>`;
             },
-        },
-        {
-            title: "Bank",
-            data: "bank",
         },
         {
             title: "Created at",
