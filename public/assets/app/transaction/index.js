@@ -63,6 +63,7 @@ const table = new NioApp.DataTable(".list", {
         },
         {
             title: "Created at",
+            class: "text-right",
             data: "created_at",
             render: (data) => {
                 return dateFormatter({ locate: "en-US", value: data });
@@ -70,13 +71,16 @@ const table = new NioApp.DataTable(".list", {
         },
         {
             title: "Status",
+            class: "text-right",
             data: null,
             render: (data) => {
-                let statusClass = "text-danger";
+                let statusClass = "danger";
+                let statusText = "Inactive";
                 if (data.status == "Activo") {
-                    statusClass = "text-success";
+                    statusClass = "success";
+                    statusText = "Active";
                 }
-                return `<span class="tb-status ${statusClass}">${data.status}</span>`;
+                return ` <span class="badge badge-dot badge-${statusClass}" id="status">${statusText}</span>`;
             },
         },
     ],
