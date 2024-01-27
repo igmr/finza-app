@@ -1,7 +1,63 @@
+const table = new NioApp.DataTable(".info", {
+    scrollX: true,
+    scrollY: 200,
+    progressing: true,
+    autoWidth: false,
+    pageLength: 5,
+    lengthMenu: [
+        [5, 10, 20, -1],
+        [5, 10, 20, "All"],
+    ],
+    paging: true,
+    responsive: {
+        details: true,
+    },
+    buttons: ["copy", "excel", "csv", "pdf"],
+    ajax: `${baseUrlAccount}/detail/${getId()}`,
+    columns: [
+        {
+            title: "Bank",
+            data: "bank",
+        },
+        {
+            title: "Saving",
+            data: "saving",
+        },
+        {
+            title: "Debt",
+            data: "debt",
+        },
+        {
+            title: "Amount",
+            class: "text-right",
+            data: null,
+            render: (data) => {
+                let amount = data.amount;
+                let color = "success";
+                if (data.type == "egress") {
+                    amount = parseFloat(data.amount) * -1;
+                    color = "danger";
+                }
+                amount = currencyFormatter({
+                    currency: "MXN",
+                    value: amount,
+                });
+                return `<span class="text-${color}">${amount}</span>`;
+            },
+        },
+        {
+            title: "Created at",
+            class: "text-right",
+            data: "created_at",
+            render: (data) => {
+                return dateFormatter({ locate: "en-US", value: data });
+            },
+        },
+    ],
+});
+
 const id = document.querySelector("#id");
 const name = document.querySelector("#name");
-const bank = document.querySelector("#bank");
-const observation = document.querySelector("#observation");
 const status = document.querySelector("#status");
 const accountId = getId();
 const btnDelete = document.querySelector("#btnDelete");
@@ -36,17 +92,13 @@ btnEdit.addEventListener("click", async (e) => {
 const loadInfo = async () => {
     const data = await findByIdAccount(accountId);
     id.value = accountId;
-    name.innerText = data.account;
-    bank.innerText = "";
-    if (data.bank) {
-        bank.innerText = `@${data.bank}`;
-    }
-    observation.innerText = "";
-    if (data.observation) {
-        observation.innerText = data.observation;
+    name.innerText = `${data.account}/${data.bank}`;
+    if(data.account == data.bank)
+    {
+        name.innerText = data.account;
     }
     setDelete(data.status);
-    // console.log(data);
+    //console.log(data);
 };
 
 const setDelete = (statusValue) => {
