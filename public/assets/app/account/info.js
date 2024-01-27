@@ -106,17 +106,21 @@ const setDelete = (statusValue) => {
     btnRestore.classList.remove("d-block");
     btnDelete.classList.remove("d-none");
     btnDelete.classList.remove("d-block");
-    status.classList.remove("dot-danger");
-    status.classList.remove("dot-success");
+    status.innerText = "";
+    status.classList.remove("badge-primary");
+    status.classList.remove("badge-danger");
+    status.classList.remove("badge-success");
     if (statusValue === "Activo") {
         // console.log("Activo");
-        status.classList.add("dot-success");
+        status.innerText = "Active";
+        status.classList.add("badge-success");
         btnRestore.classList.add("d-none");
         btnDelete.classList.add("d-block");
         return;
     } else {
         // console.log("Inactivo");
-        status.classList.add("dot-danger");
+        status.innerText = "Inactive";
+        status.classList.add("badge-danger");
         btnDelete.classList.add("d-none");
         btnRestore.classList.add("d-block");
         return;
