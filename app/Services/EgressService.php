@@ -73,12 +73,12 @@ class EgressService implements \App\Services\Interfaces\EgressInterface
     public function datatable()
     {
         $data = DB::table('egresses')
-
             ->join('users', 'users.id', '=', 'egresses.usr_id')
             ->leftJoin('accounts', 'accounts.id', '=', 'egresses.acc_id')
             ->leftJoin('categories', 'categories.id', '=', 'egresses.cat_id')
             ->leftJoin('savings', 'savings.id', '=', 'egresses.sav_id')
             ->leftJoin('debts', 'debts.id', '=', 'egresses.deb_id')
+            ->leftJoin('banks', 'banks.id', '=', 'accounts.ban_id')
             ->select(
                 'egresses.id AS egr_id',
                 'egresses.concept',
@@ -88,6 +88,8 @@ class EgressService implements \App\Services\Interfaces\EgressInterface
                 'egresses.observation',
                 'egresses.status',
                 'egresses.created_at',
+                DB::raw('if(isnull(banks.id), 0, banks.id) ban_id'),
+                DB::raw('if(isnull(banks.name), "None", banks.name) bank'),
                 DB::raw('if(isnull(egresses.acc_id), 0, egresses.acc_id) acc_id'),
                 DB::raw('if(isnull(accounts.name), "None", accounts.name) account'),
                 DB::raw('if(isnull(egresses.cat_id), 0, egresses.cat_id) cat_id'),
@@ -98,7 +100,8 @@ class EgressService implements \App\Services\Interfaces\EgressInterface
                 DB::raw('if(isnull(debts.name), "None", debts.name) debt'),
                 DB::raw('if(isnull(egresses.usr_id), 0,egresses.usr_id) usr_id'),
                 DB::raw('if(isnull(users.name), "Administrator", users.name) user'),
-            )->orderBy('egresses.id', 'desc')->get();
+            )->orderBy('egresses.id', 'desc')
+            ->get();
         return datatables($data)->toJson();
     }
 
@@ -114,6 +117,7 @@ class EgressService implements \App\Services\Interfaces\EgressInterface
             ->leftJoin('categories', 'categories.id', '=', 'egresses.cat_id')
             ->leftJoin('savings', 'savings.id', '=', 'egresses.sav_id')
             ->leftJoin('debts', 'debts.id', '=', 'egresses.deb_id')
+            ->leftJoin('banks', 'banks.id', '=', 'accounts.ban_id')
             ->select(
                 'egresses.id AS egr_id',
                 'egresses.concept',
@@ -123,6 +127,8 @@ class EgressService implements \App\Services\Interfaces\EgressInterface
                 'egresses.observation',
                 'egresses.status',
                 'egresses.created_at',
+                DB::raw('if(isnull(banks.id), 0, banks.id) ban_id'),
+                DB::raw('if(isnull(banks.name), "None", banks.name) bank'),
                 DB::raw('if(isnull(egresses.acc_id), 0, egresses.acc_id) acc_id'),
                 DB::raw('if(isnull(accounts.name), "None", accounts.name) account'),
                 DB::raw('if(isnull(egresses.cat_id), 0, egresses.cat_id) cat_id'),
@@ -133,7 +139,8 @@ class EgressService implements \App\Services\Interfaces\EgressInterface
                 DB::raw('if(isnull(debts.name), "None", debts.name) debt'),
                 DB::raw('if(isnull(egresses.usr_id), 0,egresses.usr_id) usr_id'),
                 DB::raw('if(isnull(users.name), "Administrator", users.name) user'),
-            )->paginate($paginate);
+            )->orderBy('egresses.id', 'desc')
+            ->paginate($paginate);
     }
 
     public function info(string $id)
@@ -145,6 +152,7 @@ class EgressService implements \App\Services\Interfaces\EgressInterface
             ->leftJoin('categories', 'categories.id', '=', 'egresses.cat_id')
             ->leftJoin('savings', 'savings.id', '=', 'egresses.sav_id')
             ->leftJoin('debts', 'debts.id', '=', 'egresses.deb_id')
+            ->leftJoin('banks', 'banks.id', '=', 'accounts.ban_id')
             ->select(
                 'egresses.id AS egr_id',
                 'egresses.concept',
@@ -154,6 +162,8 @@ class EgressService implements \App\Services\Interfaces\EgressInterface
                 'egresses.observation',
                 'egresses.status',
                 'egresses.created_at',
+                DB::raw('if(isnull(banks.id), 0, banks.id) ban_id'),
+                DB::raw('if(isnull(banks.name), "None", banks.name) bank'),
                 DB::raw('if(isnull(egresses.acc_id), 0, egresses.acc_id) acc_id'),
                 DB::raw('if(isnull(accounts.name), "None", accounts.name) account'),
                 DB::raw('if(isnull(egresses.cat_id), 0, egresses.cat_id) cat_id'),
@@ -164,7 +174,8 @@ class EgressService implements \App\Services\Interfaces\EgressInterface
                 DB::raw('if(isnull(debts.name), "None", debts.name) debt'),
                 DB::raw('if(isnull(egresses.usr_id), 0,egresses.usr_id) usr_id'),
                 DB::raw('if(isnull(users.name), "Administrator", users.name) user'),
-            )->first();
+            )->orderBy('egresses.id', 'desc')
+            ->first();
     }
 
     public function select()

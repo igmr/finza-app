@@ -1,13 +1,7 @@
 const status = document.querySelector("#status");
 const concept = document.querySelector("#concept");
 const amount = document.querySelector("#amount");
-const description = document.querySelector("#description");
-const reference = document.querySelector("#reference");
-const account = document.querySelector("#account");
-const category = document.querySelector("#category");
-const debt = document.querySelector("#debt");
-const user = document.querySelector("#user");
-const observation = document.querySelector("#observation");
+const accountBank = document.querySelector("#account-bank");
 
 const egressId = getId();
 const btnDelete = document.querySelector("#btnDelete");
@@ -41,19 +35,19 @@ btnEdit.addEventListener("click", async (e) => {
 
 const loadInfo = async () => {
     const data = await findByIdEgress(egressId);
-    console.log(data);
     const _amount = currencyFormatter({ currency: "MXN", value: data.amount });
 
-    concept.innerText = data.concept ? data.concept : "";
-    amount.innerText = data.amount ? _amount : "";
-    description.innerText = data.description ? data.description : "";
-    reference.innerText = data.reference ? data.reference : "";
-    account.innerText = data.account ? data.account : "";
-    category.innerText = data.category ? data.category : "";
-    debt.innerText = data.debt ? data.debt : "";
-    user.innerText = data.user ? data.user : "";
-    observation.innerText = data.observation ? data.observation : "";
-
+    id.value = egressId;
+    concept.innerText = data.concept;
+    amount.innerText = "";
+    if (data.amount) {
+        amount.innerHTML = `${_amount} <span>/MXN</span>`;
+    }
+    accountBank.innerHTML = `${data.account}/${data.bank}`;
+    if (data.account == data.bank) {
+        accountBank.innerHTML = data.bank;
+    }
+    console.log(data);
     setDelete(data.status);
 };
 
@@ -62,17 +56,21 @@ const setDelete = (statusValue) => {
     btnRestore.classList.remove("d-block");
     btnDelete.classList.remove("d-none");
     btnDelete.classList.remove("d-block");
-    status.classList.remove("dot-danger");
-    status.classList.remove("dot-success");
+    status.innerText = "";
+    status.classList.remove("badge-primary");
+    status.classList.remove("badge-danger");
+    status.classList.remove("badge-success");
     if (statusValue === "Activo") {
         // console.log("Activo");
-        status.classList.add("dot-success");
+        status.innerText = "Active";
+        status.classList.add("badge-success");
         btnRestore.classList.add("d-none");
         btnDelete.classList.add("d-block");
         return;
     } else {
         // console.log("Inactivo");
-        status.classList.add("dot-danger");
+        status.innerText = "Inactive";
+        status.classList.add("badge-danger");
         btnDelete.classList.add("d-none");
         btnRestore.classList.add("d-block");
         return;
