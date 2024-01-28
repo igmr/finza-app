@@ -25,7 +25,7 @@ const table = new NioApp.DataTable(".list", {
             data:'code',
         },
         {
-            title: "Category",
+            title: "Classification",
             data: null,
             render: (data) => {
                 return `<a href="${baseUrlClassification}/${data.classification_id}">${data.classification}</a>`;
