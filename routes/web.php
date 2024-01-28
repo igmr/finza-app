@@ -165,7 +165,7 @@ Route::middleware(['auth'])->prefix('app')->group(function () {
         Route::get('/info/{id}',       [DebtController::class, 'info'])->name('app.debt.info');
         Route::get('/select',          [DebtController::class, 'select'])->name('app.debt.select');
         Route::get('/datatable',       [DebtController::class, 'datatable'])->name('app.debt.datatable');
-        Route::get('/detail',          [DebtController::class, 'detail'])->name('app.debt.detail');
+        Route::get('/detail/{id}',     [DebtController::class, 'detail'])->name('app.debt.detail');
         // Resources
         Route::get('/',                [DebtController::class, 'index'])->name('app.debt.index');
         Route::get('/create',          [DebtController::class, 'create'])->name('app.debt.create');
