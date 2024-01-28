@@ -29,7 +29,11 @@ const table = new NioApp.DataTable(".list", {
         },
         {
             title: "Date finish",
+            class: "text-right",
             data: "date_finish",
+            render: (data) => {
+                return dateFormatter({ locate: "en-US", value: data });
+            },
         },
         {
             title: "Amount",
