@@ -144,6 +144,7 @@ class IngressService implements \App\Services\Interfaces\IngressInterface
     public function info(string $id)
     {
         return DB::table('ingresses')
+            ->where('ingresses.id', $id)
             ->join('users', 'users.id', '=', 'ingresses.usr_id')
             ->leftJoin('accounts', 'accounts.id', '=', 'ingresses.acc_id')
             ->leftJoin('classifications', 'classifications.id', '=', 'ingresses.cls_id')
