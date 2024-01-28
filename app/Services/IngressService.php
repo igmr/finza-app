@@ -78,6 +78,7 @@ class IngressService implements \App\Services\Interfaces\IngressInterface
             ->leftJoin('classifications', 'classifications.id', '=', 'ingresses.cls_id')
             ->leftJoin('savings', 'savings.id', '=', 'ingresses.sav_id')
             ->leftJoin('debts', 'debts.id', '=', 'ingresses.deb_id')
+            ->leftJoin('banks', 'banks.id', '=', 'accounts.ban_id')
             ->select(
                 'ingresses.id AS ing_id',
                 'ingresses.concept',
@@ -87,6 +88,8 @@ class IngressService implements \App\Services\Interfaces\IngressInterface
                 'ingresses.observation',
                 'ingresses.status',
                 'ingresses.created_at',
+                DB::raw('if(isnull(banks.id), 0, banks.id) ban_id'),
+                DB::raw('if(isnull(banks.name), "None", banks.name) bank'),
                 DB::raw('if(isnull(ingresses.acc_id), 0, ingresses.acc_id) acc_id'),
                 DB::raw('if(isnull(accounts.name), "None", accounts.name) account'),
                 DB::raw('if(isnull(ingresses.cls_id), 0, ingresses.cls_id) cls_id'),
@@ -113,6 +116,7 @@ class IngressService implements \App\Services\Interfaces\IngressInterface
             ->leftJoin('classifications', 'classifications.id', '=', 'ingresses.cls_id')
             ->leftJoin('savings', 'savings.id', '=', 'ingresses.sav_id')
             ->leftJoin('debts', 'debts.id', '=', 'ingresses.deb_id')
+            ->leftJoin('banks', 'banks.id', '=', 'accounts.ban_id')
             ->select(
                 'ingresses.id AS ing_id',
                 'ingresses.concept',
@@ -122,6 +126,8 @@ class IngressService implements \App\Services\Interfaces\IngressInterface
                 'ingresses.observation',
                 'ingresses.status',
                 'ingresses.created_at',
+                DB::raw('if(isnull(banks.id), 0, banks.id) ban_id'),
+                DB::raw('if(isnull(banks.name), "None", banks.name) bank'),
                 DB::raw('if(isnull(ingresses.acc_id), 0, ingresses.acc_id) acc_id'),
                 DB::raw('if(isnull(accounts.name), "None", accounts.name) account'),
                 DB::raw('if(isnull(ingresses.cls_id), 0, ingresses.cls_id) cls_id'),
@@ -138,12 +144,12 @@ class IngressService implements \App\Services\Interfaces\IngressInterface
     public function info(string $id)
     {
         return DB::table('ingresses')
-            ->where('ingresses.id', $id)
             ->join('users', 'users.id', '=', 'ingresses.usr_id')
             ->leftJoin('accounts', 'accounts.id', '=', 'ingresses.acc_id')
             ->leftJoin('classifications', 'classifications.id', '=', 'ingresses.cls_id')
             ->leftJoin('savings', 'savings.id', '=', 'ingresses.sav_id')
             ->leftJoin('debts', 'debts.id', '=', 'ingresses.deb_id')
+            ->leftJoin('banks', 'banks.id', '=', 'accounts.ban_id')
             ->select(
                 'ingresses.id AS ing_id',
                 'ingresses.concept',
@@ -153,6 +159,8 @@ class IngressService implements \App\Services\Interfaces\IngressInterface
                 'ingresses.observation',
                 'ingresses.status',
                 'ingresses.created_at',
+                DB::raw('if(isnull(banks.id), 0, banks.id) ban_id'),
+                DB::raw('if(isnull(banks.name), "None", banks.name) bank'),
                 DB::raw('if(isnull(ingresses.acc_id), 0, ingresses.acc_id) acc_id'),
                 DB::raw('if(isnull(accounts.name), "None", accounts.name) account'),
                 DB::raw('if(isnull(ingresses.cls_id), 0, ingresses.cls_id) cls_id'),
