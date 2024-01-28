@@ -1,10 +1,9 @@
 const id = document.querySelector("#id");
-const name = document.querySelector("#name");
+const budget = document.querySelector("#budget");
 const amount = document.querySelector("#amount");
-const account = document.querySelector("#account");
-const period = document.querySelector("#period");
-const observation = document.querySelector("#observation");
 const status = document.querySelector("#status");
+const accountBank = document.querySelector("#account-bank");
+
 const budgetId = getId();
 const btnDelete = document.querySelector("#btnDelete");
 const btnRestore = document.querySelector("#btnRestore");
@@ -40,21 +39,14 @@ const loadInfo = async () => {
     const _amount = currencyFormatter({ currency: "MXN", value: data.amount });
 
     id.value = budgetId;
-    name.innerText = data.budget;
-    amount.innerText = _amount;
-    account.innerText = "";
+    budget.innerText = data.budget;
+    amount.innerHTML = `${_amount} <span>/MXN</span>`;
+    accountBank.innerText = "";
+    accountBank.innerText = `${data.bank}`;
     if (data.account) {
-        account.innerText = `@${data.account} / ${data.bank}`;
-    }
-    period.innerText = "";
-    if (data.period) {
-        period.innerText = data.period;
-    }
-    if (data.observation) {
-        observation.innerText = data.observation;
+        accountBank.innerText = `${data.account} / ${data.bank}`;
     }
     setDelete(data.status);
-    // console.log(data);
 };
 
 const setDelete = (statusValue) => {
@@ -62,17 +54,21 @@ const setDelete = (statusValue) => {
     btnRestore.classList.remove("d-block");
     btnDelete.classList.remove("d-none");
     btnDelete.classList.remove("d-block");
-    status.classList.remove("dot-danger");
-    status.classList.remove("dot-success");
+    status.innerText = "";
+    status.classList.remove("badge-primary");
+    status.classList.remove("badge-danger");
+    status.classList.remove("badge-success");
     if (statusValue === "Activo") {
         // console.log("Activo");
-        status.classList.add("dot-success");
+        status.innerText = "Active";
+        status.classList.add("badge-success");
         btnRestore.classList.add("d-none");
         btnDelete.classList.add("d-block");
         return;
     } else {
         // console.log("Inactivo");
-        status.classList.add("dot-danger");
+        status.innerText = "Inactive";
+        status.classList.add("badge-danger");
         btnDelete.classList.add("d-none");
         btnRestore.classList.add("d-block");
         return;
