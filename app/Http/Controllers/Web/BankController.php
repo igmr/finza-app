@@ -4,18 +4,23 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Web\BankFormRequest;
+use App\Services\AccountService;
 use App\Services\BankService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use stdClass;
 
 class BankController extends Controller
 {
     protected $service;
-    public function __construct(BankService $service)
+    protected $serviceAccount;
+    public function __construct(BankService $service, AccountService $serviceAccount)
     {
         $this->service = $service;
+        $this->serviceAccount = $serviceAccount;
     }
 
     /**
@@ -61,7 +66,8 @@ class BankController extends Controller
             $response['data']    = [];
             $payload             = $req->validated();
             $payload['usr_id']   = Auth::user()->id;
-            $data    = $this->service->store($payload);
+            $payload['status']   = 'Activo';
+            $data    = $this->_store($payload);
             if ($data) {
                 $response['success'] = true;
                 $response['data'] = $data;
@@ -80,6 +86,33 @@ class BankController extends Controller
                 'message' => 'Data invalid',
                 'errors'  => ['general' => ['Error in server.']],
             ], Response::HTTP_BAD_REQUEST));
+        }
+    }
+
+    private function _store($payload)
+    {
+        try {
+            DB::beginTransaction();
+            /* ============================================================= */
+            /* CREATE BANK                                                   */
+            /* ============================================================= */
+            $bank = $this->service->store($payload);
+            /* ============================================================= */
+            /* PAYLOAD ACCOUNT                                               */
+            /* ============================================================= */
+            $data['usr_id'] = $bank->usr_id;
+            $data['ban_id'] = $bank->id;
+            $data['name']   = $bank->name;
+            $data['status'] = 'Activo';
+            /* ============================================================= */
+            /* CREATE ACCOUNT                                                */
+            /* ============================================================= */
+            $store = $this->serviceAccount->store($data);
+            DB::commit();
+            return $bank;
+        } catch (\Exception $ex) {
+            DB::rollBack();
+            return new stdClass();
         }
     }
 
@@ -187,7 +220,7 @@ class BankController extends Controller
     {
         return $this->service->datatable();
     }
-    
+
     public function detail(int $id)
     {
         return $this->service->detail($id);
