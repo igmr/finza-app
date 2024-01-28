@@ -89,6 +89,22 @@ class ClassificationService implements \App\Services\Interfaces\ClassificationIn
 
     public function detail(int $id)
     {
+        $data = DB::table('ingresses')
+            ->leftJoin('classifications', 'classifications.id', '=', 'ingresses.cls_id')
+            ->leftJoin('savings', 'savings.id', '=', 'ingresses.sav_id')
+            ->leftJoin('debts', 'debts.id', '=', 'ingresses.deb_id')
+            ->leftJoin('accounts', 'accounts.id', '=', 'ingresses.acc_id')            
+            ->leftJoin('banks', 'banks.id', '=', 'accounts.ban_id')
+            ->where('classifications.id', "=", $id)
+            ->select([
+                'classifications.name AS classification', 'savings.name AS saving', 'debts.name AS debt',
+                'accounts.name AS account', 'banks.name AS bank',
+                'ingresses.amount', 'ingresses.created_at',
+                DB::raw('"ingress" AS type'),
+            ])
+            ->orderBy('ingresses.created_at', 'desc')
+            ->get();
+        return datatables($data)->toJson();
     }
 
     public function list(Request $req, int $paginate = 15)

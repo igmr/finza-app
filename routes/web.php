@@ -75,7 +75,7 @@ Route::middleware(['auth'])->prefix('app')->group(function () {
         Route::get('/info/{id}',       [ClassificationController::class, 'info'])->name('app.classification.info');
         Route::get('/select',          [ClassificationController::class, 'select'])->name('app.classification.select');
         Route::get('/datatable',       [ClassificationController::class, 'datatable'])->name('app.classification.datatable');
-        Route::get('/detail',          [ClassificationController::class, 'detail'])->name('app.classification.detail');
+        Route::get('/detail/{id}',     [ClassificationController::class, 'detail'])->name('app.classification.detail');
         // Resources
         Route::get('/',                [ClassificationController::class, 'index'])->name('app.classification.index');
         Route::get('/create',          [ClassificationController::class, 'create'])->name('app.classification.create');
