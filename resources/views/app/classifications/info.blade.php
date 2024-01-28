@@ -66,7 +66,7 @@
                     <div @class(['card', 'card-bordered', 'pricing', 'text-center'])>
                         <div @class(['pricing-body'])>
                             <div style="font-size: 80px">
-                                <em @class(['icon', 'ni', 'ni-tag-alt"'])></em>
+                                <em @class(['icon', 'ni', 'ni-tag-alt'])></em>
                             </div>
                             <div @class(['pricing-title', 'w-220px', 'mx-auto'])>
                                 <h4 class="title" id="name">name</h4>
