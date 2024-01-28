@@ -13,14 +13,14 @@
 
     <div @class(['nk-content-wrap'])>
         <div @class(['nk-block-head', 'nk-block-head-md'])>
-            <div @class(['nk-block-between'])>
-                <div @class(['nk-block-head-content'])>
-                    <h3 @class(['nk-block-title', 'page-title'])>{{ $subtitle }}</h3>
-                </div><!-- .nk-block-head-content -->
-                <form id="formDelete">
-                    <input type="hidden" id="id" name="id">
-                    @csrf
-                    <div @class(['nk-block-head-content', 'row'])>
+            <form id="formDelete">
+                <input type="hidden" id="id" name="id">
+                @csrf
+                <div @class(['nk-block-between'])>
+                    <div @class(['nk-block-head-content'])>
+                        <h3 @class(['nk-block-title', 'page-title'])>{{ $subtitle }}</h3>
+                    </div><!-- .nk-block-head-content -->
+                    <div @class(['nk-block-head-content', 'btn-group'])>
                         <button type="button" id="btnBack" @class(['btn', 'btn-sm', 'btn-dim', 'btn-secondary', 'ml-2'])>
                             <em @class(['icon', 'ni', 'ni-chevrons-left'])></em>
                             <span>Back</span>
@@ -38,8 +38,8 @@
                             <span>Delete</span>
                         </button>
                     </div><!-- .nk-block-head-content -->
-                </form>
-            </div><!-- .nk-block-between -->
+                </div><!-- .nk-block-between -->
+            </form>
 
             <div @class(['pt-3', 'd-none']) id="alert-error">
                 <div @class(['gy-4'])>
@@ -49,6 +49,7 @@
                     </div>
                 </div>
             </div><!-- #alert-success -->
+
             <div @class(['pt-3', 'd-none']) id="alert-success">
                 <div @class(['gy-4'])>
                     <div @class(['example-alert'])>
@@ -62,38 +63,44 @@
         <div @class(['nk-block'])>
             <div @class(['row', 'g-gs'])>
                 <div @class(['col-12'])>
-                    <div @class(['card', 'card-bordered'])>
-                        <div @class(['card-inner'])>
-                            <div @class(['team'])>
-                                <div @class(['user-card', 'user-card-s2'])>
-                                    <div @class(['user-avatar', 'lg', 'bg-primary'])>
-                                        <em @class(['icon', 'ni', 'ni-building'])></em>
-                                        <div @class(['status', 'dot', 'dot-lg']) id="status"></div>
-                                    </div>
-                                    <div @class(['user-info'])>
-                                        <h6 id="concept">concept</h6>
-                                        <span @class(['sub-text']) id="amount">amount</span>
-                                        <span @class(['sub-text']) id="description">description</span>
-                                        <span @class(['sub-text']) id="reference">reference</span>
-                                        <span @class(['sub-text']) id="created_at">created_at</span>
-                                        <span @class(['sub-text']) id="account_from">account_from</span>
-                                        <span @class(['sub-text']) id="bank_from">bank_from</span>
-                                        <span @class(['sub-text']) id="account_to">account_to</span>
-                                        <span @class(['sub-text']) id="bank_to">bank_to</span>
-                                        <span @class(['sub-text']) id="classification">classification</span>
-                                        <span @class(['sub-text']) id="category">category</span>
-                                        <span @class(['sub-text']) id="saving">saving</span>
-                                        <span @class(['sub-text']) id="debt">debt</span>
-                                        <span @class(['sub-text']) id="user">user</span>
-                                    </div>
-                                </div>
-                                <div @class(['team-details'])>
-                                    <p id="observation">observation</p>
-                                </div>
-                            </div><!-- .team -->
-                        </div><!-- .card-inner -->
-                    </div><!-- .card -->
-                </div><!-- .col -->
+                    <div @class(['card', 'card-bordered', 'pricing', 'text-center'])>
+                        <div @class(['pricing-body'])>
+                            <div style="font-size: 80px">
+                                <em @class(['icon', 'ni', 'ni-report-profit'])></em>
+                            </div>
+                            <div @class(['pricing-title', 'w-220px', 'mx-auto'])>
+                                <h4 class="title" id="concept">concept</h4>
+                                <span class="badge badge-dot badge-primary" id="status">status</span>
+                            </div>
+                            <div @class(['pricing-amount'])>
+                                <div @class(['amount']) id="amount">$0 <span>/MXN</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div @class(['col-md-6', 'col-xxl-6'])>
+                    <div @class(['card', 'card-bordered', 'pricing', 'text-center'])>
+                        <div @class(['pricing-body'])>
+                            <div style="font-size: 80px">
+                                <em @class(['icon', 'ni', 'ni-wallet-out'])></em>
+                                <h5 @class(['title']) id="account-bank-from">account/bank/from</h5>
+                                <span @class(['sub-text']) id="classification">classification</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div @class(['col-md-6', 'col-xxl-6'])>
+                    <div @class(['card', 'card-bordered', 'pricing', 'text-center'])>
+                        <div @class(['pricing-body'])>
+                            <div style="font-size: 80px">
+                                <em @class(['icon', 'ni', 'ni-wallet-in'])></em>
+                                <h5 @class(['title']) id="account-bank-to">account/bank/to</h5>
+                                <span @class(['sub-text']) id="category-gender">category-gender</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div><!-- .nk-block -->
     </div>

@@ -82,10 +82,13 @@ class TransactionService implements \App\Services\Interfaces\TransactionInterfac
             ->leftJoin('banks AS banks_to', 'banks_to.id', '=', 'accounts_to.ban_id')
             ->leftJoin('classifications', 'classifications.id', '=', 'transactions.cls_id')
             ->leftJoin('categories', 'categories.id', '=', 'transactions.cat_id')
+            ->leftJoin('genders', 'genders.id', '=', 'categories.gen_id')
             ->leftJoin('savings', 'savings.id', '=', 'transactions.sav_id')
             ->leftJoin('debts', 'debts.id', '=', 'transactions.deb_id')
             ->select(
                 'transactions.id AS tra_id',
+                'transactions.ing_id',
+                'transactions.egr_id',
                 'transactions.concept',
                 'transactions.description',
                 'transactions.reference',
@@ -93,6 +96,8 @@ class TransactionService implements \App\Services\Interfaces\TransactionInterfac
                 'transactions.observation',
                 'transactions.status',
                 'transactions.created_at',
+                DB::raw('if(isnull(genders.id), 0, genders.id) gen_id'),
+                DB::raw('if(isnull(genders.name), "None", genders.name) gender'),
                 DB::raw('if(isnull(transactions.acc_ing_id), 0, transactions.acc_ing_id) acc_ing_id'),
                 DB::raw('if(isnull(accounts_from.name), "None", accounts_from.name) account_from'),
                 DB::raw('if(isnull(banks_from.id), "None", banks_from.id) bank_from_id'),
@@ -131,10 +136,13 @@ class TransactionService implements \App\Services\Interfaces\TransactionInterfac
             ->leftJoin('banks AS banks_to', 'banks_to.id', '=', 'accounts_to.ban_id')
             ->leftJoin('classifications', 'classifications.id', '=', 'transactions.cls_id')
             ->leftJoin('categories', 'categories.id', '=', 'transactions.cat_id')
+            ->leftJoin('genders', 'genders.id', '=', 'categories.gen_id')
             ->leftJoin('savings', 'savings.id', '=', 'transactions.sav_id')
             ->leftJoin('debts', 'debts.id', '=', 'transactions.deb_id')
             ->select(
                 'transactions.id AS tra_id',
+                'transactions.ing_id',
+                'transactions.egr_id',
                 'transactions.concept',
                 'transactions.description',
                 'transactions.reference',
@@ -142,6 +150,8 @@ class TransactionService implements \App\Services\Interfaces\TransactionInterfac
                 'transactions.observation',
                 'transactions.status',
                 'transactions.created_at',
+                DB::raw('if(isnull(genders.id), 0, genders.id) gen_id'),
+                DB::raw('if(isnull(genders.name), "None", genders.name) gender'),
                 DB::raw('if(isnull(transactions.acc_ing_id), 0, transactions.acc_ing_id) acc_ing_id'),
                 DB::raw('if(isnull(accounts_from.name), "None", accounts_from.name) account_from'),
                 DB::raw('if(isnull(banks_from.id), "None", banks_from.id) bank_from_id'),
@@ -176,12 +186,13 @@ class TransactionService implements \App\Services\Interfaces\TransactionInterfac
             ->leftJoin('banks AS banks_to', 'banks_to.id', '=', 'accounts_to.ban_id')
             ->leftJoin('classifications', 'classifications.id', '=', 'transactions.cls_id')
             ->leftJoin('categories', 'categories.id', '=', 'transactions.cat_id')
+            ->leftJoin('genders', 'genders.id', '=', 'categories.gen_id')
             ->leftJoin('savings', 'savings.id', '=', 'transactions.sav_id')
             ->leftJoin('debts', 'debts.id', '=', 'transactions.deb_id')
             ->select(
                 'transactions.id AS tra_id',
-                'transactions.ing_id AS ing_id',
-                'transactions.egr_id AS egr_id',
+                'transactions.ing_id',
+                'transactions.egr_id',
                 'transactions.concept',
                 'transactions.description',
                 'transactions.reference',
@@ -189,6 +200,8 @@ class TransactionService implements \App\Services\Interfaces\TransactionInterfac
                 'transactions.observation',
                 'transactions.status',
                 'transactions.created_at',
+                DB::raw('if(isnull(genders.id), 0, genders.id) gen_id'),
+                DB::raw('if(isnull(genders.name), "None", genders.name) gender'),
                 DB::raw('if(isnull(transactions.acc_ing_id), 0, transactions.acc_ing_id) acc_ing_id'),
                 DB::raw('if(isnull(accounts_from.name), "None", accounts_from.name) account_from'),
                 DB::raw('if(isnull(banks_from.id), "None", banks_from.id) bank_from_id'),
