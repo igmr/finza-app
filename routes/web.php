@@ -147,7 +147,7 @@ Route::middleware(['auth'])->prefix('app')->group(function () {
         Route::get('/info/{id}',       [SavingController::class, 'info'])->name('app.saving.info');
         Route::get('/select',          [SavingController::class, 'select'])->name('app.saving.select');
         Route::get('/datatable',       [SavingController::class, 'datatable'])->name('app.saving.datatable');
-        Route::get('/detail',          [SavingController::class, 'detail'])->name('app.saving.detail');
+        Route::get('/detail/{id}',     [SavingController::class, 'detail'])->name('app.saving.detail');
         // Resources
         Route::get('/',                [SavingController::class, 'index'])->name('app.saving.index');
         Route::get('/create',          [SavingController::class, 'create'])->name('app.saving.create');

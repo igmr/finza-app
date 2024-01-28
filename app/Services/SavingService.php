@@ -90,6 +90,35 @@ class SavingService implements \App\Services\Interfaces\SavingInterface
 
     public function detail(int $id)
     {
+        $sql = "SELECT bank, account, description, saving, debt, amount, created_at, type
+                FROM (SELECT banks.name AS bank, accounts.name AS account,
+					classifications.name AS description,
+                    savings.name AS saving, debts.name AS debt,
+                    ingresses.amount, ingresses.created_at, 'ingress' AS type
+                FROM ingresses
+                LEFT JOIN classifications ON classifications.id = ingresses.cls_id
+                LEFT JOIN savings ON savings.id = ingresses.sav_id
+                LEFT JOIN debts ON debts.id = ingresses.deb_id
+                LEFT JOIN accounts ON accounts.id = ingresses.acc_id
+                LEFT JOIN banks ON banks.id = accounts.ban_id
+                WHERE 1=1
+                AND savings.id = ?
+                UNION
+                SELECT banks.name AS bank, accounts.name AS account, CONCAT(genders.name, ' - ', categories.name) AS description,
+                    savings.name AS saving, debts.name AS debt,
+                    egresses.amount, egresses.created_at, 'egress' AS type
+                FROM egresses
+                LEFT JOIN categories ON categories.id = egresses.cat_id
+                LEFT JOIN genders ON genders.id = categories.gen_id
+                LEFT JOIN savings ON savings.id = egresses.sav_id
+                LEFT JOIN debts ON debts.id = egresses.deb_id
+                LEFT JOIN accounts ON accounts.id = egresses.acc_id
+                LEFT JOIN banks ON banks.id = accounts.ban_id
+                WHERE 1=1
+                AND savings.id = ?) AS detail
+                ORDER BY created_at DESC";
+        $query = DB::select($sql, [$id, $id]);
+        return datatables($query)->toJson();
     }
 
     public function list(Request $req, int $paginate = 15)
