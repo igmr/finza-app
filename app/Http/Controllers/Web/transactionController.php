@@ -83,7 +83,7 @@ class transactionController extends Controller
             $payloadEgress['reference']   = $payload['reference'] ?? null;
             $payloadEgress['amount']      = $payload['amount'] ?? null;
             $payloadEgress['observation'] = $payload['observation'] ?? null;
-            $payloadEgress['status']      = 'Active';
+            $payloadEgress['status']      = 'Activo';
             $dataEgress   = $this->serviceEgress->store($payloadEgress);
             // ================================================================ //
             // Ingresses                                                        //
@@ -99,7 +99,7 @@ class transactionController extends Controller
             $payloadIngress['reference']   = $payload['reference'] ?? null;
             $payloadIngress['amount']      = $payload['amount'] ?? null;
             $payloadIngress['observation'] = $payload['observation'] ?? null;
-            $payloadIngress['status']      = 'Active';
+            $payloadIngress['status']      = 'Activo';
             $dataIngress   = $this->serviceIngress->store($payloadIngress);
             // ================================================================ //
             // Transactions                                                     //
