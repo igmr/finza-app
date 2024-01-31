@@ -32,8 +32,6 @@ class BankController extends Controller
         $data['subtitle'] = 'List banks';
         $data['cssFILES'] = [];
         $data['jsFILES']  = [
-            'assets/app/tools.js',
-            'assets/app/services.js',
             'assets/app/bank/index.js',
         ];
         return view('app.banks.index', $data);
@@ -48,8 +46,6 @@ class BankController extends Controller
         $data['subtitle'] = 'Add bank';
         $data['cssFILES'] = [];
         $data['jsFILES']  = [
-            'assets/app/tools.js',
-            'assets/app/services.js',
             'assets/app/showErrorsForm.js',
             'assets/app/bank/create.js',
         ];
@@ -125,9 +121,7 @@ class BankController extends Controller
         $data['subtitle'] = 'Info bank';
         $data['cssFILES'] = [];
         $data['jsFILES']  = [
-            'assets/app/tools.js',
             'assets/app/showErrorsForm.js',
-            'assets/app/services.js',
             'assets/app/bank/info.js',
         ];
         return view('app.banks.info', $data);
@@ -142,9 +136,7 @@ class BankController extends Controller
         $data['subtitle'] = 'Edit bank';
         $data['cssFILES'] = [];
         $data['jsFILES']  = [
-            'assets/app/tools.js',
             'assets/app/showErrorsForm.js',
-            'assets/app/services.js',
             'assets/app/bank/edit.js',
         ];
         return view('app.banks.edit', $data);

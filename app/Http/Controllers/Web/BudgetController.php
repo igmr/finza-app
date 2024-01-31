@@ -27,8 +27,6 @@ class BudgetController extends Controller
         $data['subtitle'] = 'List budgets';
         $data['cssFILES'] = [];
         $data['jsFILES']  = [
-            'assets/app/tools.js',
-            'assets/app/services.js',
             'assets/app/budget/index.js',
         ];
         return view('app.budgets.index', $data);
@@ -43,8 +41,6 @@ class BudgetController extends Controller
         $data['subtitle'] = 'Add budget';
         $data['cssFILES'] = [];
         $data['jsFILES']  = [
-            'assets/app/tools.js',
-            'assets/app/services.js',
             'assets/app/showErrorsForm.js',
             'assets/app/budget/create.js',
         ];
@@ -94,9 +90,7 @@ class BudgetController extends Controller
         $data['subtitle'] = 'Info budget';
         $data['cssFILES'] = [];
         $data['jsFILES']  = [
-            'assets/app/tools.js',
             'assets/app/showErrorsForm.js',
-            'assets/app/services.js',
             'assets/app/budget/info.js',
         ];
         return view('app.budgets.info', $data);
@@ -111,9 +105,7 @@ class BudgetController extends Controller
         $data['subtitle'] = 'Edit budget';
         $data['cssFILES'] = [];
         $data['jsFILES']  = [
-            'assets/app/tools.js',
             'assets/app/showErrorsForm.js',
-            'assets/app/services.js',
             'assets/app/budget/edit.js',
         ];
         return view('app.budgets.edit', $data);

@@ -27,8 +27,6 @@ class GenderController extends Controller
         $data['subtitle']    = 'List genders';
         $data['cssFILES']    = [];
         $data['jsFILES']     = [
-            'assets/app/tools.js',
-            'assets/app/services.js',
             'assets/app/gender/index.js',
         ];
         $data['labelCreate'] = 'Add Gender';
@@ -45,8 +43,6 @@ class GenderController extends Controller
         $data['subtitle'] = 'Add gender';
         $data['cssFILES'] = [];
         $data['jsFILES']  = [
-            'assets/app/tools.js',
-            'assets/app/services.js',
             'assets/app/showErrorsForm.js',
             'assets/app/gender/create.js',
         ];
@@ -94,9 +90,7 @@ class GenderController extends Controller
         $data['subtitle'] = 'Info gender';
         $data['cssFILES'] = [];
         $data['jsFILES']  = [
-            'assets/app/tools.js',
             'assets/app/showErrorsForm.js',
-            'assets/app/services.js',
             'assets/app/gender/info.js',
         ];
         return view('app.genders.info', $data);
@@ -111,9 +105,7 @@ class GenderController extends Controller
         $data['subtitle'] = 'Edit gender';
         $data['cssFILES'] = [];
         $data['jsFILES']  = [
-            'assets/app/tools.js',
             'assets/app/showErrorsForm.js',
-            'assets/app/services.js',
             'assets/app/gender/edit.js',
         ];
         return view('app.genders.edit', $data);

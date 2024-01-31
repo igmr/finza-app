@@ -27,8 +27,6 @@ class AccountController extends Controller
         $data['subtitle'] = 'List accounts';
         $data['cssFILES'] = [];
         $data['jsFILES']  = [
-            'assets/app/tools.js',
-            'assets/app/services.js',
             'assets/app/account/index.js',
         ];
         return view('app.accounts.index', $data);
@@ -43,8 +41,6 @@ class AccountController extends Controller
         $data['subtitle'] = 'Add account';
         $data['cssFILES'] = [];
         $data['jsFILES']  = [
-            'assets/app/tools.js',
-            'assets/app/services.js',
             'assets/app/showErrorsForm.js',
             'assets/app/account/create.js',
         ];
@@ -94,9 +90,7 @@ class AccountController extends Controller
         $data['subtitle'] = 'Info account';
         $data['cssFILES'] = [];
         $data['jsFILES']  = [
-            'assets/app/tools.js',
             'assets/app/showErrorsForm.js',
-            'assets/app/services.js',
             'assets/app/account/info.js',
         ];
         return view('app.accounts.info', $data);
@@ -111,9 +105,7 @@ class AccountController extends Controller
         $data['subtitle'] = 'Edit account';
         $data['cssFILES'] = [];
         $data['jsFILES']  = [
-            'assets/app/tools.js',
             'assets/app/showErrorsForm.js',
-            'assets/app/services.js',
             'assets/app/account/edit.js',
         ];
         return view('app.accounts.edit', $data);

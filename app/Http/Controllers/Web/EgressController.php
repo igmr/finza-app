@@ -27,8 +27,6 @@ class EgressController extends Controller
         $data['subtitle']    = 'List Egresses';
         $data['cssFILES']    = [];
         $data['jsFILES']     = [
-            'assets/app/tools.js',
-            'assets/app/services.js',
             'assets/app/egress/index.js',
         ];
         return view('app.egresses.index', $data);
@@ -43,8 +41,6 @@ class EgressController extends Controller
         $data['subtitle'] = 'Add egress';
         $data['cssFILES'] = [];
         $data['jsFILES']  = [
-            'assets/app/tools.js',
-            'assets/app/services.js',
             'assets/app/showErrorsForm.js',
             'assets/app/egress/create.js',
         ];
@@ -96,9 +92,7 @@ class EgressController extends Controller
         $data['subtitle'] = 'Info egress';
         $data['cssFILES'] = [];
         $data['jsFILES']  = [
-            'assets/app/tools.js',
             'assets/app/showErrorsForm.js',
-            'assets/app/services.js',
             'assets/app/egress/info.js',
         ];
         return view('app.egresses.info', $data);
@@ -113,9 +107,7 @@ class EgressController extends Controller
         $data['subtitle'] = 'Edit egress';
         $data['cssFILES'] = [];
         $data['jsFILES']  = [
-            'assets/app/tools.js',
             'assets/app/showErrorsForm.js',
-            'assets/app/services.js',
             'assets/app/egress/edit.js',
         ];
         return view('app.egresses.edit', $data);

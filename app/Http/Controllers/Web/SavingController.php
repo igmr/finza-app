@@ -28,8 +28,6 @@ class SavingController extends Controller
         $data['subtitle'] = 'List saving';
         $data['cssFILES'] = [];
         $data['jsFILES']  = [
-            'assets/app/tools.js',
-            'assets/app/services.js',
             'assets/app/saving/index.js',
         ];
         return view('app.savings.index', $data);
@@ -44,8 +42,6 @@ class SavingController extends Controller
         $data['subtitle'] = 'Add saving';
         $data['cssFILES'] = [];
         $data['jsFILES']  = [
-            'assets/app/tools.js',
-            'assets/app/services.js',
             'assets/app/showErrorsForm.js',
             'assets/app/saving/create.js',
         ];
@@ -94,9 +90,7 @@ class SavingController extends Controller
         $data['subtitle'] = 'Info saving';
         $data['cssFILES'] = [];
         $data['jsFILES']  = [
-            'assets/app/tools.js',
             'assets/app/showErrorsForm.js',
-            'assets/app/services.js',
             'assets/app/saving/info.js',
         ];
         return view('app.savings.info', $data);
@@ -111,9 +105,7 @@ class SavingController extends Controller
         $data['subtitle'] = 'Edit saving';
         $data['cssFILES'] = [];
         $data['jsFILES']  = [
-            'assets/app/tools.js',
             'assets/app/showErrorsForm.js',
-            'assets/app/services.js',
             'assets/app/saving/edit.js',
         ];
         return view('app.savings.edit', $data);

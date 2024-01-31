@@ -27,8 +27,6 @@ class ClassificationController extends Controller
         $data['subtitle']    = 'List classification';
         $data['cssFILES']    = [];
         $data['jsFILES']     = [
-            'assets/app/tools.js',
-            'assets/app/services.js',
             'assets/app/classification/index.js',
         ];
         $data['labelCreate'] = 'Add classification';
@@ -45,8 +43,6 @@ class ClassificationController extends Controller
         $data['subtitle'] = 'Add classification';
         $data['cssFILES'] = [];
         $data['jsFILES']  = [
-            'assets/app/tools.js',
-            'assets/app/services.js',
             'assets/app/showErrorsForm.js',
             'assets/app/classification/create.js',
         ];
@@ -94,9 +90,7 @@ class ClassificationController extends Controller
         $data['subtitle'] = 'Info classification';
         $data['cssFILES'] = [];
         $data['jsFILES']  = [
-            'assets/app/tools.js',
             'assets/app/showErrorsForm.js',
-            'assets/app/services.js',
             'assets/app/classification/info.js',
         ];
         return view('app.classifications.info', $data);
@@ -111,9 +105,7 @@ class ClassificationController extends Controller
         $data['subtitle'] = 'Edit classification';
         $data['cssFILES'] = [];
         $data['jsFILES']  = [
-            'assets/app/tools.js',
             'assets/app/showErrorsForm.js',
-            'assets/app/services.js',
             'assets/app/classification/edit.js',
         ];
         return view('app.classifications.edit', $data);

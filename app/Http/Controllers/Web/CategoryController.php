@@ -27,8 +27,6 @@ class CategoryController extends Controller
         $data['subtitle'] = 'List categories';
         $data['cssFILES'] = [];
         $data['jsFILES']  = [
-            'assets/app/tools.js',
-            'assets/app/services.js',
             'assets/app/category/index.js',
         ];
         return view('app.categories.index', $data);
@@ -43,8 +41,6 @@ class CategoryController extends Controller
         $data['subtitle'] = 'Add category';
         $data['cssFILES'] = [];
         $data['jsFILES']  = [
-            'assets/app/tools.js',
-            'assets/app/services.js',
             'assets/app/showErrorsForm.js',
             'assets/app/category/create.js',
         ];
@@ -94,9 +90,7 @@ class CategoryController extends Controller
         $data['subtitle'] = 'Info category';
         $data['cssFILES'] = [];
         $data['jsFILES']  = [
-            'assets/app/tools.js',
             'assets/app/showErrorsForm.js',
-            'assets/app/services.js',
             'assets/app/category/info.js',
         ];
         return view('app.categories.info', $data);
@@ -111,9 +105,7 @@ class CategoryController extends Controller
         $data['subtitle'] = 'Edit category';
         $data['cssFILES'] = [];
         $data['jsFILES']  = [
-            'assets/app/tools.js',
             'assets/app/showErrorsForm.js',
-            'assets/app/services.js',
             'assets/app/category/edit.js',
         ];
         return view('app.categories.edit', $data);

@@ -37,8 +37,6 @@ class transactionController extends Controller
         $data['subtitle']    = 'List transactions';
         $data['cssFILES']    = [];
         $data['jsFILES']     = [
-            'assets/app/tools.js',
-            'assets/app/services.js',
             'assets/app/transaction/index.js',
         ];
         return view('app.transactions.index', $data);
@@ -53,8 +51,6 @@ class transactionController extends Controller
         $data['subtitle'] = 'Add transaction';
         $data['cssFILES'] = [];
         $data['jsFILES']  = [
-            'assets/app/tools.js',
-            'assets/app/services.js',
             'assets/app/showErrorsForm.js',
             'assets/app/transaction/create.js',
         ];
@@ -150,9 +146,7 @@ class transactionController extends Controller
         $data['subtitle'] = 'Info transaction';
         $data['cssFILES'] = [];
         $data['jsFILES']  = [
-            'assets/app/tools.js',
             'assets/app/showErrorsForm.js',
-            'assets/app/services.js',
             'assets/app/transaction/info.js',
         ];
         return view('app.transactions.info', $data);
@@ -167,9 +161,7 @@ class transactionController extends Controller
         $data['subtitle'] = 'Edit transaction';
         $data['cssFILES'] = [];
         $data['jsFILES']  = [
-            'assets/app/tools.js',
             'assets/app/showErrorsForm.js',
-            'assets/app/services.js',
             'assets/app/transaction/edit.js',
         ];
         return view('app.transactions.edit', $data);

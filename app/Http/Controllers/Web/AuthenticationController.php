@@ -28,9 +28,7 @@ class AuthenticationController extends Controller
         }
         $data['cssFILES'] = [];
         $data['jsFILES']  = [
-            'assets/app/tools.js',
             'assets/app/showErrorsForm.js',
-            'assets/app/services.js',
             'assets/app/authentication/authorization.js',
         ];
         return View('authorization', $data);

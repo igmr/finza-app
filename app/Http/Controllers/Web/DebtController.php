@@ -27,8 +27,6 @@ class DebtController extends Controller
         $data['subtitle'] = 'List debts';
         $data['cssFILES'] = [];
         $data['jsFILES']  = [
-            'assets/app/tools.js',
-            'assets/app/services.js',
             'assets/app/debt/index.js',
         ];
         return view('app.debts.index', $data);
@@ -43,8 +41,6 @@ class DebtController extends Controller
         $data['subtitle'] = 'Add debt';
         $data['cssFILES'] = [];
         $data['jsFILES']  = [
-            'assets/app/tools.js',
-            'assets/app/services.js',
             'assets/app/showErrorsForm.js',
             'assets/app/debt/create.js',
         ];
@@ -94,9 +90,7 @@ class DebtController extends Controller
         $data['subtitle'] = 'Info debt';
         $data['cssFILES'] = [];
         $data['jsFILES']  = [
-            'assets/app/tools.js',
             'assets/app/showErrorsForm.js',
-            'assets/app/services.js',
             'assets/app/debt/info.js',
         ];
         return view('app.debts.info', $data);
@@ -111,9 +105,7 @@ class DebtController extends Controller
         $data['subtitle'] = 'Edit debt';
         $data['cssFILES'] = [];
         $data['jsFILES']  = [
-            'assets/app/tools.js',
             'assets/app/showErrorsForm.js',
-            'assets/app/services.js',
             'assets/app/debt/edit.js',
         ];
         return view('app.debts.edit', $data);

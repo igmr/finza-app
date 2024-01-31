@@ -26,8 +26,6 @@ class IngressController extends Controller
         $data['subtitle']    = 'List ingresses';
         $data['cssFILES']    = [];
         $data['jsFILES']     = [
-            'assets/app/tools.js',
-            'assets/app/services.js',
             'assets/app/ingress/index.js',
         ];
         return view('app.ingresses.index', $data);
@@ -42,8 +40,6 @@ class IngressController extends Controller
         $data['subtitle'] = 'Add ingress';
         $data['cssFILES'] = [];
         $data['jsFILES']  = [
-            'assets/app/tools.js',
-            'assets/app/services.js',
             'assets/app/showErrorsForm.js',
             'assets/app/ingress/create.js',
         ];
@@ -95,9 +91,7 @@ class IngressController extends Controller
         $data['subtitle'] = 'Info ingress';
         $data['cssFILES'] = [];
         $data['jsFILES']  = [
-            'assets/app/tools.js',
             'assets/app/showErrorsForm.js',
-            'assets/app/services.js',
             'assets/app/ingress/info.js',
         ];
         return view('app.ingresses.info', $data);
@@ -112,9 +106,7 @@ class IngressController extends Controller
         $data['subtitle'] = 'Edit ingress';
         $data['cssFILES'] = [];
         $data['jsFILES']  = [
-            'assets/app/tools.js',
             'assets/app/showErrorsForm.js',
-            'assets/app/services.js',
             'assets/app/ingress/edit.js',
         ];
         return view('app.ingresses.edit', $data);
