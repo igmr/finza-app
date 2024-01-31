@@ -115,16 +115,19 @@
                                         <span>AB</span>
                                     </div>
                                     <div @class(['user-info'])>
-                                        <span @class(['lead-text'])>Abu Bin Ishtiyak</span>
-                                        <span @class(['sub-text'])>info@softnio.com</span>
+                                        <span @class(['lead-text'])>{{ auth()->user()->name }}</span>
+                                        <span @class(['sub-text'])>{{ auth()->user()->email }}</span>
                                     </div>
+                                    <!--
                                     <div @class(['user-action'])>
                                         <a @class(['btn', 'btn-icon', 'mr-n2']) href="#">
                                             <em @class(['icon', 'ni', 'ni-setting'])></em>
                                         </a>
                                     </div>
+                                    -->
                                 </div>
                             </div>
+                            <!--
                             <div @class(['dropdown-inner'])>
                                 <ul @class(['link-list'])>
                                     <li>
@@ -135,10 +138,11 @@
                                     </li>
                                 </ul>
                             </div>
+                            -->
                             <div @class(['dropdown-inner'])>
                                 <ul @class(['link-list'])>
                                     <li>
-                                        <a href="#">
+                                        <a href="#" onclick="fetchDeleteAuthenticate()">
                                             <em @class(['icon', 'ni', 'ni-signout'])></em>
                                             <span>Sign out</span>
                                         </a>
@@ -148,6 +152,7 @@
                         </div>
                     </li><!-- .dropdown -->
                     <li @class(['d-lg-none'])>
+                        <input type="hidden" id="token-logout" value="{{ csrf_token() }}" />
                         <a href="#" @class(['toggle', 'nk-quick-nav-icon', 'mr-n1']) data-target="sideNav">
                             <em @class(['icon', 'ni', 'ni-menu'])></em>
                         </a>

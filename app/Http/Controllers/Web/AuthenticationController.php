@@ -82,10 +82,13 @@ class AuthenticationController extends Controller
      */
     public function destroy(Request $req)
     {
-        $req->user()->tokens()->delete();
-        return response()->json(
-            ['success' => true],
-            Response::HTTP_OK
-        );
+        Auth::logout();
+        $req->session()->invalidate();
+        $req->session()->regenerateToken();
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'Log out',
+            'data'    => [],
+        ], Response::HTTP_OK);
     }
 }

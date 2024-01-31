@@ -30,7 +30,7 @@ Route::get('/',  [AuthenticationController::class, 'create'])->name('authenticat
 Route::post('/', [AuthenticationController::class, 'store'])->name('authentication.store');
 
 Route::middleware(['auth'])->prefix('app')->group(function () {
-    Route::post('/logout', [AuthenticationController::class, 'destroy'])->name('authentication.destroy');
+    Route::delete('/logout', [AuthenticationController::class, 'destroy'])->name('authentication.destroy');
     Route::get('/',        [DashboardController::class, 'index'])->name('dashboard');
 
     Route::prefix('bank')->group(function () {

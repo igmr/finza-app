@@ -1,5 +1,6 @@
 const baseUrl = `http://127.0.0.1:8000`;
 const urlPostAuthenticate = `${baseUrl}`;
+const urlDeleteAuthenticate = `${baseUrl}/app/logout`;
 const baseUrlBank = `${baseUrl}/app/bank`;
 const baseUrlGender = `${baseUrl}/app/gender`;
 const baseUrlClassification = `${baseUrl}/app/classification`;
@@ -29,6 +30,31 @@ const fetchPostAuthenticate = async (payload, token) => {
             status,
             data,
         };
+    } catch (error) {
+        console.log(error);
+        return {
+            status: 500,
+            data: {},
+        };
+    }
+};
+
+const fetchDeleteAuthenticate = async () => {
+    try {
+        const token = document.querySelector("#token-logout").value;
+        const response = await fetch(urlDeleteAuthenticate, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+                "X-CSRF-Token": token,
+            },
+        });
+        const data = await response.json();
+        const status = response.status;
+        if (status == 200) {
+            window.location.href = baseUrl;
+        }
     } catch (error) {
         console.log(error);
         return {
