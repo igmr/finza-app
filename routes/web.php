@@ -31,7 +31,7 @@ Route::post('/', [AuthenticationController::class, 'store'])->name('authenticati
 
 Route::middleware(['auth'])->prefix('app')->group(function () {
     Route::delete('/logout', [AuthenticationController::class, 'destroy'])->name('authentication.destroy');
-    Route::get('/',        [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/',          [DashboardController::class, 'index'])->name('dashboard');
 
     Route::prefix('bank')->group(function () {
         // Queries
