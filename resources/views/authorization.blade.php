@@ -38,7 +38,7 @@
                         ])>
                             <div @class(['nk-block', 'nk-block-middle', 'nk-auth-body'])>
                                 <div @class(['brand-logo', 'pb-5'])>
-                                    <a href="{{ route('authentication')}}" @class(['logo-link'])>
+                                    <a href="{{ route('authentication') }}" @class(['logo-link'])>
                                         <img @class(['logo-light', 'logo-img', 'logo-img-lg']) src="{{ url('assets/images/logo.png') }}"
                                             srcset="{{ url('assets/images/logo2x.png') }} 2x" alt="logo">
 
@@ -69,7 +69,8 @@
                                         </div>
                                         <div @class(['form-control-wrap'])>
                                             <input type="text" @class(['form-control', 'form-control-lg']) id="email"
-                                                name="email" placeholder="Enter your email address" value="demo@demo.com">
+                                                name="email" placeholder="Enter your email address"
+                                                value="demo@demo.com">
                                         </div>
                                     </div><!-- .form-group -->
                                     <div @class(['form-group'])>
@@ -105,6 +106,8 @@
     <!-- JavaScript -->
     <script src="{{ url('assets/js/bundle.js?ver=2.7.0') }}"></script>
     <script src="{{ url('assets/js/scripts.js?ver=2.7.0') }}"></script>
+    <script src="{{ url('assets/app/tools.js') }}"></script>
+    <script src="{{ url('assets/app/services.js') }}"></script>
     <!-- Custom JS -->
     @foreach ($jsFILES as $jsFile)
         <script src="{{ url($jsFile) }}"></script>
