@@ -31,6 +31,7 @@ class GenderController extends Controller
         ];
         $data['labelCreate'] = 'Add Gender';
         $data['routeCreate'] = 'app.gender.create';
+        $this->logLoadView(auth()->user()->id, "gender.index");
         return view('app.genders.index', $data);
     }
 
@@ -46,6 +47,7 @@ class GenderController extends Controller
             'assets/app/showErrorsForm.js',
             'assets/app/gender/create.js',
         ];
+        $this->logLoadView(auth()->user()->id, "gender.create");
         return view('app.genders.create', $data);
     }
 
@@ -63,16 +65,19 @@ class GenderController extends Controller
             if ($data) {
                 $response['success'] = true;
                 $response['data'] = $data;
+                $this->logCreated(auth()->user()->id, "gender.store", $data['id']);
                 return response()->json(
                     $response,
                     Response::HTTP_CREATED
                 );
             }
+            $this->logError(auth()->user()->id, 'gender.store', 'Data invalid.');
             return response()->json(
                 $response,
                 Response::HTTP_BAD_REQUEST
             );
         } catch (\Exception $ex) {
+            $this->logException(auth()->user()->id, "gender.store", "{$ex->getMessage()}");
             throw new HttpResponseException(response()->json([
                 'success' => false,
                 'message' => 'Data invalid',
@@ -93,6 +98,7 @@ class GenderController extends Controller
             'assets/app/showErrorsForm.js',
             'assets/app/gender/info.js',
         ];
+        $this->logLoadView(auth()->user()->id, "gender.show", "Load view for genderID: {$id}");
         return view('app.genders.info', $data);
     }
 
@@ -108,6 +114,7 @@ class GenderController extends Controller
             'assets/app/showErrorsForm.js',
             'assets/app/gender/edit.js',
         ];
+        $this->logLoadView(auth()->user()->id, "gender.edit", "Load view for genderID: {$id}");
         return view('app.genders.edit', $data);
     }
 
@@ -125,6 +132,7 @@ class GenderController extends Controller
             }
         }
         if ($isNull == false) {
+            $this->logError(auth()->user()->id, "gender.update", "Data invalid for genderID: {$id}");
             throw new HttpResponseException(response()->json([
                 'success' => false,
                 'message' => 'Data invalid',
@@ -134,6 +142,7 @@ class GenderController extends Controller
         $data = $this->service->update($id, $payload);
         $response['success'] = true;
         $response['data']    = $data;
+        $this->logUpdated(auth()->user()->id, "gender.update", $data['id']);
         return response()->json(
             $response,
             Response::HTTP_OK
@@ -145,60 +154,75 @@ class GenderController extends Controller
      */
     public function destroy(string $id)
     {
-        if ($this->service->destroy($id)) {
-            $response['success'] = true;
-            $response['data'] = ['general' => ['Gender deleted.']];
-            return response()->json(
-                $response,
-                Response::HTTP_CREATED
-            );
+        try {
+            if ($this->service->destroy($id)) {
+                $response['success'] = true;
+                $response['data'] = ['general' => ['Gender deleted.']];
+                $this->logDeleted(auth()->user()->id, "gender.destroy", $id);
+                return response()->json(
+                    $response,
+                    Response::HTTP_CREATED
+                );
+            }
+            throw new HttpResponseException(response()->json([
+                'success' => false,
+                'message' => 'Data invalid',
+                'errors'  => ['general' => ['Error in server.']],
+            ], Response::HTTP_BAD_REQUEST));
+        } catch (\Exception $ex) {
+            $this->logException(auth()->user()->id, "gender.destroy", "{$ex->getMessage()}");
         }
-        throw new HttpResponseException(response()->json([
-            'success' => false,
-            'message' => 'Data invalid',
-            'errors'  => ['general' => ['Error in server.']],
-        ], Response::HTTP_BAD_REQUEST));
     }
 
     public function restore(string $id)
     {
-        if ($this->service->restore($id)) {
-            $response['success'] = true;
-            $response['data'] = ['general' => ['Gender restored.']];
-            return response()->json(
-                $response,
-                Response::HTTP_CREATED
-            );
+        try {
+            if ($this->service->restore($id)) {
+                $response['success'] = true;
+                $response['data'] = ['general' => ['Gender restored.']];
+                $this->logRestored(auth()->user()->id, "gender.restore", $id);
+                return response()->json(
+                    $response,
+                    Response::HTTP_CREATED
+                );
+            }
+            throw new HttpResponseException(response()->json([
+                'success' => false,
+                'message' => 'Data invalid',
+                'errors'  => ['general' => ['Error in server.']],
+            ], Response::HTTP_BAD_REQUEST));
+        } catch (\Exception $ex) {
+            $this->logException(auth()->user()->id, "gender.restore", "{$ex->getMessage()}");
         }
-        throw new HttpResponseException(response()->json([
-            'success' => false,
-            'message' => 'Data invalid',
-            'errors'  => ['general' => ['Error in server.']],
-        ], Response::HTTP_BAD_REQUEST));
     }
 
     public function datatable()
     {
+        $this->logQuery(auth()->user()->id, "gender.datatable");
         return $this->service->datatable();
     }
 
     public function detail(int $id)
     {
+        $this->logQuery(auth()->user()->id, "gender.detail", "Load Query for genderID: {$id}.");
         return $this->service->detail($id);
     }
 
     public function list(Request $req)
     {
+        $this->logQuery(auth()->user()->id, "gender.list");
         return $this->service->list($req);
     }
 
     public function info(string $id)
     {
+        $this->logQuery(auth()->user()->id, "gender.info", "Load Query for genderID: {$id}.");
         return $this->service->info($id);
     }
 
     public function select()
     {
+        $this->logQuery(auth()->user()->id, "gender.select");
         return $this->service->select();
     }
 }

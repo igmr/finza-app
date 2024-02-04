@@ -29,6 +29,7 @@ class EgressController extends Controller
         $data['jsFILES']     = [
             'assets/app/egress/index.js',
         ];
+        $this->logLoadView(auth()->user()->id, "egress.index");
         return view('app.egresses.index', $data);
     }
 
@@ -44,6 +45,7 @@ class EgressController extends Controller
             'assets/app/showErrorsForm.js',
             'assets/app/egress/create.js',
         ];
+        $this->logLoadView(auth()->user()->id, "egress.create");
         return view('app.egresses.create', $data);
     }
 
@@ -63,6 +65,7 @@ class EgressController extends Controller
             $payload['acc_id']   = $payload['account'] ?? null;
             $data    = $this->service->store($payload);
             if ($data) {
+                $this->logCreated(auth()->user()->id, "egress.store", $data['id']);
                 $response['success'] = true;
                 $response['data'] = $data;
                 return response()->json(
@@ -70,11 +73,13 @@ class EgressController extends Controller
                     Response::HTTP_CREATED
                 );
             }
+            $this->logError(auth()->user()->id, 'egress.store', 'Data invalid.');
             return response()->json(
                 $response,
                 Response::HTTP_BAD_REQUEST
             );
         } catch (\Exception $ex) {
+            $this->logException(auth()->user()->id, "egress.store", "{$ex->getMessage()}");
             throw new HttpResponseException(response()->json([
                 'success' => false,
                 'message' => 'Data invalid',
@@ -95,6 +100,7 @@ class EgressController extends Controller
             'assets/app/showErrorsForm.js',
             'assets/app/egress/info.js',
         ];
+        $this->logLoadView(auth()->user()->id, "egress.show", "Load view for egressID: {$id}");
         return view('app.egresses.info', $data);
     }
 
@@ -110,6 +116,7 @@ class EgressController extends Controller
             'assets/app/showErrorsForm.js',
             'assets/app/egress/edit.js',
         ];
+        $this->logLoadView(auth()->user()->id, "egress.edit", "Load view for egressID: {$id}");
         return view('app.egresses.edit', $data);
     }
 
@@ -139,6 +146,7 @@ class EgressController extends Controller
             }
         }
         if ($isNull == false) {
+            $this->logError(auth()->user()->id, "egress.update", "Data invalid for egressID: {$id}");
             throw new HttpResponseException(response()->json([
                 'success' => false,
                 'message' => 'Data invalid',
@@ -148,6 +156,7 @@ class EgressController extends Controller
         $data = $this->service->update($id, $payload);
         $response['success'] = true;
         $response['data']    = $data;
+        $this->logUpdated(auth()->user()->id, "egress.update", $data['id']);
         return response()->json(
             $response,
             Response::HTTP_OK
@@ -159,60 +168,75 @@ class EgressController extends Controller
      */
     public function destroy(string $id)
     {
-        if ($this->service->destroy($id)) {
-            $response['success'] = true;
-            $response['data'] = ['general' => ['Egress deleted.']];
-            return response()->json(
-                $response,
-                Response::HTTP_OK
-            );
+        try {
+            if ($this->service->destroy($id)) {
+                $response['success'] = true;
+                $response['data'] = ['general' => ['Egress deleted.']];
+                $this->logDeleted(auth()->user()->id, "egress.destroy", $id);
+                return response()->json(
+                    $response,
+                    Response::HTTP_OK
+                );
+            }
+            throw new HttpResponseException(response()->json([
+                'success' => false,
+                'message' => 'Data invalid',
+                'errors'  => ['general' => ['Error in server.']],
+            ], Response::HTTP_BAD_REQUEST));
+        } catch (\Exception $ex) {
+            $this->logException(auth()->user()->id, "egress.destroy", "{$ex->getMessage()}");
         }
-        throw new HttpResponseException(response()->json([
-            'success' => false,
-            'message' => 'Data invalid',
-            'errors'  => ['general' => ['Error in server.']],
-        ], Response::HTTP_BAD_REQUEST));
     }
 
     public function restore(string $id)
     {
-        if ($this->service->restore($id)) {
-            $response['success'] = true;
-            $response['data'] = ['general' => ['Egress restored.']];
-            return response()->json(
-                $response,
-                Response::HTTP_OK
-            );
+        try {
+            if ($this->service->restore($id)) {
+                $response['success'] = true;
+                $response['data'] = ['general' => ['Egress restored.']];
+                $this->logRestored(auth()->user()->id, "egress.restore", $id);
+                return response()->json(
+                    $response,
+                    Response::HTTP_OK
+                );
+            }
+            throw new HttpResponseException(response()->json([
+                'success' => false,
+                'message' => 'Data invalid',
+                'errors'  => ['general' => ['Error in server.']],
+            ], Response::HTTP_BAD_REQUEST));
+        } catch (\Exception $ex) {
+            $this->logException(auth()->user()->id, "egress.restore", "{$ex->getMessage()}");
         }
-        throw new HttpResponseException(response()->json([
-            'success' => false,
-            'message' => 'Data invalid',
-            'errors'  => ['general' => ['Error in server.']],
-        ], Response::HTTP_BAD_REQUEST));
     }
 
     public function datatable()
     {
+        $this->logQuery(auth()->user()->id, "egress.datatable");
         return $this->service->datatable();
     }
 
     public function detail(int $id)
     {
+        $this->logQuery(auth()->user()->id, "egress.detail", "Load Query for egressID: {$id}.");
         return $this->service->detail($id);
     }
 
     public function list(Request $req)
     {
+        $this->logQuery(auth()->user()->id, "egress.list");
         return $this->service->list($req);
     }
 
     public function info(string $id)
     {
+        $this->logQuery(auth()->user()->id, "egress.info", "Load Query for egressID: {$id}.");
         return $this->service->info($id);
     }
 
     public function select()
     {
+        $this->logQuery(auth()->user()->id, "egress.select");
         return $this->service->select();
     }
 }

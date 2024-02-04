@@ -31,6 +31,7 @@ class AuthenticationController extends Controller
             'assets/app/showErrorsForm.js',
             'assets/app/authentication/authorization.js',
         ];
+        $this->logLoadView(0, 'authorization');
         return View('authorization', $data);
     }
 
@@ -42,11 +43,13 @@ class AuthenticationController extends Controller
         $credentials = $req->validated();
         if (Auth::attempt($credentials)) {
             $req->session()->regenerate();
+            $this->logAuthorization(auth()->user()->id);
             return response()->json(
                 ['success' => true],
                 Response::HTTP_OK
             );
         }
+        $this->logAuthorizationError($credentials['email']);
         return response()->json(
             ['email' => 'The provided credentials do not match our records.'],
             Response::HTTP_BAD_REQUEST
@@ -82,6 +85,7 @@ class AuthenticationController extends Controller
      */
     public function destroy(Request $req)
     {
+        $this->logAuthentication(auth()->user()->id, 'Logout successful.');
         Auth::logout();
         $req->session()->invalidate();
         $req->session()->regenerateToken();

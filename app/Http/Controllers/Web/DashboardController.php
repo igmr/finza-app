@@ -16,6 +16,7 @@ class DashboardController extends Controller
         $data['subtitle'] = 'Dashboard';
         $data['cssFILES'] = [];
         $data['jsFILES']  = [];
+        $this->logLoadView(auth()->user()->id, "dashboard.index");
         return view('app.dashboard', $data);
     }
 

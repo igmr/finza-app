@@ -29,6 +29,7 @@ class BudgetController extends Controller
         $data['jsFILES']  = [
             'assets/app/budget/index.js',
         ];
+        $this->logLoadView(auth()->user()->id, "budget.index");
         return view('app.budgets.index', $data);
     }
 
@@ -44,6 +45,7 @@ class BudgetController extends Controller
             'assets/app/showErrorsForm.js',
             'assets/app/budget/create.js',
         ];
+        $this->logLoadView(auth()->user()->id, "budget.create");
         return view('app.budgets.create', $data);
     }
 
@@ -62,16 +64,19 @@ class BudgetController extends Controller
             if ($data) {
                 $response['success'] = true;
                 $response['data'] = $data;
+                $this->logCreated(auth()->user()->id, "budget.store", $data['id']);
                 return response()->json(
                     $response,
                     Response::HTTP_CREATED
                 );
             }
+            $this->logError(auth()->user()->id, 'budget.store', 'Data invalid.');
             return response()->json(
                 $response,
                 Response::HTTP_BAD_REQUEST
             );
         } catch (\Exception $ex) {
+            $this->logException(auth()->user()->id, "budget.store", "{$ex->getMessage()}");
             $response['success'] = false;
             $response['data']    = [$ex];
             return response()->json(
@@ -93,6 +98,7 @@ class BudgetController extends Controller
             'assets/app/showErrorsForm.js',
             'assets/app/budget/info.js',
         ];
+        $this->logLoadView(auth()->user()->id, "budget.show", "Load view for budgetID: {$id}");
         return view('app.budgets.info', $data);
     }
 
@@ -108,6 +114,7 @@ class BudgetController extends Controller
             'assets/app/showErrorsForm.js',
             'assets/app/budget/edit.js',
         ];
+        $this->logLoadView(auth()->user()->id, "budget.edit", "Load view for budgetID: {$id}");
         return view('app.budgets.edit', $data);
     }
 
@@ -128,6 +135,7 @@ class BudgetController extends Controller
             }
         }
         if ($isNull == false) {
+            $this->logError(auth()->user()->id, "budget.update", "Data invalid for budgetID: {$id}");
             throw new HttpResponseException(response()->json([
                 'message' => 'Data invalid',
                 'errors'  => ['general' => ['Error']],
@@ -136,6 +144,7 @@ class BudgetController extends Controller
         $data = $this->service->update($id, $payload);
         $response['success'] = true;
         $response['data']    = $data;
+        $this->logUpdated(auth()->user()->id, "budget.update", $data['id']);
         return response()->json(
             $response,
             Response::HTTP_OK
@@ -147,60 +156,75 @@ class BudgetController extends Controller
      */
     public function destroy(string $id)
     {
-        if ($this->service->destroy($id)) {
-            $response['success'] = true;
-            $response['data'] = ['general' => ['Budget deleted.']];
-            return response()->json(
-                $response,
-                Response::HTTP_OK
-            );
+        try {
+            if ($this->service->destroy($id)) {
+                $response['success'] = true;
+                $response['data'] = ['general' => ['Budget deleted.']];
+                $this->logDeleted(auth()->user()->id, "budget.destroy", $id);
+                return response()->json(
+                    $response,
+                    Response::HTTP_OK
+                );
+            }
+            throw new HttpResponseException(response()->json([
+                'success' => false,
+                'message' => 'Data invalid',
+                'errors'  => ['general' => ['Error in server.']],
+            ], Response::HTTP_BAD_REQUEST));
+        } catch (\Exception $ex) {
+            $this->logException(auth()->user()->id, "budget.destroy", "{$ex->getMessage()}");
         }
-        throw new HttpResponseException(response()->json([
-            'success' => false,
-            'message' => 'Data invalid',
-            'errors'  => ['general' => ['Error in server.']],
-        ], Response::HTTP_BAD_REQUEST));
     }
 
     public function restore(string $id)
     {
-        if ($this->service->restore($id)) {
-            $response['success'] = true;
-            $response['data'] = ['general' => ['Budget restored.']];
-            return response()->json(
-                $response,
-                Response::HTTP_OK
-            );
+        try {
+            if ($this->service->restore($id)) {
+                $response['success'] = true;
+                $response['data'] = ['general' => ['Budget restored.']];
+                $this->logRestored(auth()->user()->id, "budget.restored", $id);
+                return response()->json(
+                    $response,
+                    Response::HTTP_OK
+                );
+            }
+            throw new HttpResponseException(response()->json([
+                'success' => false,
+                'message' => 'Data invalid',
+                'errors'  => ['general' => ['Error in server.']],
+            ], Response::HTTP_BAD_REQUEST));
+        } catch (\Exception $ex) {
+            $this->logException(auth()->user()->id, "budget.restored", "{$ex->getMessage()}");
         }
-        throw new HttpResponseException(response()->json([
-            'success' => false,
-            'message' => 'Data invalid',
-            'errors'  => ['general' => ['Error in server.']],
-        ], Response::HTTP_BAD_REQUEST));
     }
 
     public function datatable()
     {
+        $this->logQuery(auth()->user()->id, "budget.datatable");
         return $this->service->datatable();
     }
 
     public function detail(int $id)
     {
+        $this->logQuery(auth()->user()->id, "budget.detail", "Load Query for budgetID: {$id}.");
         return $this->service->detail($id);
     }
 
     public function list(Request $req)
     {
+        $this->logQuery(auth()->user()->id, "budget.list");
         return $this->service->list($req);
     }
 
     public function info(string $id)
     {
+        $this->logQuery(auth()->user()->id, "budget.info", "Load Query for budgetID: {$id}.");
         return $this->service->info($id);
     }
 
     public function select()
     {
+        $this->logQuery(auth()->user()->id, "budget.select");
         return $this->service->select();
     }
 }

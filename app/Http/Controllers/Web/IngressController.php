@@ -28,6 +28,7 @@ class IngressController extends Controller
         $data['jsFILES']     = [
             'assets/app/ingress/index.js',
         ];
+        $this->logLoadView(auth()->user()->id, "ingress.index");
         return view('app.ingresses.index', $data);
     }
 
@@ -43,6 +44,7 @@ class IngressController extends Controller
             'assets/app/showErrorsForm.js',
             'assets/app/ingress/create.js',
         ];
+        $this->logLoadView(auth()->user()->id, "ingress.create");
         return view('app.ingresses.create', $data);
     }
 
@@ -62,6 +64,7 @@ class IngressController extends Controller
             $payload['acc_id']   = $payload['account'] ?? null;
             $data    = $this->service->store($payload);
             if ($data) {
+                $this->logCreated(auth()->user()->id, "ingress.store", $data['id']);
                 $response['success'] = true;
                 $response['data'] = $data;
                 return response()->json(
@@ -69,11 +72,13 @@ class IngressController extends Controller
                     Response::HTTP_CREATED
                 );
             }
+            $this->logError(auth()->user()->id, 'ingress.store', 'Data invalid.');
             return response()->json(
                 $response,
                 Response::HTTP_BAD_REQUEST
             );
         } catch (\Exception $ex) {
+            $this->logException(auth()->user()->id, "ingress.store", "{$ex->getMessage()}");
             throw new HttpResponseException(response()->json([
                 'success' => false,
                 'message' => 'Data invalid',
@@ -94,6 +99,7 @@ class IngressController extends Controller
             'assets/app/showErrorsForm.js',
             'assets/app/ingress/info.js',
         ];
+        $this->logLoadView(auth()->user()->id, "ingress.show", "Load view for ingressID: {$id}");
         return view('app.ingresses.info', $data);
     }
 
@@ -109,6 +115,7 @@ class IngressController extends Controller
             'assets/app/showErrorsForm.js',
             'assets/app/ingress/edit.js',
         ];
+        $this->logLoadView(auth()->user()->id, "ingress.edit", "Load view for ingressID: {$id}");
         return view('app.ingresses.edit', $data);
     }
 
@@ -138,6 +145,7 @@ class IngressController extends Controller
             }
         }
         if ($isNull == false) {
+            $this->logError(auth()->user()->id, "ingress.update", "Data invalid for ingressID: {$id}");
             throw new HttpResponseException(response()->json([
                 'success' => false,
                 'message' => 'Data invalid',
@@ -147,6 +155,7 @@ class IngressController extends Controller
         $data = $this->service->update($id, $payload);
         $response['success'] = true;
         $response['data']    = $data;
+        $this->logUpdated(auth()->user()->id, "ingress.update", $data['id']);
         return response()->json(
             $response,
             Response::HTTP_OK
@@ -158,60 +167,75 @@ class IngressController extends Controller
      */
     public function destroy(string $id)
     {
-        if ($this->service->destroy($id)) {
-            $response['success'] = true;
-            $response['data'] = ['general' => ['Ingress deleted.']];
-            return response()->json(
-                $response,
-                Response::HTTP_OK
-            );
+        try {
+            if ($this->service->destroy($id)) {
+                $response['success'] = true;
+                $response['data'] = ['general' => ['Ingress deleted.']];
+                $this->logDeleted(auth()->user()->id, "ingress.destroy", $id);
+                return response()->json(
+                    $response,
+                    Response::HTTP_OK
+                );
+            }
+            throw new HttpResponseException(response()->json([
+                'success' => false,
+                'message' => 'Data invalid',
+                'errors'  => ['general' => ['Error in server.']],
+            ], Response::HTTP_BAD_REQUEST));
+        } catch (\Exception $ex) {
+            $this->logException(auth()->user()->id, "ingress.destroy", "{$ex->getMessage()}");
         }
-        throw new HttpResponseException(response()->json([
-            'success' => false,
-            'message' => 'Data invalid',
-            'errors'  => ['general' => ['Error in server.']],
-        ], Response::HTTP_BAD_REQUEST));
     }
 
     public function restore(string $id)
     {
-        if ($this->service->restore($id)) {
-            $response['success'] = true;
-            $response['data'] = ['general' => ['Ingress restored.']];
-            return response()->json(
-                $response,
-                Response::HTTP_OK
-            );
+        try {
+            if ($this->service->restore($id)) {
+                $response['success'] = true;
+                $response['data'] = ['general' => ['Ingress restored.']];
+                $this->logRestored(auth()->user()->id, "ingress.restore", $id);
+                return response()->json(
+                    $response,
+                    Response::HTTP_OK
+                );
+            }
+            throw new HttpResponseException(response()->json([
+                'success' => false,
+                'message' => 'Data invalid',
+                'errors'  => ['general' => ['Error in server.']],
+            ], Response::HTTP_BAD_REQUEST));
+        } catch (\Exception $ex) {
+            $this->logException(auth()->user()->id, "ingress.restore", "{$ex->getMessage()}");
         }
-        throw new HttpResponseException(response()->json([
-            'success' => false,
-            'message' => 'Data invalid',
-            'errors'  => ['general' => ['Error in server.']],
-        ], Response::HTTP_BAD_REQUEST));
     }
 
     public function datatable()
     {
+        $this->logQuery(auth()->user()->id, "ingress.datatable");
         return $this->service->datatable();
     }
 
     public function detail(int $id)
     {
+        $this->logQuery(auth()->user()->id, "ingress.detail", "Load Query for ingressID: {$id}.");
         return $this->service->detail($id);
     }
 
     public function list(Request $req)
     {
+        $this->logQuery(auth()->user()->id, "ingress.list");
         return $this->service->list($req);
     }
 
     public function info(string $id)
     {
+        $this->logQuery(auth()->user()->id, "ingress.info", "Load Query for ingressID: {$id}.");
         return $this->service->info($id);
     }
 
     public function select()
     {
+        $this->logQuery(auth()->user()->id, "ingress.select");
         return $this->service->select();
     }
 }

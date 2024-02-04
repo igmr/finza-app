@@ -31,6 +31,7 @@ class ClassificationController extends Controller
         ];
         $data['labelCreate'] = 'Add classification';
         $data['routeCreate'] = 'app.classification.create';
+        $this->logLoadView(auth()->user()->id, "classification.index");
         return view('app.classifications.index', $data);
     }
 
@@ -46,6 +47,7 @@ class ClassificationController extends Controller
             'assets/app/showErrorsForm.js',
             'assets/app/classification/create.js',
         ];
+        $this->logLoadView(auth()->user()->id, "classification.create");
         return view('app.classifications.create', $data);
     }
 
@@ -63,16 +65,19 @@ class ClassificationController extends Controller
             if ($data) {
                 $response['success'] = true;
                 $response['data'] = $data;
+                $this->logCreated(auth()->user()->id, "classification.store", $data['id']);
                 return response()->json(
                     $response,
                     Response::HTTP_CREATED
                 );
             }
+            $this->logError(auth()->user()->id, 'classification.store', 'Data invalid.');
             return response()->json(
                 $response,
                 Response::HTTP_BAD_REQUEST
             );
         } catch (\Exception $ex) {
+            $this->logException(auth()->user()->id, "classification.store", "{$ex->getMessage()}");
             throw new HttpResponseException(response()->json([
                 'success' => false,
                 'message' => 'Data invalid',
@@ -93,6 +98,7 @@ class ClassificationController extends Controller
             'assets/app/showErrorsForm.js',
             'assets/app/classification/info.js',
         ];
+        $this->logLoadView(auth()->user()->id, "classification.show", "Load view for classificationID: {$id}");
         return view('app.classifications.info', $data);
     }
 
@@ -108,6 +114,7 @@ class ClassificationController extends Controller
             'assets/app/showErrorsForm.js',
             'assets/app/classification/edit.js',
         ];
+        $this->logLoadView(auth()->user()->id, "classification.edit", "Load view for classificationID: {$id}");
         return view('app.classifications.edit', $data);
     }
 
@@ -125,6 +132,7 @@ class ClassificationController extends Controller
             }
         }
         if ($isNull == false) {
+            $this->logError(auth()->user()->id, "classification.update", "Data invalid for classificationID: {$id}");
             throw new HttpResponseException(response()->json([
                 'success' => false,
                 'message' => 'Data invalid',
@@ -134,6 +142,7 @@ class ClassificationController extends Controller
         $data = $this->service->update($id, $payload);
         $response['success'] = true;
         $response['data']    = $data;
+        $this->logUpdated(auth()->user()->id, "classification.update", $data['id']);
         return response()->json(
             $response,
             Response::HTTP_OK
@@ -145,60 +154,75 @@ class ClassificationController extends Controller
      */
     public function destroy(string $id)
     {
-        if ($this->service->destroy($id)) {
-            $response['success'] = true;
-            $response['data'] = ['general' => ['Classification deleted.']];
-            return response()->json(
-                $response,
-                Response::HTTP_CREATED
-            );
+        try {
+            if ($this->service->destroy($id)) {
+                $response['success'] = true;
+                $response['data'] = ['general' => ['Classification deleted.']];
+                $this->logDeleted(auth()->user()->id, "classification.destroy", $id);
+                return response()->json(
+                    $response,
+                    Response::HTTP_CREATED
+                );
+            }
+            throw new HttpResponseException(response()->json([
+                'success' => false,
+                'message' => 'Data invalid',
+                'errors'  => ['general' => ['Error in server.']],
+            ], Response::HTTP_BAD_REQUEST));
+        } catch (\Exception $ex) {
+            $this->logException(auth()->user()->id, "classification.destroy", "{$ex->getMessage()}");
         }
-        throw new HttpResponseException(response()->json([
-            'success' => false,
-            'message' => 'Data invalid',
-            'errors'  => ['general' => ['Error in server.']],
-        ], Response::HTTP_BAD_REQUEST));
     }
 
     public function restore(string $id)
     {
-        if ($this->service->restore($id)) {
-            $response['success'] = true;
-            $response['data'] = ['general' => ['Classification restored.']];
-            return response()->json(
-                $response,
-                Response::HTTP_CREATED
-            );
+        try {
+            if ($this->service->restore($id)) {
+                $response['success'] = true;
+                $response['data'] = ['general' => ['Classification restored.']];
+                $this->logRestored(auth()->user()->id, "classification.restore", $id);
+                return response()->json(
+                    $response,
+                    Response::HTTP_CREATED
+                );
+            }
+            throw new HttpResponseException(response()->json([
+                'success' => false,
+                'message' => 'Data invalid',
+                'errors'  => ['general' => ['Error in server.']],
+            ], Response::HTTP_BAD_REQUEST));
+        } catch (\Exception $ex) {
+            $this->logException(auth()->user()->id, "classification.restore", "{$ex->getMessage()}");
         }
-        throw new HttpResponseException(response()->json([
-            'success' => false,
-            'message' => 'Data invalid',
-            'errors'  => ['general' => ['Error in server.']],
-        ], Response::HTTP_BAD_REQUEST));
     }
 
     public function datatable()
     {
+        $this->logQuery(auth()->user()->id, "classification.datatable");
         return $this->service->datatable();
     }
 
     public function detail(int $id)
     {
+        $this->logQuery(auth()->user()->id, "classification.detail", "Load Query for classificationID: {$id}.");
         return $this->service->detail($id);
     }
 
     public function list(Request $req)
     {
+        $this->logQuery(auth()->user()->id, "classification.list");
         return $this->service->list($req);
     }
 
     public function info(string $id)
     {
+        $this->logQuery(auth()->user()->id, "classification.info", "Load Query for classificationID: {$id}.");
         return $this->service->info($id);
     }
 
     public function select()
     {
+        $this->logQuery(auth()->user()->id, "classification.select");
         return $this->service->select();
     }
 }

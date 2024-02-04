@@ -34,6 +34,7 @@ class BankController extends Controller
         $data['jsFILES']  = [
             'assets/app/bank/index.js',
         ];
+        $this->logLoadView(auth()->user()->id, "bank.index");
         return view('app.banks.index', $data);
     }
 
@@ -49,6 +50,7 @@ class BankController extends Controller
             'assets/app/showErrorsForm.js',
             'assets/app/bank/create.js',
         ];
+        $this->logLoadView(auth()->user()->id, "bank.create");
         return view('app.banks.create', $data);
     }
 
@@ -104,9 +106,11 @@ class BankController extends Controller
             /* CREATE ACCOUNT                                                */
             /* ============================================================= */
             $store = $this->serviceAccount->store($data);
+            $this->logCreated(auth()->user()->id, "bank.store", $store['id']);
             DB::commit();
             return $bank;
         } catch (\Exception $ex) {
+            $this->logException(auth()->user()->id, "bank.store", "{$ex->getMessage()}");
             DB::rollBack();
             return new stdClass();
         }
@@ -124,6 +128,7 @@ class BankController extends Controller
             'assets/app/showErrorsForm.js',
             'assets/app/bank/info.js',
         ];
+        $this->logLoadView(auth()->user()->id, "bank.show", "Load view for bankID: {$id}");
         return view('app.banks.info', $data);
     }
 
@@ -139,6 +144,7 @@ class BankController extends Controller
             'assets/app/showErrorsForm.js',
             'assets/app/bank/edit.js',
         ];
+        $this->logLoadView(auth()->user()->id, "bank.edit", "Load view for bankID: {$id}");
         return view('app.banks.edit', $data);
     }
 
@@ -156,6 +162,7 @@ class BankController extends Controller
             }
         }
         if ($isNull == false) {
+            $this->logError(auth()->user()->id, "bank.update", "Data invalid for bankID: {$id}");
             throw new HttpResponseException(response()->json([
                 'success' => false,
                 'message' => 'Data invalid',
@@ -165,6 +172,7 @@ class BankController extends Controller
         $data = $this->service->update($id, $payload);
         $response['success'] = true;
         $response['data']    = $data;
+        $this->logUpdated(auth()->user()->id, "bank.update", $data['id']);
         return response()->json(
             $response,
             Response::HTTP_OK
@@ -176,60 +184,75 @@ class BankController extends Controller
      */
     public function destroy(string $id)
     {
-        if ($this->service->destroy($id)) {
-            $response['success'] = true;
-            $response['data'] = ['general' => ['Bank deleted.']];
-            return response()->json(
-                $response,
-                Response::HTTP_OK
-            );
+        try {
+            if ($this->service->destroy($id)) {
+                $response['success'] = true;
+                $response['data'] = ['general' => ['Bank deleted.']];
+                $this->logDeleted(auth()->user()->id, "bank.destroy", $id);
+                return response()->json(
+                    $response,
+                    Response::HTTP_OK
+                );
+            }
+            throw new HttpResponseException(response()->json([
+                'success' => false,
+                'message' => 'Data invalid',
+                'errors'  => ['general' => ['Error in server.']],
+            ], Response::HTTP_BAD_REQUEST));
+        } catch (\Exception $ex) {
+            $this->logException(auth()->user()->id, "bank.destroy", "{$ex->getMessage()}");
         }
-        throw new HttpResponseException(response()->json([
-            'success' => false,
-            'message' => 'Data invalid',
-            'errors'  => ['general' => ['Error in server.']],
-        ], Response::HTTP_BAD_REQUEST));
     }
 
     public function restore(string $id)
     {
-        if ($this->service->restore($id)) {
-            $response['success'] = true;
-            $response['data'] = ['general' => ['Bank restored.']];
-            return response()->json(
-                $response,
-                Response::HTTP_OK
-            );
+        try {
+            if ($this->service->restore($id)) {
+                $response['success'] = true;
+                $response['data'] = ['general' => ['Bank restored.']];
+                $this->logRestored(auth()->user()->id, "bank.restore", $id);
+                return response()->json(
+                    $response,
+                    Response::HTTP_OK
+                );
+            }
+            throw new HttpResponseException(response()->json([
+                'success' => false,
+                'message' => 'Data invalid',
+                'errors'  => ['general' => ['Error in server.']],
+            ], Response::HTTP_BAD_REQUEST));
+        } catch (\Exception $ex) {
+            $this->logException(auth()->user()->id, "bank.restore", "{$ex->getMessage()}");
         }
-        throw new HttpResponseException(response()->json([
-            'success' => false,
-            'message' => 'Data invalid',
-            'errors'  => ['general' => ['Error in server.']],
-        ], Response::HTTP_BAD_REQUEST));
     }
 
     public function datatable()
     {
+        $this->logQuery(auth()->user()->id, "bank.datatable");
         return $this->service->datatable();
     }
 
     public function detail(int $id)
     {
+        $this->logQuery(auth()->user()->id, "bank.detail", "Load Query for bankID: {$id}.");
         return $this->service->detail($id);
     }
 
     public function list(Request $req)
     {
+        $this->logQuery(auth()->user()->id, "bank.list");
         return $this->service->list($req);
     }
 
     public function info(string $id)
     {
+        $this->logQuery(auth()->user()->id, "bank.info", "Load Query for bankID: {$id}.");
         return $this->service->info($id);
     }
 
     public function select()
     {
+        $this->logQuery(auth()->user()->id, "bank.select");
         return $this->service->select();
     }
 }

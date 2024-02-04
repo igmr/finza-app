@@ -29,6 +29,7 @@ class AccountController extends Controller
         $data['jsFILES']  = [
             'assets/app/account/index.js',
         ];
+        $this->logLoadView(auth()->user()->id, "account.index");
         return view('app.accounts.index', $data);
     }
 
@@ -44,6 +45,7 @@ class AccountController extends Controller
             'assets/app/showErrorsForm.js',
             'assets/app/account/create.js',
         ];
+        $this->logLoadView(auth()->user()->id, "account.create");
         return view('app.accounts.create', $data);
     }
 
@@ -60,6 +62,7 @@ class AccountController extends Controller
             $payload['ban_id']   = $payload['bank'];
             $data    = $this->service->store($payload);
             if ($data) {
+                $this->logCreated(auth()->user()->id, "account.store", $data['id']);
                 $response['success'] = true;
                 $response['data'] = $data;
                 return response()->json(
@@ -67,6 +70,7 @@ class AccountController extends Controller
                     Response::HTTP_CREATED
                 );
             }
+            $this->logError(auth()->user()->id, 'account.store', 'Data invalid.');
             return response()->json(
                 $response,
                 Response::HTTP_BAD_REQUEST
@@ -74,6 +78,7 @@ class AccountController extends Controller
         } catch (\Exception $ex) {
             $response['success'] = false;
             $response['data']    = [$ex];
+            $this->logException(auth()->user()->id, "account.store", "{$ex->getMessage()}");
             return response()->json(
                 $response,
                 Response::HTTP_INTERNAL_SERVER_ERROR
@@ -93,6 +98,7 @@ class AccountController extends Controller
             'assets/app/showErrorsForm.js',
             'assets/app/account/info.js',
         ];
+        $this->logLoadView(auth()->user()->id, "bank.show", "Load view for accountID: {$id}");
         return view('app.accounts.info', $data);
     }
 
@@ -108,6 +114,7 @@ class AccountController extends Controller
             'assets/app/showErrorsForm.js',
             'assets/app/account/edit.js',
         ];
+        $this->logLoadView(auth()->user()->id, "account.edit", "Load view for accountID: {$id}");
         return view('app.accounts.edit', $data);
     }
 
@@ -128,6 +135,7 @@ class AccountController extends Controller
             }
         }
         if ($isNull == false) {
+            $this->logError(auth()->user()->id, "account.update", "Data invalid for accountID: {$id}");
             throw new HttpResponseException(response()->json([
                 'message' => 'Data invalid',
                 'errors'  => ['general' => ['Error']],
@@ -136,6 +144,7 @@ class AccountController extends Controller
         $data = $this->service->update($id, $payload);
         $response['success'] = true;
         $response['data']    = $data;
+        $this->logUpdated(auth()->user()->id, "account.update", $data['id']);
         return response()->json(
             $response,
             Response::HTTP_OK
@@ -147,60 +156,75 @@ class AccountController extends Controller
      */
     public function destroy(string $id)
     {
-        if ($this->service->destroy($id)) {
-            $response['success'] = true;
-            $response['data'] = ['general' => ['Account deleted.']];
-            return response()->json(
-                $response,
-                Response::HTTP_OK
-            );
+        try {
+            if ($this->service->destroy($id)) {
+                $response['success'] = true;
+                $response['data'] = ['general' => ['Account deleted.']];
+                $this->logDeleted(auth()->user()->id, "account.destroy", $id);
+                return response()->json(
+                    $response,
+                    Response::HTTP_OK
+                );
+            }
+            throw new HttpResponseException(response()->json([
+                'success' => false,
+                'message' => 'Data invalid',
+                'errors'  => ['general' => ['Error in server.']],
+            ], Response::HTTP_BAD_REQUEST));
+        } catch (\Exception $ex) {
+            $this->logException(auth()->user()->id, "account.destroy", "{$ex->getMessage()}");
         }
-        throw new HttpResponseException(response()->json([
-            'success' => false,
-            'message' => 'Data invalid',
-            'errors'  => ['general' => ['Error in server.']],
-        ], Response::HTTP_BAD_REQUEST));
     }
 
     public function restore(string $id)
     {
-        if ($this->service->restore($id)) {
-            $response['success'] = true;
-            $response['data'] = ['general' => ['Account restored.']];
-            return response()->json(
-                $response,
-                Response::HTTP_OK
-            );
+        try {
+            if ($this->service->restore($id)) {
+                $response['success'] = true;
+                $response['data'] = ['general' => ['Account restored.']];
+                $this->logRestored(auth()->user()->id, "account.restore", $id);
+                return response()->json(
+                    $response,
+                    Response::HTTP_OK
+                );
+            }
+            throw new HttpResponseException(response()->json([
+                'success' => false,
+                'message' => 'Data invalid',
+                'errors'  => ['general' => ['Error in server.']],
+            ], Response::HTTP_BAD_REQUEST));
+        } catch (\Exception $ex) {
+            $this->logException(auth()->user()->id, "account.restore", "{$ex->getMessage()}");
         }
-        throw new HttpResponseException(response()->json([
-            'success' => false,
-            'message' => 'Data invalid',
-            'errors'  => ['general' => ['Error in server.']],
-        ], Response::HTTP_BAD_REQUEST));
     }
 
     public function datatable()
     {
+        $this->logQuery(auth()->user()->id, "account.datatable");
         return $this->service->datatable();
     }
-    
+
     public function detail(int $id)
     {
+        $this->logQuery(auth()->user()->id, "account.detail", "Load Query for accountID: {$id}.");
         return $this->service->detail($id);
     }
 
     public function list(Request $req)
     {
+        $this->logQuery(auth()->user()->id, "account.list");
         return $this->service->list($req);
     }
 
     public function info(string $id)
     {
+        $this->logQuery(auth()->user()->id, "account.info", "Load Query for accountID: {$id}.");
         return $this->service->info($id);
     }
 
     public function select()
     {
+        $this->logQuery(auth()->user()->id, "account.select");
         return $this->service->select();
     }
 }

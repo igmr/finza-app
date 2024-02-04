@@ -39,6 +39,7 @@ class transactionController extends Controller
         $data['jsFILES']     = [
             'assets/app/transaction/index.js',
         ];
+        $this->logLoadView(auth()->user()->id, "transaction.index");
         return view('app.transactions.index', $data);
     }
 
@@ -54,6 +55,7 @@ class transactionController extends Controller
             'assets/app/showErrorsForm.js',
             'assets/app/transaction/create.js',
         ];
+        $this->logLoadView(auth()->user()->id, "transaction.create");
         return view('app.transactions.create', $data);
     }
 
@@ -126,9 +128,11 @@ class transactionController extends Controller
                 'egress' => $dataEgress,
                 'ingress' => $dataIngress,
             ];
+            $this->logInfo(auth()->user()->id, " transaction.store - transaction: {$dataTransaction['id']} || egress: {$dataEgress['id']} || ingress: {$dataIngress['id']} - transaction created successfully.");
             return response()->json($response, 201);
         } catch (\Exception $ex) {
             DB::rollBack();
+            $this->logException(auth()->user()->id, "transaction.store", "{$ex->getMessage()}");
             throw new HttpResponseException(response()->json([
                 'success' => false,
                 'message' => 'Data invalid',
@@ -149,6 +153,7 @@ class transactionController extends Controller
             'assets/app/showErrorsForm.js',
             'assets/app/transaction/info.js',
         ];
+        $this->logLoadView(auth()->user()->id, "transaction.show", "Load view for transactionID: {$id}");
         return view('app.transactions.info', $data);
     }
 
@@ -164,6 +169,7 @@ class transactionController extends Controller
             'assets/app/showErrorsForm.js',
             'assets/app/transaction/edit.js',
         ];
+        $this->logLoadView(auth()->user()->id, "transaction.edit", "Load view for transactionID: {$id}");
         return view('app.transactions.edit', $data);
     }
 
@@ -233,9 +239,11 @@ class transactionController extends Controller
                 'egress' => $dataEgress,
                 'ingress' => $dataIngress,
             ];
+            $this->logInfo(auth()->user()->id, " transaction.update - transaction: {$dataTransaction['id']} || egress: {$dataEgress['id']} || ingress: {$dataIngress['id']} - transaction created successfully.");
             return response()->json($response, 200);
         } catch (\Exception $ex) {
             DB::rollBack();
+            $this->logException(auth()->user()->id, "transaction.destroy", "{$ex->getMessage()}");
             throw new HttpResponseException(response()->json([
                 'success' => false,
                 'message' => 'Data invalid',
@@ -262,6 +270,7 @@ class transactionController extends Controller
                 DB::commit();
                 $response['success'] = true;
                 $response['data'] = ['general' => ['Transaction deleted.']];
+                $this->logDeleted(auth()->user()->id, "transaction.destroy", $id);
                 return response()->json(
                     $response,
                     Response::HTTP_OK
@@ -269,6 +278,7 @@ class transactionController extends Controller
             }
         } catch (\Exception $ex) {
             DB::rollBack();
+            $this->logException(auth()->user()->id, "transaction.restore", "{$ex->getMessage()}");
             throw new HttpResponseException(response()->json([
                 'success' => false,
                 'message' => 'Data invalid',
@@ -292,6 +302,7 @@ class transactionController extends Controller
                 DB::commit();
                 $response['success'] = true;
                 $response['data'] = ['general' => ['Transaction restored.']];
+                $this->logRestored(auth()->user()->id, "transaction.restore", $id);
                 return response()->json(
                     $response,
                     Response::HTTP_OK
@@ -299,6 +310,7 @@ class transactionController extends Controller
             }
         } catch (\Exception $ex) {
             DB::rollBack();
+            $this->logException(auth()->user()->id, "transaction.restore", "{$ex->getMessage()}");
             throw new HttpResponseException(response()->json([
                 'success' => false,
                 'message' => 'Data invalid',
@@ -309,26 +321,31 @@ class transactionController extends Controller
 
     public function datatable()
     {
+        $this->logQuery(auth()->user()->id, "transaction.datatable");
         return $this->service->datatable();
     }
 
     public function detail(int $id)
     {
+        $this->logQuery(auth()->user()->id, "transaction.detail", "Load Query for transactionID: {$id}.");
         return $this->service->detail($id);
     }
 
     public function list(Request $req)
     {
+        $this->logQuery(auth()->user()->id, "transaction.list");
         return $this->service->list($req);
     }
 
     public function info(string $id)
     {
+        $this->logQuery(auth()->user()->id, "transaction.info", "Load Query for transactionID: {$id}.");
         return $this->service->info($id);
     }
 
     public function select()
     {
+        $this->logQuery(auth()->user()->id, "transaction.select");
         return $this->service->select();
     }
 }

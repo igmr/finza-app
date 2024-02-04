@@ -29,6 +29,7 @@ class CategoryController extends Controller
         $data['jsFILES']  = [
             'assets/app/category/index.js',
         ];
+        $this->logLoadView(auth()->user()->id, "category.index");
         return view('app.categories.index', $data);
     }
 
@@ -44,6 +45,7 @@ class CategoryController extends Controller
             'assets/app/showErrorsForm.js',
             'assets/app/category/create.js',
         ];
+        $this->logLoadView(auth()->user()->id, "category.create");
         return view('app.categories.create', $data);
     }
 
@@ -62,16 +64,19 @@ class CategoryController extends Controller
             if ($data) {
                 $response['success'] = true;
                 $response['data'] = $data;
+                $this->logCreated(auth()->user()->id, "category.store", $data['id']);
                 return response()->json(
                     $response,
                     Response::HTTP_CREATED
                 );
             }
+            $this->logError(auth()->user()->id, 'category.store', 'Data invalid.');
             return response()->json(
                 $response,
                 Response::HTTP_BAD_REQUEST
             );
         } catch (\Exception $ex) {
+            $this->logException(auth()->user()->id, "category.store", "{$ex->getMessage()}");
             $response['success'] = false;
             $response['data']    = [$ex];
             return response()->json(
@@ -93,6 +98,7 @@ class CategoryController extends Controller
             'assets/app/showErrorsForm.js',
             'assets/app/category/info.js',
         ];
+        $this->logLoadView(auth()->user()->id, "category.show", "Load view for categoryID: {$id}");
         return view('app.categories.info', $data);
     }
 
@@ -108,6 +114,7 @@ class CategoryController extends Controller
             'assets/app/showErrorsForm.js',
             'assets/app/category/edit.js',
         ];
+        $this->logLoadView(auth()->user()->id, "category.edit", "Load view for categoryID: {$id}");
         return view('app.categories.edit', $data);
     }
 
@@ -128,6 +135,7 @@ class CategoryController extends Controller
             }
         }
         if ($isNull == false) {
+            $this->logError(auth()->user()->id, "category.update", "Data invalid for categoryID: {$id}");
             throw new HttpResponseException(response()->json([
                 'message' => 'Data invalid',
                 'errors'  => ['general' => ['Error']],
@@ -136,6 +144,7 @@ class CategoryController extends Controller
         $data = $this->service->update($id, $payload);
         $response['success'] = true;
         $response['data']    = $data;
+        $this->logUpdated(auth()->user()->id, "category.update", $data['id']);
         return response()->json(
             $response,
             Response::HTTP_OK
@@ -147,60 +156,75 @@ class CategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        if ($this->service->destroy($id)) {
-            $response['success'] = true;
-            $response['data'] = ['general' => ['Category deleted.']];
-            return response()->json(
-                $response,
-                Response::HTTP_OK
-            );
+        try {
+            if ($this->service->destroy($id)) {
+                $response['success'] = true;
+                $response['data'] = ['general' => ['Category deleted.']];
+                $this->logDeleted(auth()->user()->id, "category.destroy", $id);
+                return response()->json(
+                    $response,
+                    Response::HTTP_OK
+                );
+            }
+            throw new HttpResponseException(response()->json([
+                'success' => false,
+                'message' => 'Data invalid',
+                'errors'  => ['general' => ['Error in server.']],
+            ], Response::HTTP_BAD_REQUEST));
+        } catch (\Exception $ex) {
+            $this->logException(auth()->user()->id, "category.destroy", "{$ex->getMessage()}");
         }
-        throw new HttpResponseException(response()->json([
-            'success' => false,
-            'message' => 'Data invalid',
-            'errors'  => ['general' => ['Error in server.']],
-        ], Response::HTTP_BAD_REQUEST));
     }
 
     public function restore(string $id)
     {
-        if ($this->service->restore($id)) {
-            $response['success'] = true;
-            $response['data'] = ['general' => ['Category restored.']];
-            return response()->json(
-                $response,
-                Response::HTTP_OK
-            );
+        try {
+            if ($this->service->restore($id)) {
+                $response['success'] = true;
+                $response['data'] = ['general' => ['Category restored.']];
+                $this->logRestored(auth()->user()->id, "category.restore", $id);
+                return response()->json(
+                    $response,
+                    Response::HTTP_OK
+                );
+            }
+            throw new HttpResponseException(response()->json([
+                'success' => false,
+                'message' => 'Data invalid',
+                'errors'  => ['general' => ['Error in server.']],
+            ], Response::HTTP_BAD_REQUEST));
+        } catch (\Exception $ex) {
+            $this->logException(auth()->user()->id, "category.restore", "{$ex->getMessage()}");
         }
-        throw new HttpResponseException(response()->json([
-            'success' => false,
-            'message' => 'Data invalid',
-            'errors'  => ['general' => ['Error in server.']],
-        ], Response::HTTP_BAD_REQUEST));
     }
 
     public function datatable()
     {
+        $this->logQuery(auth()->user()->id, "category.datatable");
         return $this->service->datatable();
     }
 
     public function detail(int $id)
     {
+        $this->logQuery(auth()->user()->id, "category.detail", "Load Query for categoryID: {$id}.");
         return $this->service->detail($id);
     }
 
     public function list(Request $req)
     {
+        $this->logQuery(auth()->user()->id, "category.list");
         return $this->service->list($req);
     }
 
     public function info(string $id)
     {
+        $this->logQuery(auth()->user()->id, "category.info", "Load Query for categoryID: {$id}.");
         return $this->service->info($id);
     }
 
     public function select()
     {
+        $this->logQuery(auth()->user()->id, "category.select");
         return $this->service->select();
     }
 }
