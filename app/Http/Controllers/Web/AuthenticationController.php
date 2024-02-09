@@ -43,13 +43,13 @@ class AuthenticationController extends Controller
         $credentials = $req->validated();
         if (Auth::attempt($credentials)) {
             $req->session()->regenerate();
-            $this->logAuthorization(auth()->user()->id);
+            $this->logAuthentication(auth()->user()->id);
             return response()->json(
                 ['success' => true],
                 Response::HTTP_OK
             );
         }
-        $this->logAuthorizationError($credentials['email']);
+        $this->logAuthenticationError($credentials['email']);
         return response()->json(
             ['email' => 'The provided credentials do not match our records.'],
             Response::HTTP_BAD_REQUEST
